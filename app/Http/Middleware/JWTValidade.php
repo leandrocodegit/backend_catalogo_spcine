@@ -21,14 +21,14 @@ class JWTValidade extends BaseMiddleware
             
             $token = JWTAuth::parseToken();    
             $user = $token->authenticate();
+            
 
             $payload = auth()->payload();
             $isValidRole = false;
 
             foreach ($roles as $role) {
-                if($user->role == $role){
-                    $isValidRole = true;
-                    $output->writeln($role); 
+                if($user->perfil->role == $role){
+                    $isValidRole = true; 
                 }                 
             }
 

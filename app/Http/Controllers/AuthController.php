@@ -13,7 +13,8 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-     
+    
+    private $expires = 60000;
      
     public function __construct()
     {
@@ -45,7 +46,6 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-
         return response()->json(['message' => 'Successfully logged out']);
     }
  
@@ -59,14 +59,14 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
             'type' => 'Bearer',
-            'expires' => 600000
+            'expires' => $this->expires
         ]);
     }
 
     public static function reset($email)
     { 
         if (User::where('email', '=', $email)->exists()){ 
-            return auth()->tokenById(User::where('email', '=', $email)->first()->id); 
+            return auth()->setTTL($this->expires)->tokenById(User::where('email', '=', $email)->first()->id); 
         }
         return response()->json(['error' => 'Not found'], 404);
        

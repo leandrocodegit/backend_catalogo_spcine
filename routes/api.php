@@ -19,8 +19,7 @@ use App\Http\Controllers\CatalogoController;
  
 Route::get('/email', [UserController::class, 'show']);
 Route::get('/catalogo', [CatalogoController::class, 'index']);  
-Route::post('/user', [UserController::class, 'store']);
-Route::get('/user/{id}', [UserController::class, 'show']);
+Route::post('/user', [UserController::class, 'store']); 
 
 Route::group([ 
     'prefix' => 'auth'
@@ -37,12 +36,12 @@ Route::group([
  
 Route::group([ 
     'middleware' => 'JWT:ADMIN,GUEST',
-    'prefix' => 'usuario',
+    'prefix' => 'user',
     'roles' => ['ADMIN', 'GUEST']
 
 ], function ($router) {
 
-    Route::get('/{id}', [UserController::class, 'show']);
+    Route::get('/{id}', [UserController::class, 'show']); 
 
 });
 

@@ -27,16 +27,20 @@ class UserController extends Controller
         $request->validate([
             'nome' => 'required',
             'email' => 'required',
+            'cpf' => 'required',
+            'empresa' => 'required',
             'password' => 'required',
             'perfil' => 'required'
         ]);
 
-        if (User::where('email', '=', $request->email)->exists())
-            return response()->json(['message' => 'Email já foi cadastrado!']);     
+        if (User::where('email', '=', $request->email)->orWhere('cpf', '=', $request->cpf)->exists())
+            return response()->json(['message' => 'Usuário já foi cadastrado!']);     
 
             return User::create([
                 'nome' => $request->nome,
                 'email' => $request->email,
+                'cpf' => $request->cpf,
+                'empresa' => $request->empresa,
                 'password' => Hash::make($request->password),
                 'perfil_id' => $request->input('perfil.id')
             ]);    
