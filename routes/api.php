@@ -20,13 +20,15 @@ use App\Http\Controllers\CatalogoController;
 Route::get('/email', [UserController::class, 'show']);
 Route::get('/catalogo', [CatalogoController::class, 'index']);  
 Route::post('/user', [UserController::class, 'store']); 
+Route::post('/forgot', [UserController::class, 'forgot']); 
+  
 
 Route::group([ 
     'prefix' => 'auth'
 
 ], function ($router) {
 
-    Route::post('reseta', [AuthController::class, 'reset']);
+    
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
@@ -44,6 +46,7 @@ Route::group([
     Route::get('/{id}', [UserController::class, 'show']); 
 
 });
+
 
  
  

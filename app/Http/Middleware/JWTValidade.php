@@ -18,17 +18,16 @@ class JWTValidade extends BaseMiddleware
         try { 
 
             $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-            
+            $output->writeln(''); 
             $token = JWTAuth::parseToken();    
             $user = $token->authenticate();
-            
 
             $payload = auth()->payload();
             $isValidRole = false;
 
             foreach ($roles as $role) {
                 if($user->perfil->role == $role){
-                    $isValidRole = true; 
+                    $isValidRole = true;                    
                 }                 
             }
 

@@ -4,6 +4,11 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Exceptions\InvalidOrderException;
+use Illuminate\Support\Str;
+
 
 class Handler extends ExceptionHandler
 {
@@ -42,9 +47,26 @@ class Handler extends ExceptionHandler
      * @return void
      */
     public function register()
-    {
-        $this->reportable(function (Throwable $e) {
-            //
+    { 
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) { 
+                return response()->json([
+                    'message' => 'Recurso não encontrado.'
+                ], 404);               
+            }else{ 
+                return response(view('angular'), 404);
+            }
         });
-    }
+        
+    }  
+
+    public function render($request, Throwable $exception)
+{ 
+    $response = parent::render($request, $exception); 
+    if ($response->status() === 500) {
+        return response(view('error'), 500);
+    } 
+    return $response; 
+ 
+}
 }

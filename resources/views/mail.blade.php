@@ -6,7 +6,7 @@
   background-color: #4CAF50;
   border: none;
   color: #ffffff!important; 
-  padding: 15px 32px;
+  padding: 7px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -14,15 +14,19 @@
   margin: 4px 2px;
   cursor: pointer;
   width: 150px;
+  border-radius: 2px;
+}
+
+#alert{
+  color: orange;
 }
  
-
 </style>
 </head>
-<body>
- 
-<h2>Olá {{$user->nome}}, confirme seu email para ativar sua conta.</h2> 
-<a href="#" class="button">Confirmar email</a> 
-
+<body> 
+<img src="{{$message->embed(env('APP_URL').'/imagens/logo.png')}}"> 
+<h2>{{$emailSubject->mensagem}}</h2> 
+<a href="{{$emailSubject->link}}" class="button">{{$emailSubject->nameBottom}}</a> 
+<p id="alert">Este email não recebe mensagens!</p>
 </body>
 </html>

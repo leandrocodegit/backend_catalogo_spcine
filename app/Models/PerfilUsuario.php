@@ -17,7 +17,8 @@ class PerfilUsuario extends Model
         'nome' 
     ];
 
-    public function usuarios(){
+    public function usuario
+    (){
         return $this->belongsTo(Usuario::class);
     }
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique(); 
             $table->string('empresa')->nullable();
             $table->string('password');  
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

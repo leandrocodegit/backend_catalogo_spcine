@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\View;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +17,20 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+
 Route::get('/', function () {
     return view('angular');
 });
-
-Route::post('/user', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/auth', [AuthController::class, 'auth']);
  
-Route::get('/eventos', [EventoController::class, 'index']); 
 
+// Para ativar conta de usuário
+Route::get('/account/active/{id}/{token}', [AuthController::class, 'active']);
+
+// Redireciona para formulário de senha
+Route::get('/account/reset/{id}/{token}', [UserController::class, 'valid']);
+
+// Post formulário para redefinir senha;
+Route::Post('/account/reset/password',  [UserController::class, 'reset']); 
+
+ 
  

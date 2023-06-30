@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\User;
-
+use App\Mail\ConfirmacaoEmail; 
+use App\Jobs\EnviarEmail;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use App\Models\TokenAccess;
 
 
 class AuthController extends Controller
@@ -43,12 +47,6 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
  
-    public function logout()
-    {
-        auth()->logout();
-        return response()->json(['message' => 'Successfully logged out']);
-    }
- 
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
@@ -62,13 +60,26 @@ class AuthController extends Controller
             'expires' => $this->expires
         ]);
     }
+ 
+    public function active($id, $token)
+    {
+        if (TokenAcess::where('user_id', $id)
+        ->where('token', $token)
+        ->where('validade', '>=', Carbon::now())
+        ->where('active', '=', false)
+        ->exists()){
 
-    public static function reset($email)
-    { 
-        if (User::where('email', '=', $email)->exists()){ 
-            return auth()->setTTL($this->expires)->tokenById(User::where('email', '=', $email)->first()->id); 
+            if ($user = User::find($id)->exists()){
+                User::find($id)
+                    ->update(['active' => true]);
+            }
+
+            TokenAccess::where(['token' => $token])
+            ->update(['active' => true]);
+            return  $this->view('active-account', ['user' => $user]);       
         }
-        return response()->json(['error' => 'Not found'], 404);
-       
+        return 'Link expirou ou é inválido!'; 
     }
+ 
+ 
 }
