@@ -21,7 +21,7 @@ class JWTValidade extends BaseMiddleware
             $output->writeln(''); 
             $token = JWTAuth::parseToken();    
             $user = $token->authenticate();
-
+            $output->writeln($user->email);
             $payload = auth()->payload();
             $isValidRole = false;
 

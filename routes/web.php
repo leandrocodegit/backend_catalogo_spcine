@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\SecurityController;
 use Illuminate\Support\Facades\View;
 
 /*
@@ -24,13 +24,12 @@ Route::get('/', function () {
  
 
 // Para ativar conta de usuário
-Route::get('/account/active/{id}/{token}', [AuthController::class, 'active']);
+Route::get('/account/active/{id}/{token}', [SecurityController::class, 'active']);
 
 // Redireciona para formulário de senha
-Route::get('/account/reset/{id}/{token}', [UserController::class, 'valid']);
+Route::get('/account/reset/{id}/{token}', [SecurityController::class, 'valid']);
 
-// Post formulário para redefinir senha;
-Route::Post('/account/reset/password',  [UserController::class, 'reset']); 
+ 
 
  
  

@@ -5,138 +5,133 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\TokenAccess;
-use App\Mail\ConfirmacaoEmail;
-use Illuminate\Support\Facades\Mail; 
+use App\Models\TokenAccess; 
 use App\Jobs\EnviarEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
+use Throwable;
 
 
-class UserController extends Controller
-{
+class UserController extends Controller {
 
-    public function index()
-    {
-        //
-    }
+  public function index() {
+    //
+  }
 
-    public function create()
-    {
-        //
-    }
+  public function create() {
+    //
+  }
 
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nome' => 'required',
-            'email' => 'required',
-            'cpf' => 'required',
-            'empresa' => 'required',
-            'password' => 'required',
-            'perfil' => 'required'
-        ]);
+  public function store(Request $request) {
 
-        if (User::where('email', '=', $request->email)->orWhere('cpf', '=', $request->cpf)->exists())
-            return response()->json(['message' => 'Usuário já foi cadastrado!']);     
+    $validator = Validator::make($request->all(), [
+      'nome' => 'bail|required',
+      'email' => 'bail|required',
+      'cpf' => 'bail|required',
+      'empresa' => 'bail|required',
+      'password' => ['required', Password::min(8)->mixedCase(1)->symbols(1)],
+      'perfil' => 'bail|required'
+    ],
+    [
+        'nome.required' => 'Nome é obrigatório!',
+        'email.required' => 'Email é obrigatório!',
+        'cpf.required' => 'Documento é obrigatório!',
+        'empresa.required' => 'Empresa é obrigatório!', 
+        'password' => 'Senha deve possui no minimo 8 caracteres, conter pelo menos uma letra maiúscula e uma minúscula e pelo menos um símbolo.', 
+        'perfil' => 'Perfil é obrigatório!',
+    ]);
 
-            $user = User::create([
-                'nome' => $request->nome,
-                'email' => $request->email,
-                'cpf' => $request->cpf,
-                'empresa' => $request->empresa,
-                'password' => Hash::make($request->password),
-                'active' => false,
-                'perfil_id' => $request->input('perfil.id')
-            ]); 
-            
-           $tokenAcess = TokenAccess::create([
-                'user_id' => $user->id,
-                'tipo' => 'ACTIVE',
-                'token' => Str::random(80),
-                'validade' => Carbon::now()->addMinutes(10)           
-            ]);
-
-            EnviarEmail::dispatch($user, $tokenAcess, 'CHECK');
-    }
-
+    if ($validator->fails())
+        return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
  
-    public function show($id)
-    {
 
-        if (User::where('id', '=', $id)->exists()){            
-            return User::find($id)->with('perfil')->find($id);
-        } 
+    if (User:: where('email', '=', $request -> email) -> orWhere('cpf', '=', $request -> cpf) -> exists())
+    return response() -> json(['message' => 'Usuário já foi cadastrado!']);
 
-       return response()->json(['message' => 'Usuário não encontrado']); 
+    $user = User:: create([
+      'nome' => $request -> nome,
+      'email' => $request -> email,
+      'cpf' => $request -> cpf,
+      'empresa' => $request -> empresa,
+      'password' => Hash:: make($request -> password),
+      'active' => false,
+      'perfil_id' => $request -> input('perfil.id')
+    ]);
+
+    $tokenAcess = TokenAccess:: create([
+      'user_id' => $user -> id,
+      'tipo' => 'ACTIVE',
+      'token' => Str:: random(254),
+      'validade' => Carbon:: now() -> addMinutes(10)
+    ]);
+
+    EnviarEmail:: dispatch($user, $tokenAcess, 'CHECK');
+  }
+
+
+  public function show($id) {
+
+    if (User:: where('id', '=', $id) -> exists()) {
+      return User:: find($id) ->with ('perfil') -> find($id);
     }
 
-    public function edit($id)
-    {
-        //
-    }
-    
+    return response() -> json(['message' => 'Usuário não encontrado']);
+  }
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function forgot(Request $request)
-    {  
+  public function edit(Request $request) {
  
-        if (User::where('email', $request->email) 
-        ->where('active', '=', true)
-        ->exists()){
-            $user = User::where('email', $request->email)->first();
-            $tokenAcess = TokenAccess::create([
-                'user_id' => $user->id,
-                'tipo' => 'ACTIVE',
-                'token' => Str::random(128),
-                'validade' => Carbon::now()->addMinutes(10)           
-            ]);    
-           EnviarEmail::dispatch($user, $tokenAcess, 'RESET');
-           return response()->json(['message' => 'Redefinição de senha enviada com sucesso!']);
-            }      
-        return response()->json(['message' => 'Usuário não encontrado']);
+    $validator = Validator::make($request->all(), [
+      'nome' => 'bail|required',
+      'email' => 'bail|required',
+      'cpf' => 'bail|required',
+      'empresa' => 'bail|required'
+    ],
+    [
+        'nome.required' => 'Nome é obrigatório!',
+        'email.required' => 'Email é obrigatório!',
+        'cpf.required' => 'Documento é obrigatório!',
+        'empresa.required' => 'Empresa é obrigatório!', 
+    ]);
+
+    if ($validator->fails())
+        return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+ 
+    try {
+      $token = JWTAuth:: parseToken();
+      $userAuth = $token -> authenticate();
+
+      if ($userAuth -> perfil -> role !== 'ROOT')
+        if ($userAuth !== $request -> id)
+      return response() -> json(['error' => 'Não é possivel atualizar este usuário!']);
+
+      $userDB = User:: find($request -> id)
+        -> update([
+          'nome' => $request -> email,
+          'nome' => $request -> nome,
+          'cpf' => $request -> cpf,
+          'empresa' => $request -> empresa,]);
+
+    } catch (Throwable $e) {
+      return response() -> json(['error' => 'Falha ao atualizar cadastro!']);
     }
+  }
+ 
+  public function destroy($id) {
 
-    public function reset(Request $request)
-    {   
-        if (TokenAccess::where('user_id', $request->id)
-        ->where('token', $request->token)
-        ->where('validade', '>=', Carbon::now())
-        ->where('active', '=', false)
-        ->exists()){
-
-            if ($user = User::find($request->id)->exists()){
-                User::find($request->id)
-                    ->update(['password' => Hash::make($request->password)]);
-            }
-
-            TokenAccess::where(['token' => $request->token])
-            ->delete();
-            return view('success-reset-password');     
-        } 
-        return 'Falha ao alterar senha!';
-    }
-
-    public function valid($id, $token)
-    {   
-        if (TokenAccess::where('user_id', $id)
-        ->where('token', $token)
-        ->where('validade', '>=', Carbon::now())
-        ->where('active', '=', false)
-        ->exists()){
-            return  view('reset-password', ['id' => $id, 'token' => $token]);    
-        } 
-        abort(500);
-    }
-
+    try {
+        $token = JWTAuth:: parseToken();
+        $userAuth = $token -> authenticate();
+  
+        if ($userAuth -> perfil -> role === 'ROOT')
+          User::destroy($id);  
+  
+      } catch (Throwable $e) {
+        return response() -> json(['error' => 'Falha ao remover cadastro!']);
+      }
+  }
 }

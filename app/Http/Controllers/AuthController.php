@@ -61,25 +61,5 @@ class AuthController extends Controller
         ]);
     }
  
-    public function active($id, $token)
-    {
-        if (TokenAcess::where('user_id', $id)
-        ->where('token', $token)
-        ->where('validade', '>=', Carbon::now())
-        ->where('active', '=', false)
-        ->exists()){
-
-            if ($user = User::find($id)->exists()){
-                User::find($id)
-                    ->update(['active' => true]);
-            }
-
-            TokenAccess::where(['token' => $token])
-            ->update(['active' => true]);
-            return  $this->view('active-account', ['user' => $user]);       
-        }
-        return 'Link expirou ou é inválido!'; 
-    }
- 
  
 }

@@ -6,7 +6,7 @@
   color: #0fd3ff; 
 }
 a {
-  background-color: #4CAF50;
+  background-color: #a53684;
   border: none;
   color: #ffffff!important; 
   padding: 7px 32px;
@@ -20,6 +20,9 @@ a {
   border-radius: 2px;
 }
  
+a:hover{ 
+  background: #824ba1!important; 
+}
 </style>
 </head>
 <body> 

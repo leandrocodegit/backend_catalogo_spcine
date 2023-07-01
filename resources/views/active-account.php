@@ -2,11 +2,14 @@
 <html>
 <head>
 <style>
- .button {
-  background-color: #4CAF50;
+ h2 { 
+  color: #0fd3ff; 
+}
+a {
+  background-color: #a53684;
   border: none;
   color: #ffffff!important; 
-  padding: 15px 32px;
+  padding: 7px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -14,13 +17,17 @@
   margin: 4px 2px;
   cursor: pointer;
   width: 150px;
+  border-radius: 2px;
+}
+
+a:hover{ 
+  background: #824ba1!important; 
 }
  
-
 </style>
 </head>
-<body>
- 
+<body> 
 <h2>Seu email foi confirmado com sucesso.</h2>  
+<a href="/login">Login</a> 
 </body>
 </html>

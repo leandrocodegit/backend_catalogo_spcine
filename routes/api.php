@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogoController; 
-
+use App\Http\Controllers\SecurityController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,15 +19,23 @@ use App\Http\Controllers\CatalogoController;
  
 Route::get('/email', [UserController::class, 'show']);
 Route::get('/catalogo', [CatalogoController::class, 'index']);  
+
+
+//Users 
 Route::post('/user', [UserController::class, 'store']); 
-Route::post('/forgot', [UserController::class, 'forgot']); 
+Route::patch('/user', [UserController::class, 'edit']);
+Route::delete('/user/{', [UserController::class, 'destroy']); 
   
+// Account active and passwords
+Route::post('/forgot', [SecurityController::class, 'forgot']); 
+Route::post('/forgot/resend', [SecurityController::class, 'resend']); 
+Route::put('/forgot/reset/password', [SecurityController::class, 'reset']);
+
 
 Route::group([ 
     'prefix' => 'auth'
 
 ], function ($router) {
-
     
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);

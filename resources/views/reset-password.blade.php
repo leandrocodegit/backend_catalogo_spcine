@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Bootstrap Example</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+    <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1"> 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -26,6 +26,18 @@ p{
 }
 button{
   width: 300px;
+  background: #a53684!important;
+  border-radius: 2px!important;
+  border: none;
+  color: white!important;
+}
+
+button:hover{ 
+  background: #824ba1!important; 
+}
+
+.erros{
+  padding: 10px;
 }
 
 @media (max-width:600px) {
@@ -36,8 +48,8 @@ p{
   font-size: 1.0rem;
 }
 button{
-  width: 250px;
-}
+  width: 250px;  
+} 
 }
 </style>
  
@@ -48,17 +60,45 @@ button{
   @csrf
   <div class="form-group  mt-2">
     <label for="senha">Senha</label>
-    <input type="password" class="form-control" id="password" name="password" placeholder="Nova senha">
+    <input  onkeyup="comparaSenha()" type="password" class="form-control" id="password" name="password" placeholder="Nova senha">
     <input type="hidden" class="form-control" id="id" name="id" value="{{$id}}">
     <input type="hidden" class="form-control" id="token" name="token" value="{{$token}}">
   </div> 
   
   <div class="form-group mt-3">
     <label for="confirmaSenha">Confirmar senha</label>
-    <input type="password" class="form-control" id="confirmaSenha" placeholder="Confirmar senha">
+    <input  onkeyup="comparaSenha()"type="password" class="form-control" id="confirmaSenha" placeholder="Confirmar senha">
   </div> 
-  <button type="submit" class="btn btn-primary  mt-4">Enviar</button>
+ <p id="alerta"></p>
+  <button type="submit" class="btn mt-4">Enviar</button>
 </form>
+
+<div class="erros">
+@if($errors->any())
+  <div class="alert alert-warning">
+    <ul>   
+  @foreach($errors->all() as $error)
+      <li>{{$error}}</li>
+      @endforeach
+    </ul> 
+  </div> 
+  @endif
+</div>                    
 </div>
 </body>
 </html>
+
+<script>  
+function comparaSenha() {  
+ 
+    var password = document.getElementById("password").value; 
+  var confirmaSenha = document.getElementById("confirmaSenha").value;   
+    if(password.length >= 8  && confirmaSenha.length >= 8) {  
+    document.getElementById("alerta").innerHTML = "*1";
+    if(password != confirmaSenha) {  
+     document.getElementById("alerta").innerHTML = "*Senha são diferentes";    
+  }  
+}
+ 
+}  
+</script>  
