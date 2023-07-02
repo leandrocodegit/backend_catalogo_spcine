@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\TokenAccess; 
+use App\Models\Account\User;
+use App\Models\Account\TokenAccess; 
 use App\Jobs\EnviarEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -34,15 +34,14 @@ class UserController extends Controller {
       'email' => 'bail|required',
       'cpf' => 'bail|required',
       'empresa' => 'bail|required',
-      'password' => ['required', Password::min(8)->mixedCase(1)->symbols(1)],
+      'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)],
       'perfil' => 'bail|required'
     ],
     [
         'nome.required' => 'Nome é obrigatório!',
         'email.required' => 'Email é obrigatório!',
         'cpf.required' => 'Documento é obrigatório!',
-        'empresa.required' => 'Empresa é obrigatório!', 
-        'password' => 'Senha deve possui no minimo 8 caracteres, conter pelo menos uma letra maiúscula e uma minúscula e pelo menos um símbolo.', 
+        'empresa.required' => 'Empresa é obrigatório!',   
         'perfil' => 'Perfil é obrigatório!',
     ]);
 
@@ -79,8 +78,18 @@ class UserController extends Controller {
     if (User:: where('id', '=', $id) -> exists()) {
       return User:: find($id) ->with ('perfil') -> find($id);
     }
-
     return response() -> json(['message' => 'Usuário não encontrado']);
+  }
+
+  public function search($search) { 
+
+   if( Str::length($search) > 2)
+    return User::where('nome', 'LIKE', '%'.$search.'%')
+    ->orWhere('email', 'LIKE', '%'.$search.'%')
+    ->orWhere('cpf', 'LIKE', '%'.$search.'%')
+    ->orWhere('empresa', 'LIKE', '%'.$search.'%')
+    ->get(); 
+    return response() -> json(['message' => 'Necessário ao menos 3 caracteres!'], 201);
   }
 
   public function edit(Request $request) {

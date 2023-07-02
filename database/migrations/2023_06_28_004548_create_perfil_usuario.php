@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('role', 6);
             $table->string('nome', 20 );
+            $table->timestamps();
         });
 
      

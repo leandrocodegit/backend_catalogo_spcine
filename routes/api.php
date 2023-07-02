@@ -17,21 +17,12 @@ use App\Http\Controllers\SecurityController;
 |
 */
  
-Route::get('/email', [UserController::class, 'show']);
-Route::get('/catalogo', [CatalogoController::class, 'index']);  
-
-
-//Users 
-Route::post('/user', [UserController::class, 'store']); 
-Route::patch('/user', [UserController::class, 'edit']);
-Route::delete('/user/{', [UserController::class, 'destroy']); 
-  
-// Account active and passwords
+//Route:: Account active and passwords
 Route::post('/forgot', [SecurityController::class, 'forgot']); 
 Route::post('/forgot/resend', [SecurityController::class, 'resend']); 
 Route::put('/forgot/reset/password', [SecurityController::class, 'reset']);
 
-
+//Route:: Auth
 Route::group([ 
     'prefix' => 'auth'
 
@@ -44,15 +35,20 @@ Route::group([
 });
 
  
+//Route:: Users
 Route::group([ 
-    'middleware' => 'JWT:ADMIN,GUEST',
+    'middleware' => 'JWT:ROOT,ADMIN,USER',
     'prefix' => 'user',
-    'roles' => ['ADMIN', 'GUEST']
+    'roles' => ['ROOT', 'ADMIN', 'USER']
 
 ], function ($router) {
 
-    Route::get('/{id}', [UserController::class, 'show']); 
-
+    Route::get('/{id}', [UserController::class, 'show']);
+    Route::get('/filter/list/{search}', [UserController::class, 'search']);
+    Route::post('/', [UserController::class, 'store']); 
+    Route::put('/reset/password', [SecurityController::class, 'editPassword']);    
+    Route::patch('/', [UserController::class, 'edit']);
+    Route::delete('/{id}', [UserController::class, 'destroy']);
 });
 
 

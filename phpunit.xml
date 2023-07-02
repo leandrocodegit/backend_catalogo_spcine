@@ -18,11 +18,20 @@
         </include>
     </coverage>
     <php>
-        <env name="APP_ENV" value="testing"/>
+        <env name="ID_FAKE" value="1"/>
+        <env name="NOME_FAKE" value="Fake nome"/>
+        <env name="CPF_FAKE" value="12345678910"/>
+        <env name="EMAIL_FAKE" value="fake@fake.com"/>
+        <env name="EMPRESA_FAKE" value="Empresa fake"/>
+        <env name="PERFIL_FAKE" value="1"/>
+        <env name="ACTIVE_FAKE" value="false"/>
+        <env name="EMAIL_FAKE" value="fake@fake.com"/>
+        <env name="PASSWORD" value="F@kePassword10!"/>
+        <env name="APP_ENV" value="testing"/> 
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_DATABASE" value="test"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

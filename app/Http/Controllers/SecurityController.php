@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\TokenAccess;  
+use App\Models\Account\User;
+use App\Models\Account\TokenAccess;  
 use App\Jobs\EnviarEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -71,7 +71,7 @@ class SecurityController extends Controller
           EnviarEmail:: dispatch($user, $tokenAcess, 'CHECK');
           return response() -> json(['message' => 'Ativação enviada com sucesso!']);
         }
-        return response() -> json(['message' => 'Usuário não encontrado ou ativo']);
+        return response() -> json(['message' => 'Usuário não encontrado ou ativo'], 400);
       }
     
       public function reset(Request $request) {
@@ -106,6 +106,28 @@ class SecurityController extends Controller
         }
         return response()->json(['errors' => 'Falha ao atualiza senha!', 'status' => 400], 400);
       }
+
+      public function editPassword(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required', 
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)] 
+          ],
+          [
+            'id.required' => 'Id é obrigatório!', 
+          ]);
+      
+          if ($validator->fails())
+              return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);    
+   
+          if (User:: find($request -> id) -> exists()) {
+            User:: find($request -> id)
+              -> update(['password' => Hash:: make($request -> password)]);
+           return response() -> json(['message' => 'Senha alterada com sucesso!'], 200);
+          }
+    
+        return response()->json(['errors' => 'Falha ao atualiza senha!', 'status' => 400], 400);
+      }
     
       public function valid($id, $token) {
         if (TokenAccess:: where('user_id', $id)
@@ -136,6 +158,5 @@ class SecurityController extends Controller
               return view('active-account');       
           }
           return 'Link expirou ou é inválido!'; 
-      }
-    
+      }    
 }

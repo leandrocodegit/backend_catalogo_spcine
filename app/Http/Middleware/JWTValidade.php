@@ -10,6 +10,7 @@ use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 use Illuminate\Support\Facades\Log;
 
 
+
 class JWTValidade extends BaseMiddleware
 {
  
@@ -20,8 +21,7 @@ class JWTValidade extends BaseMiddleware
             $output = new \Symfony\Component\Console\Output\ConsoleOutput();
             $output->writeln(''); 
             $token = JWTAuth::parseToken();    
-            $user = $token->authenticate();
-            $output->writeln($user->email);
+            $user = $token->authenticate(); 
             $payload = auth()->payload();
             $isValidRole = false;
 

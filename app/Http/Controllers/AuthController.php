@@ -7,12 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\User;
-use App\Mail\ConfirmacaoEmail; 
-use App\Jobs\EnviarEmail;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use App\Models\TokenAccess;
+use App\Models\Account\User;   
 
 
 class AuthController extends Controller
