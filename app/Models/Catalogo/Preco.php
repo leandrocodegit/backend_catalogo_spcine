@@ -11,6 +11,10 @@ class Preco extends Model
 
     protected $table = "precos";
 
+    protected $hidden = [
+        'catalogo_id'
+    ];
+
     public function catalogo(){
         return $this->belongsTo(Catalogo::class);
     }

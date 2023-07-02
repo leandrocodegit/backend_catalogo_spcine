@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidOrderException;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 
 
@@ -68,10 +69,20 @@ class Handler extends ExceptionHandler
             } 
         });
 
+        $this->renderable(function (QueryException $e, Request $request) {
+            if ($request->is('api/*')) { 
+                return response()->json([
+                    'message' => 'Falha na requisição.',
+                    'error' => [$e->getPrevious()]
+                ], 404);               
+            } 
+        });
+
         $this->renderable(function (ValidationException $e, Request $request) {
             if ($request->is('api/*')) { 
                 return response()->json([
-                    'message' => 'A requisição não foi processada.'
+                    'message' => 'A requisição não foi processada.',
+                    'error' => [$e->getPrevious()]
                 ], 422);               
             } 
         });

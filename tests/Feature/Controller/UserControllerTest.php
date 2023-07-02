@@ -129,6 +129,16 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_busca_usuario_not_exists()
+    {
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->token,
+        ])->get('/api/user/40'); 
+ 
+        $response->assertStatus(202);
+    }
+
     public function test_delete_usuario()
     {
 

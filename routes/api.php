@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogoController; 
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\CategoriaTagController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +20,15 @@ use App\Http\Controllers\SecurityController;
 
 
 //Route:: catalogos
-Route::get('/catalogo/{nome}', [CatalogoController::class, 'index']); 
+Route::post('/catalogo/filter', [CatalogoController::class, 'filter']); 
+
+
+//Route:: categorias
+Route::get('/categoria', [CategoriaTagController::class, 'list']); 
+Route::post('/categoria', [CategoriaTagController::class, 'store']); 
+Route::patch('/categoria', [CategoriaTagController::class, 'edit']); 
+Route::get('/categoria/{id}', [CategoriaTagController::class, 'find']); 
+
  
 //Route:: Account active and passwords
 Route::post('/forgot', [SecurityController::class, 'forgot']); 

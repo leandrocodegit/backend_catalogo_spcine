@@ -6,19 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+ 
     public function up()
     {
-        Schema::create('catalogos', function (Blueprint $table) {
+        Schema::create('categoria_tags', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->string('endereco');    
-            $table->timestamps();
+            $table->string('nome')->unique();
+            $table->timestamps(); 
         });
     }
-
+ 
     public function down()
     {
-        Schema::dropIfExists('catalogos');
+        Schema::dropIfExists('categoria_tags');
     }
 };

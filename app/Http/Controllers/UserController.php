@@ -74,11 +74,11 @@ class UserController extends Controller {
 
 
   public function show($id) {
-
-    if (User:: where('id', '=', $id) -> exists()) {
-      return User:: find($id) ->with ('perfil') -> find($id);
-    }
-    return response() -> json(['message' => 'Usuário não encontrado']);
+ 
+      $user = User::with ('perfil') -> find($id);
+      if($user === null)
+        return response()->json(['message' => env('RESPONSE_NOT_FOUND'), 'status' => 202], 202);
+    return $user;  
   }
 
   public function search($search) { 

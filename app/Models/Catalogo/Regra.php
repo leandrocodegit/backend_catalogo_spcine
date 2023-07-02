@@ -10,8 +10,14 @@ class Regra extends Model
     use HasFactory;
 
     protected $table = "regras";
+    
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'pivot'
+    ];
 
     public function catalogos(){
-        return $this->hasMany(Catalogo::class);
+        return $this->belongsToMany(Catalogo::class, 'regras_catalogo');
     }
 }
