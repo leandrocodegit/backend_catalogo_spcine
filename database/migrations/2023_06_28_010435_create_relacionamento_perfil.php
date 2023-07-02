@@ -19,7 +19,7 @@ return new class extends Migration
     {
          //Removendo relacionamento
          Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('usuarios_usuario_id_foreign');
+            $table->dropForeign('users_perfil_id_foreign');
         }); 
     }
 };

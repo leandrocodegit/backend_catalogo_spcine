@@ -16,6 +16,10 @@ use App\Http\Controllers\SecurityController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+//Route:: catalogos
+Route::get('/catalogo/{nome}', [CatalogoController::class, 'index']); 
  
 //Route:: Account active and passwords
 Route::post('/forgot', [SecurityController::class, 'forgot']); 

@@ -17,8 +17,7 @@ class PerfilUsuario extends Model
         'nome' 
     ];
 
-    public function usuario
-    (){
-        return $this->belongsTo(Usuario::class);
+    public function usuarios(){
+        return $this->hasMany(Usuario::class);
     }
 }
