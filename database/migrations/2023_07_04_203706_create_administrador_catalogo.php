@@ -6,22 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+ 
     public function up()
     {
-        Schema::create('catalogos', function (Blueprint $table) {
+        Schema::create('administrador_catalogo', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('endereco');            
-            $table->boolean('home'); 
-            $table->float('mediaPreco')->nullable();
-            $table->boolean('active');    
+            $table->boolean('active');             
             $table->timestamps();
         });
     }
-
+ 
     public function down()
     {
-        Schema::dropIfExists('catalogos');
+        Schema::dropIfExists('administrador_catalogo');
     }
 };

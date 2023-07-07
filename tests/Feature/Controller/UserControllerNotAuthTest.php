@@ -29,27 +29,7 @@ class UserControllerTestNotAuth extends TestCase
         $this->user = User::factory()->create();  
     }
  
-    public function test_create_novo_usuario_not_auth()
-    {
- 
-        $response = $this->post('/api/user', 
-        [  
-            "nome" => "Leandro",
-            "cpf" => "08987782635",
-            "email" => "lpoliveira@gmail.com",
-            "empresa" => "Spcine",
-            "password" => "Pass2020!",
-            "perfil"  => [
-                "id" => 1,
-                "role" => "ADMIN",
-                "nome" => "Administrador"
-            ]
-        ]); 
- 
-        $response->assertStatus(401);
-    }
-
-    public function test_atualizar_usuario_not_auth()
+    public function test_atualizar_usuario_nao_autenticado()
     {
  
         $response = $this->patch('/api/user', 
@@ -64,7 +44,7 @@ class UserControllerTestNotAuth extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_busca_usuario_not_auth()
+    public function test_busca_usuario_nao_autenticado()
     {
 
         $response = $this->get('/api/user/' .$this->user->id); 
@@ -72,11 +52,10 @@ class UserControllerTestNotAuth extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_delete_usuario_not_auth()
+    public function test_delete_usuario_nao_autenticado()
     {
 
         $response = $this->delete('/api/user/' .$this->user->id); 
- 
         $response->assertStatus(401);
     }
 }

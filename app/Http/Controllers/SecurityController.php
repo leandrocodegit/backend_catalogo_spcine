@@ -36,11 +36,12 @@ class SecurityController extends Controller
           $user = User:: where('email', $request -> email) -> first();
           $tokenAcess = TokenAccess:: create([
             'user_id' => $user -> id,
-            'tipo' => 'ACTIVE',
+            'tipo' => 'RESET',
             'token' => Str:: random(254),
             'validade' => Carbon:: now() -> addMinutes(10)
           ]);
-          EnviarEmail:: dispatch($user, $tokenAcess, 'RESET');
+          EnviarEmail::dispatch($user, $tokenAcess, 'RESET');
+
           return response() -> json(['message' => 'Redefinição de senha enviada com sucesso!']);
         }
         return response() -> json(['message' => 'Usuário não encontrado ou inativo']);
@@ -95,8 +96,8 @@ class SecurityController extends Controller
           -> where('active', '=', false)
           -> exists()) {
     
-          if ($user = User:: find($request -> id) -> exists()) {
-            User:: find($request -> id)
+          if ($user = User:: firstWhere('id', $request -> id) -> exists()) {
+            User:: firstWhere('id', $request -> id)
               -> update(['password' => Hash:: make($request -> password)]);
           }
     
@@ -120,8 +121,8 @@ class SecurityController extends Controller
           if ($validator->fails())
               return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);    
    
-          if (User:: find($request -> id) -> exists()) {
-            User:: find($request -> id)
+          if (User:: firstWhere('id', $request -> id) -> exists()) {
+            User:: firstWhere('id', $request -> id)
               -> update(['password' => Hash:: make($request -> password)]);
            return response() -> json(['message' => 'Senha alterada com sucesso!'], 200);
           }
@@ -148,8 +149,8 @@ class SecurityController extends Controller
           ->where('active', '=', false)
           ->exists()){
     
-              if (User::find($id)->exists()){
-                  User::find($id)
+              if (User::firstWhere('id', $id)->exists()){
+                  User::firstWhere('id', $id)
                       ->update(['active' => true]);
               }
     

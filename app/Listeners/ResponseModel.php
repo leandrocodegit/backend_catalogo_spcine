@@ -5,6 +5,8 @@ namespace App\Listeners;
 use App\Events\EventResponse;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Models\Catalogo\Preco;
+use App\Models\Catalogo\Catalogo;
 
 class ResponseModel
 {
@@ -20,12 +22,7 @@ class ResponseModel
  
     public function handle(EventResponse $event)
     {
-        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $output->writeln($event->message .'  '. $event->status); 
 
-            return response()->json([
-                'name' => 'Abigail',
-                'state' => 'CA',
-            ]);
+     
     }
 }

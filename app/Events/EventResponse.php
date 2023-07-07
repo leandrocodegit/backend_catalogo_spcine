@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\SerializesModels; 
 
 class EventResponse
 {
@@ -20,8 +20,7 @@ class EventResponse
      * @return void
      */
     public function __construct(
-        public string $message,
-        public int $status
+        public $preco 
     )
     {
         //

@@ -11,6 +11,12 @@ class Preco extends Model
 
     protected $table = "precos";
 
+    protected $fillable = [
+        'descricao',
+        'valor',
+        'catalogo_id'  
+    ];
+
     protected $hidden = [
         'catalogo_id'
     ];

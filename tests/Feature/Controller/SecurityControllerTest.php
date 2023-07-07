@@ -12,6 +12,7 @@ use App\Models\Account\TokenAccess;
 use Mockery\MockInterface;
 use App\Jobs\EnviarEmail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Database\Factories\Account\TokenAccessCheckFactory;
 
@@ -37,6 +38,9 @@ class SecurityControllerTest extends TestCase
  
     public function test_forgot_password_usuario()
     {
+
+        Mail::fake();
+        
         $response = $this->post('/api/forgot', 
         [   
             "email" => "fake@fake.com" 
@@ -46,7 +50,7 @@ class SecurityControllerTest extends TestCase
          
     }
     
-    public function test_forgot_resend_active_conta_usuario()
+    public function test_forgot_resend_ativar_conta_usuario()
     {
         $response = $this->post('/api/forgot/resend', 
         [   
@@ -56,7 +60,7 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(200);         
     }
 
-    public function test_forgot_resend_active_conta_actived_usuario()
+    public function test_forgot_resend_active_conta_activada_usuario()
     {
         $this->user->active = true;
         $this->user->save();
@@ -187,7 +191,7 @@ class SecurityControllerTest extends TestCase
 
     // Alterar senha autenticado
 
-    public function test_alterar_password_valid_auth_usuario()
+    public function test_alterar_password_valid_autenticado_usuario()
     {
   
         $response = $this->withHeaders([
@@ -202,7 +206,7 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(200);         
     }
 
-    public function test_alterar_password_invalid_numeros_auth_usuario()
+    public function test_alterar_password_invalid_numeros_autenticado_usuario()
     {
   
         $response = $this->withHeaders([
@@ -217,7 +221,7 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(400);         
     }
  
-    public function test_alterar_password_invalid_letras_auth_usuario()
+    public function test_alterar_password_invalid_letras_autenticado_usuario()
     {
   
         $response = $this->withHeaders([
@@ -232,7 +236,7 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(400);         
     }
 
-    public function test_alterar_password_invalid_maiuscula_auth_usuario()
+    public function test_alterar_password_invalid_maiuscula_autenticado_usuario()
     {
   
         $response = $this->withHeaders([
@@ -247,7 +251,7 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(400);         
     }
 
-    public function test_alterar_password_invalid_minuscula_auth_usuario()
+    public function test_alterar_password_invalid_minuscula_autenticado_usuario()
     {
   
         $response = $this->withHeaders([
@@ -262,7 +266,7 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(400);         
     }
 
-    public function test_alterar_password_invalid_quantidade_caracteres_auth_usuario()
+    public function test_alterar_password_invalid_quantidade_caracteres_autenticado_usuario()
     {
   
         $response = $this->withHeaders([

@@ -11,12 +11,12 @@ return new class extends Migration
     {
         Schema::table('imagens', function (Blueprint $table) {
             $table->unsignedBigInteger('catalogo_id');
-            $table->foreign('catalogo_id')->references('id')->on('imagens');
+            $table->foreign('catalogo_id')->references('id')->on('catalogos');
         });
 
-        Schema::table('cordenadas', function (Blueprint $table) {
-            $table->unsignedBigInteger('catalogo_id');
-            $table->foreign('catalogo_id')->references('id')->on('cordenadas');
+        Schema::table('catalogos', function (Blueprint $table) {
+            $table->unsignedBigInteger('cordenadas_id');
+            $table->foreign('cordenadas_id')->references('id')->on('cordenadas');
         });
 
         Schema::table('catalogos', function (Blueprint $table) {
@@ -36,13 +36,10 @@ return new class extends Migration
         Schema::table('imagens', function (Blueprint $table) {
             $table->dropForeign('imagens_catalogo_id_foreign');
         });
-
-        Schema::table('cordenadas', function (Blueprint $table) {
-            $table->dropForeign('cordenadas_catalogo_id_foreign');
-        });
-
+ 
         Schema::table('catalogos', function (Blueprint $table) {
             $table->dropForeign('catalogos_regiao_id_foreign');
+            $table->dropForeign('catalogos_cordenadas_id_foreign');
         });
 
         Schema::table('precos', function (Blueprint $table) {

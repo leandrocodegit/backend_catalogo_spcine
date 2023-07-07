@@ -11,8 +11,8 @@ return new class extends Migration
     {
         Schema::create('cordenadas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('latitude');
-            $table->unsignedBigInteger('longitute');
+            $table->string('latitude');
+            $table->string('longitute');
             $table->timestamps();
         });
     }

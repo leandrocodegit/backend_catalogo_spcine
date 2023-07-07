@@ -6,7 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogoController; 
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\ImagemController;
 use App\Http\Controllers\CategoriaTagController; 
+use App\Http\Controllers\RelatorioController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +21,20 @@ use App\Http\Controllers\CategoriaTagController;
 */
 
 
+//Route:: Exports arquivos de relatorio
+Route::get('/export/catalogo', [RelatorioController::class, 'catalogosXLS']); 
+
+//Route:: Imagens upload
+Route::post('/imagem', [ImagemController::class, 'store']); 
+Route::post('/imagem/file', [ImagemController::class, 'upload']); 
+Route::patch('/imagem', [ImagemController::class, 'edit']);  
+Route::get('/imagem/{id}', [ImagemController::class, 'find']); 
+Route::delete('/imagem/{id}', [ImagemController::class, 'destroy']);  
+ 
+
 //Route:: catalogos
+Route::get('/catalogo/random', [CatalogoController::class, 'random']); 
+Route::get('/catalogo/{id}', [CatalogoController::class, 'find']); 
 Route::post('/catalogo/filter', [CatalogoController::class, 'filter']); 
 
 
@@ -47,6 +62,8 @@ Route::group([
 
 });
 
+//Route:: Users
+Route::post('/user', [UserController::class, 'store']); 
  
 //Route:: Users
 Route::group([ 
@@ -58,7 +75,7 @@ Route::group([
 
     Route::get('/{id}', [UserController::class, 'show']);
     Route::get('/filter/list/{search}', [UserController::class, 'search']);
-    Route::post('/', [UserController::class, 'store']); 
+    
     Route::put('/reset/password', [SecurityController::class, 'editPassword']);    
     Route::patch('/', [UserController::class, 'edit']);
     Route::delete('/{id}', [UserController::class, 'destroy']);

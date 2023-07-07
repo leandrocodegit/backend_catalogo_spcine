@@ -75,7 +75,7 @@ class UserController extends Controller {
 
   public function show($id) {
  
-      $user = User::with ('perfil') -> find($id);
+      $user = User::with ('perfil') -> firstWhere('id', $id);
       if($user === null)
         return response()->json(['message' => env('RESPONSE_NOT_FOUND'), 'status' => 202], 202);
     return $user;  
@@ -117,8 +117,8 @@ class UserController extends Controller {
       if ($userAuth -> perfil -> role !== 'ROOT')
         if ($userAuth !== $request -> id)
       return response() -> json(['error' => 'Não é possivel atualizar este usuário!']);
-
-      $userDB = User:: find($request -> id)
+ 
+      $userDB = User::firstWhere('id', $request -> id)
         -> update([
           'nome' => $request -> email,
           'nome' => $request -> nome,

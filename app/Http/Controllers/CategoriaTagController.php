@@ -32,7 +32,7 @@ class CategoriaTagController extends Controller
      }
 
      public function find($id){
-        $categoria = CategoriaTag::find($id);
+        $categoria = CategoriaTag::firstWhere('id', $id);
         if($categoria === null)
             return response()->json(['message' => MessageResponse::NOT_FOUND, 'status' => 202], 202);
         return $categoria;
@@ -52,8 +52,8 @@ class CategoriaTagController extends Controller
       if ($validator->fails())
           return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
 
-        if(CategoriaTag::find($request->id)->exists()){
-            CategoriaTag::find($request->id)->update([
+        if(CategoriaTag::firstWhere('id', $request->id)->exists()){
+            CategoriaTag::firstWhere('id', $request->id)->update([
                 'nome' => $request->nome
             ]);        
             return response()->json(['message' => MessageResponse::SUCCESS_UPDATE, 'status' => 200], 200);

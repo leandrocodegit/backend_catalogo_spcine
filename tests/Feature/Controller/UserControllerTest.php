@@ -35,9 +35,7 @@ class UserControllerTest extends TestCase
     public function test_create_novo_usuario()
     {
  
-        $response = $this->withHeaders([
-            'Authorization' =>  $this->token,
-        ])->post('/api/user', 
+        $response = $this->post('/api/user', 
         [  
             "nome" => "Leandro",
             "cpf" => "08987782635",
@@ -129,12 +127,12 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_busca_usuario_not_exists()
+    public function test_busca_usuario_nao_existe()
     {
 
         $response = $this->withHeaders([
             'Authorization' => $this->token,
-        ])->get('/api/user/40'); 
+        ])->get('/api/user/40' .$this->user->id); 
  
         $response->assertStatus(202);
     }
@@ -160,7 +158,7 @@ class UserControllerTest extends TestCase
         $this->assertTrue(count($response->decodeResponseJson()) > 0);
     }
 
-    public function test_busca_lista_usuario_empty_result()
+    public function test_busca_lista_usuario_sem_resultados()
     {
 
         $response = $this->withHeaders([
