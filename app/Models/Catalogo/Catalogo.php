@@ -13,6 +13,16 @@ class Catalogo extends Model
 {
     use HasFactory;
 
+    protected $fillable = [ 
+        'nome',
+        'endereco',
+        'home',
+        'active',
+        'regiao_id',
+        'cordenadas_id',
+        'administrador_id'
+    ];
+
     protected $hidden = [
         'regiao_id',
         'cordenadas_id',

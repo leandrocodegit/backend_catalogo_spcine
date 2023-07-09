@@ -7,6 +7,7 @@ use App\Models\Catalogo\Catalogo;
 use Illuminate\Http\File;
 use App\Models\Enums\MessageResponse;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 
@@ -41,7 +42,7 @@ class ImagemController extends Controller
         if($imagem !== null)
            $ordem = $imagem->ordem + 1;
          
-        Imagem::create([
+       $imagemDB = Imagem::create([
             'titulo' => $request->titulo,
             'descricao' => $request->descricao,
             'ordem' => $ordem,
@@ -52,6 +53,9 @@ class ImagemController extends Controller
             'hashName' => $request->file->hashName(),
             'catalogo_id' => $request->catalogo_id         
         ]);
+
+        Log::channel('db')->info(
+            'Criado imagem ' .$imagemDB->id. ' catalogo ' .$request->catalogo_id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
 
         return response()->json([
             'message' => 'Imagem gravada com sucesso!',
@@ -64,13 +68,16 @@ class ImagemController extends Controller
         Imagem::findOrFail($request->id);
         $imagem = Imagem::with('catalogo')
         ->firstWhere('id', $request->id); 
-
-        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $output->writeln($imagem ); 
+ 
         if (Storage::disk('public')->exists('imagens/' .$imagem->catalogo->id))
             Storage::disk('public')->delete($imagem->url); 
           
-        $request->file->store('imagens/' .$imagem->catalogo->id, 'public');        
+        $request->file->store('imagens/' .$imagem->catalogo->id, 'public'); 
+        
+        Log::channel('db')->info(
+            'Upload imagem ' .$imagem->id. ' catalogo ' .$imagem->catalogo->id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
+
+        
         return response()->json([
             'message' => 'Imagem gravada com sucesso!',
              'status' => 200], 200);
@@ -78,6 +85,9 @@ class ImagemController extends Controller
 
     public function destroy($id){
         
+        Log::channel('db')->info(
+            'Delete imagem ' .$id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
+
         $imagem = Imagem::findOrFail($id);
         Storage::disk('public')->delete($imagem->url);        
 
@@ -87,6 +97,9 @@ class ImagemController extends Controller
     }
 
     public function edit(Request $request){
+
+        Log::channel('db')->info(
+            'Editado imagem ' .$request->id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
  
         Imagem::findOrFail($request->id)->update([
                 'titulo' => $request->titulo,

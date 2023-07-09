@@ -42,6 +42,7 @@ class UserControllerTest extends TestCase
             "email" => "lpoliveira@gmail.com",
             "empresa" => "Spcine",
             "password" => "Pass2020!",
+            "telefone" => "11987782635",
             "password_confirmation" => "Pass2020!",
             "perfil"  => [
                 "id" => 1,
@@ -111,7 +112,8 @@ class UserControllerTest extends TestCase
             "nome" => "Fake new",
             "cpf" => "9845213154",
             "email" => "fake@gmail.com",
-            "empresa" => "Spcine" 
+            "empresa" => "Spcine",
+            "telefone" => "11987782635" 
         ]); 
  
         $response->assertStatus(200);

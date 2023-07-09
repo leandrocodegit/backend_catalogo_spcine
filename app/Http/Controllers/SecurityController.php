@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 
@@ -93,18 +94,26 @@ class SecurityController extends Controller
         if (TokenAccess:: where('user_id', $request -> id)
           -> where('token', $request -> token)
           -> where('validade', '>=', Carbon:: now())
-          -> where('active', '=', false)
+          -> where('active', false)
           -> exists()) {
     
-          if ($user = User:: firstWhere('id', $request -> id) -> exists()) {
+          if ($user = User:: firstWhere('id', $request -> id)
+          -> where('active', true)
+          -> where('email_verificado', true) -> exists()) {
             User:: firstWhere('id', $request -> id)
               -> update(['password' => Hash:: make($request -> password)]);
-          }
-    
-          TokenAccess:: where(['token' => $request -> token])
+
+              TokenAccess:: where(['token' => $request -> token])
             -> delete ();
+
+            Log::channel('db')->info(
+              'Reset senha de usuario ' .$request -> id);  
             return response() -> json(['message' => 'Senha alterada com sucesso!'], 200);
+          }             
         }
+
+        Log::channel('db')->info(
+          'Reset de senha de usuario não concluida para o usuario id ' .$request -> id); 
         return response()->json(['errors' => 'Falha ao atualiza senha!', 'status' => 400], 400);
       }
 
@@ -124,9 +133,15 @@ class SecurityController extends Controller
           if (User:: firstWhere('id', $request -> id) -> exists()) {
             User:: firstWhere('id', $request -> id)
               -> update(['password' => Hash:: make($request -> password)]);
+
+              Log::channel('db')->info(
+                'Alterado senha de usuario ' .$request -> id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role); 
+
            return response() -> json(['message' => 'Senha alterada com sucesso!'], 200);
           }
     
+          Log::channel('db')->info(
+            'Alteração de senha de usuario não concluida ' .$request -> id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role); 
         return response()->json(['errors' => 'Falha ao atualiza senha!', 'status' => 400], 400);
       }
     
@@ -134,7 +149,7 @@ class SecurityController extends Controller
         if (TokenAccess:: where('user_id', $id)
           -> where('token', $token)
           -> where('validade', '>=', Carbon:: now())
-          -> where('active', '=', false)
+          -> where('email_verificado', '=', false)
           -> exists()) {
           return view('reset-password', ['id' => $id, 'token' => $token]);
         }
@@ -146,18 +161,26 @@ class SecurityController extends Controller
           if (TokenAccess::where('user_id', $id)
           ->where('token', $token)
           ->where('validade', '>=', Carbon::now())
-          ->where('active', '=', false)
+          ->where('email_verificado', '=', false)
           ->exists()){
     
               if (User::firstWhere('id', $id)->exists()){
                   User::firstWhere('id', $id)
-                      ->update(['active' => true]);
+                      ->update(['email-verificado' => true]);
               }
     
               TokenAccess::where(['token' => $token])
               ->update(['active' => true]);
+
+              Log::channel('db')->info(
+                'Ativação de usuario ' .$id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role); 
+
               return view('active-account');       
           }
+
+          Log::channel('db')->info(
+            'Ativação de usuario não concluida ' .$id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role); 
+
           return 'Link expirou ou é inválido!'; 
       }    
 }

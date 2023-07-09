@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('descricoes_catalogo', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');  
-            $table->string('descricao');
+            $table->string('descricao', 2048);
             $table->timestamps();
         });
     }

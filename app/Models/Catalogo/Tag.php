@@ -14,7 +14,8 @@ class Tag extends Model
 
     protected $fillable = [
         'id',
-        'nome'  
+        'nome',
+        'categoria_tag_id'  
     ];
 
     protected $hidden = [
@@ -28,6 +29,6 @@ class Tag extends Model
     }
 
     public function categoria(){
-        return $this->belongsTo(CategoriaTag::class);
+        return $this->belongsTo(CategoriaTag::class, 'categoria_tag_id'); 
     }
 }

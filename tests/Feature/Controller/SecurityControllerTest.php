@@ -86,16 +86,18 @@ class SecurityControllerTest extends TestCase
 
     public function test_alterar_password_valid_link_usuario()
     {
+        $this->user->active = true; 
+        $this->user->email_verificado = true;
+        $this->user->save();
         $response = $this->put('/api/forgot/reset/password', 
         [   
             "id" => 1,
             "token" =>  $this->tokenAccess->token,
             "password" => "F@kePassword10!",
             "password_confirmation" => "F@kePassword10!", 
-        ]);          
+        ]);         
  
-        $response->assertStatus(200);
-         
+        $response->assertStatus(200);         
     }
 
     

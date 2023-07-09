@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('cpf')->unique();
-            $table->string('email')->unique(); 
+            $table->string('email')->unique();
+            $table->string('telefone');
+            $table->boolean('email_verificado')->default(false);
             $table->string('empresa')->nullable();
             $table->string('password');  
             $table->boolean('active')->default(false);

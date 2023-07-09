@@ -19,6 +19,8 @@ class UserFactory extends Factory
             'nome' => env('NOME_FAKE'),
             'cpf' => env('CPF_FAKE'),
             'email' => env('EMAIL_FAKE'),
+            'telefone' => env('TELEFONE_FAKE'),
+            'email_verificado' => env('EMAIL_VERIFICADO_FAKE'),
             'empresa' => env('EMPRESA_FAKE'),
             'password' => '$2y$10$T395KFqulQVhixaqh7izn.xaBK0cg3In9qt9JvrAppbXloUosr0dG',
             'active' => env('ACTIVE_FAKE'),

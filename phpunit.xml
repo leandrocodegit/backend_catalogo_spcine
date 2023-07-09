@@ -24,6 +24,8 @@
         <env name="EMAIL_FAKE" value="fake@fake.com"/>
         <env name="EMPRESA_FAKE" value="Empresa fake"/>
         <env name="PERFIL_FAKE" value="1"/>
+        <env name="TELEFONE_FAKE" value="119565454514"/>
+        <env name="EMAIL_VERIFICADO_FAKE" value="false"/>
         <env name="ACTIVE_FAKE" value="false"/>
         <env name="EMAIL_FAKE" value="fake@fake.com"/>
         <env name="PASSWORD" value="F@kePassword10!"/>

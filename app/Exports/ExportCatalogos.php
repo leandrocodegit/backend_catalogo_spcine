@@ -16,9 +16,7 @@ class ExportCatalogos implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         $ca = Catalogo::with('administrador','cordenadas','tags', 'precos', 'imagens', 'regiao', 'regras') 
-        ->get();
-        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $output->writeln($ca); 
+        ->get(); 
         return $ca;
     }
 

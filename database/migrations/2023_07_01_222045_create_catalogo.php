@@ -13,9 +13,9 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('endereco');            
-            $table->boolean('home'); 
+            $table->boolean('home')->default(false); 
             $table->float('mediaPreco')->nullable();
-            $table->boolean('active');    
+            $table->boolean('active')->default(false);    
             $table->timestamps();
         });
     }

@@ -3,6 +3,8 @@
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
+use App\Log\DatabaseLogger;
+use App\Log\DatabaseHandler;
 
 return [
 
@@ -51,6 +53,12 @@ return [
     */
 
     'channels' => [
+        'db' => [
+            'driver' => 'custom',
+            'handler'   => DatabaseHandler::class, 
+            'via'   => DatabaseLogger::class, 
+            'level' => 'debug',
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],
@@ -111,7 +119,7 @@ return [
 
         'null' => [
             'driver' => 'monolog',
-            'handler' => NullHandler::class,
+            'handler' => DatabaseLogger::class,
         ],
 
         'emergency' => [

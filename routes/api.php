@@ -8,7 +8,9 @@ use App\Http\Controllers\CatalogoController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\ImagemController;
 use App\Http\Controllers\CategoriaTagController; 
-use App\Http\Controllers\RelatorioController; 
+use App\Http\Controllers\ExportImportController; 
+use App\Http\Controllers\TagController; 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,22 +22,67 @@ use App\Http\Controllers\RelatorioController;
 |
 */
 
+//Route:: Tags
+Route::group([ 
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'tag',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) { 
+    Route::get('/{id}', [TagController::class, 'find']);
+    Route::get('/find/list', [TagController::class, 'list']);
+    Route::post('/', [TagController::class, 'store']);
+    Route::delete('/{id}', [TagController::class, 'destroy']);
+});
+
 
 //Route:: Exports arquivos de relatorio
-Route::get('/export/catalogo', [RelatorioController::class, 'catalogosXLS']); 
+Route::group([ 
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'data',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::get('/export/catalogo', [ExportImportController::class, 'catalogosXLS']);  
+});
+Route::group([ 
+    'middleware' => 'JWT:ROOT',
+    'prefix' => 'data',
+    'roles' => ['ROOT']
+
+], function ($router) { 
+    Route::post('/import/catalogo', [ExportImportController::class, 'importCatalogo']); 
+    Route::post('/import/usuario', [ExportImportController::class, 'importUsers']);
+});
 
 //Route:: Imagens upload
-Route::post('/imagem', [ImagemController::class, 'store']); 
-Route::post('/imagem/file', [ImagemController::class, 'upload']); 
-Route::patch('/imagem', [ImagemController::class, 'edit']);  
-Route::get('/imagem/{id}', [ImagemController::class, 'find']); 
-Route::delete('/imagem/{id}', [ImagemController::class, 'destroy']);  
- 
+Route::group([ 
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'imagem',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) { 
+    Route::post('/', [ImagemController::class, 'store']); 
+    Route::post('/file', [ImagemController::class, 'upload']); 
+    Route::patch('/', [ImagemController::class, 'edit']);  
+    Route::get('/{id}', [ImagemController::class, 'find']); 
+    Route::delete('/{id}', [ImagemController::class, 'destroy']);  
+});
+
 
 //Route:: catalogos
-Route::get('/catalogo/random', [CatalogoController::class, 'random']); 
-Route::get('/catalogo/{id}', [CatalogoController::class, 'find']); 
-Route::post('/catalogo/filter', [CatalogoController::class, 'filter']); 
+Route::group([ 
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'catalogo',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) { 
+    Route::post('/', [CatalogoController::class, 'store']); 
+    Route::patch('/', [CatalogoController::class, 'edit']); 
+    Route::get('/random', [CatalogoController::class, 'random']); 
+    Route::get('/{id}', [CatalogoController::class, 'find']); 
+    Route::post('/filter', [CatalogoController::class, 'filter']); 
+});
 
 
 //Route:: categorias

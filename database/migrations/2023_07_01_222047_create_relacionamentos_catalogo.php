@@ -15,12 +15,12 @@ return new class extends Migration
         });
 
         Schema::table('catalogos', function (Blueprint $table) {
-            $table->unsignedBigInteger('cordenadas_id');
+            $table->unsignedBigInteger('cordenadas_id')->nullable();;
             $table->foreign('cordenadas_id')->references('id')->on('cordenadas');
         });
 
         Schema::table('catalogos', function (Blueprint $table) {
-            $table->unsignedBigInteger('regiao_id');
+            $table->unsignedBigInteger('regiao_id')->nullable();;
             $table->foreign('regiao_id')->references('id')->on('regioes');
         });
 

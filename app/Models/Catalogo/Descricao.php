@@ -11,6 +11,12 @@ class Descricao extends Model
 
     protected $table = "descricoes_catalogo";
 
+    protected $fillable = [
+        'titulo',
+        'descricao',
+        'catalogo_id'
+    ];
+
     protected $hidden = [
         'catalogo_id'  
     ];

@@ -5,9 +5,9 @@ namespace Database\Factories\Catalogo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalogo\Cordenada>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalogo\Preco>
  */
-class CordenadaFactory extends Factory
+class PrecoFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,9 @@ class CordenadaFactory extends Factory
     {
         return [
             "id" => 1,
-            "latitude" => "-23.731546855968322",
-            "longitude" => "-46.60115020353316"
+            "valor" => 100, 
+            "descricao" => 'Descricao regra',
+            "catalogo_id" => 1,
         ];
     }
 }

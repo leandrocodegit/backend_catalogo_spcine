@@ -25,9 +25,11 @@ class CategoriaTagController extends Controller
       
           if ($validator->fails())
               return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+
          CategoriaTag::create([
             'nome' => $request->nome
         ]);
+        
         return response()->json(['message' => MessageResponse::SUCCESS_CREATE, 'status' => 200], 200);
      }
 
@@ -51,13 +53,11 @@ class CategoriaTagController extends Controller
   
       if ($validator->fails())
           return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
-
-        if(CategoriaTag::firstWhere('id', $request->id)->exists()){
-            CategoriaTag::firstWhere('id', $request->id)->update([
+ 
+           return CategoriaTag::updateOrCreate(
+                [ 'id' => isset($request['id']) ? $request->id : null],
+                [
                 'nome' => $request->nome
-            ]);        
-            return response()->json(['message' => MessageResponse::SUCCESS_UPDATE, 'status' => 200], 200);
-     }
-     return response()->json(['message' => MessageResponse::NOT_FOUND, 'status' => 202], 202);
+            ]);  
     }
 }
