@@ -10,6 +10,7 @@ use App\Http\Controllers\ImagemController;
 use App\Http\Controllers\CategoriaTagController; 
 use App\Http\Controllers\ExportImportController; 
 use App\Http\Controllers\TagController; 
+use App\Http\Controllers\RegraController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,19 @@ use App\Http\Controllers\TagController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+//Route:: Regas
+Route::group([ 
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'regra',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) { 
+    Route::get('/{id}', [RegraController::class, 'show']);
+    Route::get('/find/list', [RegraController::class, 'list']);
+    Route::post('/', [RegraController::class, 'store']);
+    Route::delete('/{id}', [RegraController::class, 'destroy']);
+});
 
 //Route:: Tags
 Route::group([ 
@@ -34,7 +48,6 @@ Route::group([
     Route::post('/', [TagController::class, 'store']);
     Route::delete('/{id}', [TagController::class, 'destroy']);
 });
-
 
 //Route:: Exports arquivos de relatorio
 Route::group([ 
