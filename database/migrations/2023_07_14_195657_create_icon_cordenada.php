@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('agendas', function (Blueprint $table) {
+        Schema::create('icon_cordenada', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('data');
+            $table->string('descricao')->nullable();
+            $table->string('imagem')->nullable();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('agendas');
+        Schema::dropIfExists('icon_cordenada');
     }
 };

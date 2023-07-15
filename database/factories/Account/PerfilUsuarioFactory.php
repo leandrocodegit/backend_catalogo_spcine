@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Account;
 
+use App\Models\Account\PerfilUsuario;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,20 +10,34 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PerfilUsuarioFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
+    protected $model = PerfilUsuario::class;
+
     public function definition()
     {
-        
+
+        PerfilUsuario::create([
+            'id' => 1000,
+            'nome' => 'Root',
+            'role' => 'ROOT'
+        ]);
+
+        PerfilUsuario::create([
+            'id' => 3,
+            'nome' => 'Operador',
+            'role' => 'GUEST'
+        ]);
+
+        PerfilUsuario::create([
+            'id' => 4,
+            'nome' => 'Cliente',
+            'role' => 'CLIENT'
+        ]);
+
         return [
-            'id' => 1, 
-            'role' => 'ADMIN',
+            'id' => 2,
             'nome' => 'Administrador',
-            'updated_at' => '2023-06-30 17:20:58',
-            'created_at' => '2023-06-30 17:20:58' 
+            'role' => 'ADMIN'
         ];
     }
 }

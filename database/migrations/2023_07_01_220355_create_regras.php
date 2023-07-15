@@ -10,9 +10,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('regras', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('icon'); 
-            $table->string('descricao'); 
+            $table->id();
+            $table->string('imagem');
+            $table->string('descricao');
             $table->timestamps();
         });
     }

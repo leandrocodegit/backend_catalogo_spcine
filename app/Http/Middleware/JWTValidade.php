@@ -8,44 +8,65 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 
 
 class JWTValidade extends BaseMiddleware
 {
- 
+
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        try { 
+        try {
 
             $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $output->writeln(''); 
-            $token = JWTAuth::parseToken();    
-            $user = $token->authenticate(); 
+
+            $token = JWTAuth::parseToken();
+            $user = $token->authenticate();
             $payload = auth()->payload();
             $isValidRole = false;
 
             foreach ($roles as $role) {
                 if($user->perfil->role == $role){
-                    $isValidRole = true;                    
-                }                 
+                    $isValidRole = true;
+                }
+            }
+
+            if ($request->nome != null) {
+                if (Str::contains($request['nome'], 'SELECT', true)) {
+                    auth()->logout();
+                    return $this->unauthorized();
+                } else if (Str::contains($request['nome'], 'WHERE', true)) {
+                    auth()->logout();
+                    return $this->unauthorized();
+                } else if (Str::contains($request['nome'], 'UNION', true)) {
+                    auth()->logout();
+                    return $this->unauthorized();
+                } else if (Str::contains($request['nome'], 'DELETE', true)) {
+                    auth()->logout();
+                    return $this->unauthorized();
+                }
+                else if (Str::contains($request['nome'], 'JOIN', true)) {
+                    auth()->logout();
+                    return $this->unauthorized();
+                }
             }
 
             if($isValidRole == false)
                 return $this->unauthorized('Usuário sem permissão!');
-       
-            } catch (TokenExpiredException $e) {       
+
+            } catch (TokenExpiredException $e) {
                 return $this->unauthorized('Token expirado!');
-            } catch (TokenInvalidException $e) { 
+            } catch (TokenInvalidException $e) {
                 return $this->unauthorized('Token inválido!');
-            }catch (JWTException $e) { 
+            }catch (JWTException $e) {
                 return $this->unauthorized('Não autorizado!');
-            }             
-            return $next($request); 
-        
+            }
+            return $next($request);
+
             return $this->unauthorized();
         }
-    
+
         private function unauthorized($message = null){
             return response()->json([
                 'message' => $message ? $message : 'Não autorizado!'

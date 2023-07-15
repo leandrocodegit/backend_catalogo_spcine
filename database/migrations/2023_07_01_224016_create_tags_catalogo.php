@@ -14,6 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('catalogo_id');
             $table->foreign('tag_id')->references('id')->on('tags');
             $table->foreign('catalogo_id')->references('id')->on('catalogos');
+   //         $table->primary(['tag_id', 'catalogo_id'])->unique();
         });
     }
 
@@ -23,7 +24,7 @@ return new class extends Migration
         Schema::table('tags_catalogo', function (Blueprint $table) {
             $table->dropForeign('tags_catalogo_catalogo_id_foreign');
             $table->dropForeign('tags_catalogo_tag_id_foreign');
-        }); 
+        });
 
         Schema::dropIfExists('tags_catalogo');
     }

@@ -5,22 +5,20 @@ namespace App\Models\Catalogo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Regra extends Model
+class Icon extends Model
 {
     use HasFactory;
 
-    protected $table = "regras";
+    protected $table = 'icon_cordenada';
 
     protected $fillable = [
-        'tipo_id',
         'descricao',
         'imagem'
     ];
 
     protected $hidden = [
         'created_at',
-        'updated_at',
-        'pivot'
+        'updated_at'
     ];
 
     protected $appends = array('host');
@@ -30,11 +28,4 @@ class Regra extends Model
         return env('URL_FILE'). $this->imagem;
     }
 
-    public function catalogos(){
-        return $this->belongsToMany(Catalogo::class, 'regras_catalogo');
-    }
-
-    public function tipo(){
-        return $this->belongsTo(TipoRegra::class, 'tipo_id');
-    }
 }

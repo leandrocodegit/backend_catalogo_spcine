@@ -5,7 +5,7 @@ namespace App\Models\Catalogo;
 
 use Illuminate\Database\Eloquent\Relations\belongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
 
@@ -13,20 +13,22 @@ class Catalogo extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 
+    protected $fillable = [
         'nome',
         'endereco',
         'home',
         'active',
         'regiao_id',
         'cordenadas_id',
-        'administrador_id'
+        'administrador_id',
+        'icon_id'
     ];
 
     protected $hidden = [
         'regiao_id',
         'cordenadas_id',
-        'administrador_id'
+        'administrador_id',
+        'icon_id'
     ];
 
     protected $table = "catalogos";
@@ -61,5 +63,9 @@ class Catalogo extends Model
 
     public function cordenadas(){
         return $this->belongsTo(Cordenada::class);
+    }
+
+    public function icon(){
+        return $this->belongsTo(Icon::class);
     }
 }

@@ -11,6 +11,11 @@ class TipoRegra extends Model
 
     protected $table = 'tipo_regra';
 
+    protected $fillable = [
+        'id',
+        'nome'  
+    ];
+
     protected $hidden = [
         'created_at',
         'updated_at' 

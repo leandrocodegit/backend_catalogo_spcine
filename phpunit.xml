@@ -4,6 +4,8 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
+
+
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
@@ -16,20 +18,25 @@
         <include>
             <directory suffix=".php">./app</directory>
         </include>
+        <report>
+            <html outputDirectory="/coverage"/>
+        </report>
     </coverage>
+
+
     <php>
         <env name="ID_FAKE" value="1"/>
         <env name="NOME_FAKE" value="Fake nome"/>
         <env name="CPF_FAKE" value="12345678910"/>
         <env name="EMAIL_FAKE" value="fake@fake.com"/>
         <env name="EMPRESA_FAKE" value="Empresa fake"/>
-        <env name="PERFIL_FAKE" value="1"/>
+        <env name="PERFIL_FAKE" value="2"/>
         <env name="TELEFONE_FAKE" value="119565454514"/>
         <env name="EMAIL_VERIFICADO_FAKE" value="false"/>
         <env name="ACTIVE_FAKE" value="false"/>
         <env name="EMAIL_FAKE" value="fake@fake.com"/>
         <env name="PASSWORD" value="F@kePassword10!"/>
-        <env name="APP_ENV" value="testing"/> 
+        <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="DB_CONNECTION" value="mysql"/>

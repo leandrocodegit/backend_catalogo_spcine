@@ -1,10 +1,15 @@
 <?php
-  
+
 namespace App\Models\Enums;
- 
-final class StatusAgenda extends Enum
+
+enum StatusAgenda: string
  {
-    const  DISPONIVEL = 'pending';
-    const  BLOQUEADA = 'active';
-    const  RESERVADA = 'inactive'; 
+//    case Pendente = 0;
+//    case Confirmado = 1;
+//    case Agendado = 2;
+//
+    case PENDENTE = '0';
+    case CONFIRMADO = '1';
+    case AGENDADO = '2';
+
 }

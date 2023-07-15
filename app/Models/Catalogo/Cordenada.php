@@ -14,15 +14,18 @@ class Cordenada extends Model
     protected $fillable = [
         'latitude',
         'longitude',
-        'catalogo_id' 
+        'icon_id'
     ];
 
     protected $hidden = [
         'created_at',
-        'updated_at' 
+        'updated_at'
     ];
- 
+
     public function catalogo(){
         return $this->belongsTo(Catalogo::class);
     }
+
+
+
 }

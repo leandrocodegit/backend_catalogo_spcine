@@ -5,9 +5,9 @@ namespace Database\Factories\Catalogo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalogo\Regra>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalogo\TipoRegra>
  */
-class RegraFactory extends Factory
+class TipoRegraFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +17,8 @@ class RegraFactory extends Factory
     public function definition()
     {
         return [
-            "id" => 1,
-            "tipo_id" => 1,
-            "imagem" => '/icon',
-            "descricao" => 'Descricao regra'
+            'id' => 1,
+            'nome' => 'Tipo de regra fake'
         ];
     }
 }

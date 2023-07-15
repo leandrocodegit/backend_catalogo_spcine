@@ -15,52 +15,78 @@ class RegraController extends Controller
     {
         return Regra::with('tipo')->get();
     }
- 
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'tipo_id' => 'bail|required',
-            'descricao' => 'bail|required' 
-          ],
-          [
-              'tipo_id.required' => 'O tipo é obrigatório!',
-              'descricao.required' => 'Descrição é obrigatório!' 
-          ]);
-      
-          if ($validator->fails())
-              return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
-        
-        if ($request->id !== null)
-            if (Regra::where('id', $request->id)->exists()){
-                $regraDB = Regra::firstWhere('id', $request->id);
-                if (Storage::disk('public')->exists($regraDB->icon))
-                    Storage::disk('public')->delete($regraDB->icon); 
-            }
-
-        $regra = Regra::updateOrCreate(
-            [ 'id' => isset($request['id']) ? $request->id : null],[
-                'tipo_id' => $request->tipo_id,
-                'descricao' => $request->descricao,
-                'icon' => 'regras/' .$request->file->hashName()
+            'descricao' => 'bail|required'
+        ],
+            [
+                'tipo_id.required' => 'O tipo é obrigatório!',
+                'descricao.required' => 'Descrição é obrigatório!'
             ]);
 
-            $file =$request->file->store('regras', 'public'); 
-         return $this->show($regra->id);   
+        if ($validator->fails())
+            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
 
+        $regra = Regra::create([
+            'tipo_id' => $request->tipo_id,
+            'descricao' => $request->descricao,
+            'imagem' => '/regras/' . $request->file->hashName()
+        ]);
+
+        $request->file->store('regras', 'public');
+
+        return $this->show($regra->id);
     }
- 
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'bail|required'
+        ],
+            [
+                'id.required' => 'Id é obrigatório!'
+            ]);
+
+        if ($validator->fails())
+            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+
+        $regra = Regra::with('tipo')->findOrFail($request->id);
+
+        if ($request->file != null) {
+            if (Storage::disk('public')->exists($regra->imagem))
+                Storage::disk('public')->delete($regra->imagem);
+            $request->file->store('regras', 'public');
+        }
+
+        $regra->update([
+            'descricao' => $request->descricao == null ? $regra->descricao : $request->descricao,
+            'tipo_id' => $request->tipo_id == null ? $regra->tipo->id : $request->tipo_id,
+            'imagem' => $request->file == null ? $regra->imagem : '/regras/' . $request->file->hashName()
+        ]);
+        return $this->show($regra->id);
+    }
+
     public function show($id)
     {
         return Regra::with('tipo')
-        ->findOrFail($id);
+            ->findOrFail($id);
     }
- 
+
     public function destroy($id)
     {
-        Regra::findOrFail($id)
-        ->delete();
-        return response()->json([
-            'message' => 'Regra removida com sucesso!',
-             'status' => 200], 200);   
+
+        $regraDB = Regra::findOrFail($id);
+
+            if (Storage::disk('public')->exists($regraDB->imagem))
+                Storage::disk('public')->delete($regraDB->imagem);
+
+            $regraDB->delete();
+
+            return response()->json([
+                'message' => 'Regra removida com sucesso!',
+                'status' => 200], 200);
     }
 }

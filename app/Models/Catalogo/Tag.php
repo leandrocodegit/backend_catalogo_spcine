@@ -15,13 +15,13 @@ class Tag extends Model
     protected $fillable = [
         'id',
         'nome',
-        'categoria_tag_id'  
+        'categoria_tag_id'
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
-        'categoria_tag_id' 
+        'categoria_tag_id'
     ];
 
     public function catalogos(){
@@ -29,6 +29,6 @@ class Tag extends Model
     }
 
     public function categoria(){
-        return $this->belongsTo(CategoriaTag::class, 'categoria_tag_id'); 
+        return $this->belongsTo(CategoriaTag::class, 'categoria_tag_id');
     }
 }
