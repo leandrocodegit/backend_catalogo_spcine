@@ -35,7 +35,7 @@ class CatalogoController extends Controller
     public function search($nome)
     {
         if ($nome == "all")
-            return Catalogo::limit(1000git)->get();
+            return Catalogo::limit(1000)->get();
 
         return Catalogo::with('descricoes')
             ->when($nome !== null)
