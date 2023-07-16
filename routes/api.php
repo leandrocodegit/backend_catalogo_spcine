@@ -14,6 +14,7 @@ use App\Http\Controllers\RegraController;
 use App\Http\Controllers\TipoRegraController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\IconController;
+use App\Http\Controllers\FiltroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,15 @@ use App\Http\Controllers\IconController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+//Route:: Icons
+Route::group([
+    'prefix' => 'util'
+
+], function ($router) {
+    Route::get('/filtro', [FiltroController::class, 'filtro']);
+});
 
 //Route:: Icons
 Route::group([
@@ -164,7 +174,7 @@ Route::group([
 
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::get('refresh', [AuthController::class, 'refresh']);
 
 });
 

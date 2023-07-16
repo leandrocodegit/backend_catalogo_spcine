@@ -5,14 +5,13 @@ namespace App\Models\Catalogo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoRegra extends Model
+class CategoriaCatalogo extends Model
 {
     use HasFactory;
 
-    protected $table = 'tipo_regra';
+    protected $table = "categoria_catalogo";
 
     protected $fillable = [
-        'id',
         'nome'
     ];
 
@@ -21,7 +20,7 @@ class TipoRegra extends Model
         'updated_at'
     ];
 
-    public function regras(){
-        return $this->hasMany(Regra::class, 'tipo_id');
+    public function catalogos(){
+        return $this->hasMany(Tag::class);
     }
 }

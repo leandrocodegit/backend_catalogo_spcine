@@ -36,6 +36,7 @@ class CatalogoControllerTest extends FactoryConfig
         ]);
 
         $response->assertStatus(200);
+        $response->assertJsonPath("categoria.id", 1);
     }
 
     public function test_create_novo_catalogo_ativado_e_home()
@@ -410,6 +411,7 @@ class CatalogoControllerTest extends FactoryConfig
             ]);
         $response->assertStatus(200);
         $this->assertTrue(count($response->decodeResponseJson()) > 0);
+
     }
 
 

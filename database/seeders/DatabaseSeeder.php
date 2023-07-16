@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Account\PerfilUsuario;
 use App\Models\Account\User;
 use App\Models\Catalogo\Administrador;
+use App\Models\Catalogo\CategoriaCatalogo;
 use App\Models\Catalogo\Icon;
 use App\Models\Catalogo\Regiao;
 use Illuminate\Database\Seeder;
@@ -28,7 +29,7 @@ class DatabaseSeeder extends Seeder
         PerfilUsuario::create([
             'id' => 2,
             'nome' => 'Administrador',
-            'role' => 'ROOT'
+            'role' => 'ADMIN'
         ]);
 
         PerfilUsuario::create([
@@ -89,6 +90,11 @@ class DatabaseSeeder extends Seeder
             'id' => 1,
             'descricao' => "",
             'imagem' => '/default/icon_default.png'
+        ]);
+
+        CategoriaCatalogo::create([
+            'id' => 1,
+            'nome' => "Todas",
         ]);
 
     }

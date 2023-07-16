@@ -7,6 +7,7 @@ use App\Models\Account\PerfilUsuario;
 use App\Models\Account\User;
 use App\Models\Catalogo\Administrador;
 use App\Models\Catalogo\Catalogo;
+use App\Models\Catalogo\CategoriaCatalogo;
 use App\Models\Catalogo\CategoriaTag;
 use App\Models\Catalogo\Cordenada;
 use App\Models\Catalogo\Icon;
@@ -34,6 +35,7 @@ class FactoryConfig extends FactoryAuthConfig
     protected $regra;
     protected $preco;
     protected $icon;
+    protected $categoriaCatalogo;
 
     public function setUp(): void
     {
@@ -49,6 +51,7 @@ class FactoryConfig extends FactoryAuthConfig
         $this->tipoRegra = TipoRegra::factory()->create();
         $this->regra = Regra::factory()->create();
         $this->icon = Icon::factory()->create();
+        $this->categoriaCatalogo = CategoriaCatalogo::factory()->create();
     }
 
 }

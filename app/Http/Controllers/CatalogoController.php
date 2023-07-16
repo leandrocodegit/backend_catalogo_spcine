@@ -34,8 +34,8 @@ class CatalogoController extends Controller
 
     public function search($nome)
     {
-        if($nome == "all")
-            return Catalogo::all();
+        if ($nome == "all")
+            return Catalogo::limit(1000git)->get();
 
         return Catalogo::with('descricoes')
             ->when($nome !== null)
@@ -44,10 +44,11 @@ class CatalogoController extends Controller
             ->limit(10)
             ->get();
     }
+
     public function filter(Request $request)
     {
-
         return Catalogo::with(
+            'categoria',
             'administrador',
             'descricoes',
             'cordenadas',
@@ -59,27 +60,39 @@ class CatalogoController extends Controller
             'regras')
             ->when($request->orderPrice !== null)
             ->orderBy('mediaPreco', $request->orderPrice)
+            //Aplica filtro por seu nome
             ->when($request->nome !== null)
             ->where('nome', 'LIKE', '%' . $request->nome . '%')
+            //Aplica filtro por catalogos ativos ou inativos
             ->when($request->active !== null)
             ->where('active', $request->active)
+            //Aplica filtro por administração
             ->when($request->administrador !== null)
             ->whereHas('administrador', function ($query) use ($request) {
                 $query->whereIn('id', $request->administrador);
             })
+            //Aplica filtro por categoria
+            ->when($request->categorias !== null)
+            ->whereHas('categoria', function ($query) use ($request) {
+                $query->whereIn('id', $request->categorias);
+            })
+            //Aplica filtro por tags descritivas
             ->when($request->tags !== null)
             ->whereHas('tags', function ($query) use ($request) {
                 $query->whereIn('id', $request->tags);
             })
+            //Aplica filtro por regras
             ->when($request->regras !== null)
             ->whereHas('regras', function ($query) use ($request) {
                 $query->whereIn('id', $request->regras);
 
             })
+            //Aplica filtro por região
             ->when($request->regiao !== null)
             ->whereHas('regiao', function ($query) use ($request) {
                 $query->whereIn('id', $request->regioes);
             })
+            //Aplica filtro por preço maior menor
             ->when($request->preco !== null)
             ->whereHas('precos', function ($query) use ($request) {
                 $query->where('valor', '>=', $request->preco);
@@ -90,7 +103,7 @@ class CatalogoController extends Controller
 
     public function find($id)
     {
-        return Catalogo::with('administrador', 'descricoes', 'cordenadas', 'tags', 'precos', 'imagens', 'regiao', 'regras')
+        return Catalogo::with('categoria', 'administrador', 'descricoes', 'cordenadas', 'tags', 'precos', 'imagens', 'regiao', 'regras')
             ->findOrFail($id);
     }
 
@@ -129,9 +142,10 @@ class CatalogoController extends Controller
             'home' => $request->home !== null ? $request->home : false,
             'active' => $request->active !== null ? $request->active : false,
             'cordenadas_id' => $cordenadas !== null ? $cordenadas->id : null,
+            'categoria_id' => $request->categoria !== null ? $request->input('categoria.id') : 1,
             'regiao_id' => $request->regiao !== null ? $request->input('regiao.id') : null,
             'administrador_id' => $request->administrador !== null ? $request->input('administrador.id') : null,
-            'icon_id' => ($request->icon !== null && $request->input('icon.id') != null)  ? $request->input('icon.id') : 1,
+            'icon_id' => ($request->icon !== null && $request->input('icon.id') != null) ? $request->input('icon.id') : 1,
         ]);
 
         $descricao = Descricao::create([
@@ -141,11 +155,9 @@ class CatalogoController extends Controller
         ]);
 
         Log::channel('db')->info(
-            'Editado imagem ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
+            'Criado catalogo ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
 
-        return response()->json([
-            'message' => 'Catalogo cadastrado com sucesso!',
-            'status' => 200], 200);
+        return $this->find($catalogo->id);
     }
 
     public function edit(Request $request)

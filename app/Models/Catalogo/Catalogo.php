@@ -21,14 +21,16 @@ class Catalogo extends Model
         'regiao_id',
         'cordenadas_id',
         'administrador_id',
-        'icon_id'
+        'icon_id',
+        'categoria_id'
     ];
 
     protected $hidden = [
         'regiao_id',
         'cordenadas_id',
         'administrador_id',
-        'icon_id'
+        'icon_id',
+        'categoria_id'
     ];
 
     protected $table = "catalogos";
@@ -67,5 +69,9 @@ class Catalogo extends Model
 
     public function icon(){
         return $this->belongsTo(Icon::class);
+    }
+
+    public function categoria(){
+        return $this->belongsTo(CategoriaCatalogo::class);
     }
 }
