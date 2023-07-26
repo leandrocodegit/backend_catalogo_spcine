@@ -19,10 +19,10 @@ class CategoriaCaracteristica extends Model
 
     public function getCountAttribute()
     {
-        return $this->caractericticas()->count();
+        return $this->caracteristicas()->count();
     }
 
-    public function caractericticas(){
+    public function caracteristicas(){
         return $this->hasMany(Caracteristica::class, 'categoria_id');
     }
 }

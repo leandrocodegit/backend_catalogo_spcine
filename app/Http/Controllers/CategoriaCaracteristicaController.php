@@ -12,7 +12,7 @@ class CategoriaCaracteristicaController extends Controller
 {
 
     public function list(){
-       return CategoriaCaracteristica::with('caractericticas')->get();
+       return CategoriaCaracteristica::with('caracteristicas')->get();
     }
 
     public function store(Request $request){

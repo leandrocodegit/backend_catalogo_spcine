@@ -16,7 +16,7 @@ class FiltroController extends Controller
 
     public function filtro()
     {
-        $categoriaCaracteristicas = CategoriaCaracteristica::with('caractericticas')->get();
+        $categoriaCaracteristicas = CategoriaCaracteristica::with('caracteristicas')->get();
         $categoriasCatalogo = CategoriaCatalogo::all();
         $regioes = Regiao::all();
         $tipos = TipoRegra::with('regras')->get();
