@@ -281,7 +281,7 @@ class CatalogoControllerTest extends FactoryConfig
     }
 
 
-    public function test_create_editar_catalogo_com_tags()
+    public function test_create_editar_catalogo_com_caracteristicas()
     {
 
         $response = $this->withHeaders([
@@ -293,14 +293,14 @@ class CatalogoControllerTest extends FactoryConfig
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
-            "tags"  => [
+            "caracteristicas"  => [
                 [
                     "id" => 1
                 ]
                 ]
         ]);
 
-        $this->assertTrue(count($response['tags']) === 1);
+        $this->assertTrue(count($response['caracteristicas']) === 1);
         $response->assertJsonPath("id", 1);
         $response->assertStatus(200);
     }

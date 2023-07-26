@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::table('catalogos', function (Blueprint $table) {
             $table->unsignedBigInteger('categoria_id')->nullable();;
-            $table->foreign('categoria_id')->references('id')->on('catalogos');
+            $table->foreign('categoria_id')->references('id')->on('categoria_catalogo');
         });
     }
 

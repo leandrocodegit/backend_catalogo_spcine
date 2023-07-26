@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catalogo\Catalogo;
 use App\Models\Catalogo\Cordenada;
 use App\Models\Catalogo\Icon;
+use App\Models\util\MapError;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +29,7 @@ class IconController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         $icon = Icon::create([
             'descricao' => $request->descricao,
@@ -49,7 +50,7 @@ class IconController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         $icon = Icon::findOrFail($request->id);
 

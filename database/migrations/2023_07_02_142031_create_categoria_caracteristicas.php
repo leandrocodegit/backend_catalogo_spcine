@@ -9,15 +9,15 @@ return new class extends Migration
 
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('categoria_caracteristicas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');  
+            $table->string('nome')->unique();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('categoria_caracteristicas');
     }
 };

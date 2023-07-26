@@ -7,14 +7,15 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogoController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\ImagemController;
-use App\Http\Controllers\CategoriaTagController;
+use App\Http\Controllers\CategoriaCaracteristicaController;
 use App\Http\Controllers\ExportImportController;
-use App\Http\Controllers\TagController;
+use App\Http\Controllers\CaracteristicaController;
 use App\Http\Controllers\RegraController;
 use App\Http\Controllers\TipoRegraController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\IconController;
 use App\Http\Controllers\FiltroController;
+use App\Http\Controllers\CategoriaCatalogoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,14 +95,14 @@ Route::group([
 //Route:: Tags
 Route::group([
     'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'tag',
+    'prefix' => 'caracteristica',
     'roles' => ['ROOT', 'ADMIN']
 
 ], function ($router) {
-    Route::get('/{id}', [TagController::class, 'find']);
-    Route::get('/find/list', [TagController::class, 'list']);
-    Route::post('/', [TagController::class, 'store']);
-    Route::delete('/{id}', [TagController::class, 'destroy']);
+    Route::get('/{id}', [CaracteristicaController::class, 'find']);
+    Route::get('/find/list', [CaracteristicaController::class, 'list']);
+    Route::post('/', [CaracteristicaController::class, 'store']);
+    Route::delete('/{id}', [CaracteristicaController::class, 'destroy']);
 });
 
 //Route:: Exports arquivos de relatorio
@@ -151,14 +152,37 @@ Route::group([
     Route::get('/{id}', [CatalogoController::class, 'find']);
     Route::get('/search/list/{nome}', [CatalogoController::class, 'search']);
     Route::post('/filter/list', [CatalogoController::class, 'filter']);
+    Route::patch('/cordenada', [CatalogoController::class, 'update']);
 });
 
 
-//Route:: categorias
-Route::get('/categoria', [CategoriaTagController::class, 'list']);
-Route::post('/categoria', [CategoriaTagController::class, 'store']);
-Route::patch('/categoria', [CategoriaTagController::class, 'edit']);
-Route::get('/categoria/{id}', [CategoriaTagController::class, 'find']);
+//Route:: categorias de caracteristicas
+Route::group([
+    'middleware' => 'JWT:ROOT,ADMIN',
+        'prefix' => 'caracteristica/categoria',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::get('/list', [CategoriaCaracteristicaController::class, 'list']);
+    Route::post('/', [CategoriaCaracteristicaController::class, 'store']);
+    Route::patch('/', [CategoriaCaracteristicaController::class, 'edit']);
+    Route::get('/{id}', [CategoriaCaracteristicaController::class, 'find']);
+    Route::delete('/{id}', [CategoriaCaracteristicaController::class, 'destroy']);
+});
+
+//Route:: Categorias catalogo
+Route::group([
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'catalogo/categoria',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::get('/list', [CategoriaCatalogoController::class, 'list']);
+    Route::post('/', [CategoriaCatalogoController::class, 'store']);
+    Route::patch('/', [CategoriaCatalogoController::class, 'edit']);
+    Route::get('/{id}', [CategoriaCatalogoController::class, 'find']);
+    Route::delete('/{id}', [CategoriaCatalogoController::class, 'destroy']);
+});
 
 
 //Route:: Account active and passwords

@@ -51,8 +51,9 @@ class Catalogo extends Model
         return $this->hasMany(Preco::class);
     }
 
-    public function tags(){
-        return $this->belongsToMany(Tag::class, 'tags_catalogo');
+    public function caracteristicas(){
+        return $this->belongsToMany(Caracteristica::class, 'caracteristicas_catalogo');
+
     }
 
     public function regiao(){
@@ -72,6 +73,6 @@ class Catalogo extends Model
     }
 
     public function categoria(){
-        return $this->belongsTo(CategoriaCatalogo::class);
+        return $this->belongsTo(CategoriaCatalogo::class, 'categoria_id');
     }
 }

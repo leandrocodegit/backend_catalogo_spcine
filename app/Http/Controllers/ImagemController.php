@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\util\MapError;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Catalogo\Imagem;
 use App\Models\Catalogo\Catalogo;
@@ -27,7 +28,7 @@ class ImagemController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+              return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         Catalogo::findOrFail($request->catalogo_id);
 

@@ -12,10 +12,9 @@ return new class extends Migration
         Schema::create('catalogos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('endereco');            
-            $table->boolean('home')->default(false); 
-            $table->float('mediaPreco')->nullable();
-            $table->boolean('active')->default(false);    
+            $table->string('endereco');
+            $table->boolean('home')->default(false);
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

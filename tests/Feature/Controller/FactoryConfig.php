@@ -8,14 +8,14 @@ use App\Models\Account\User;
 use App\Models\Catalogo\Administrador;
 use App\Models\Catalogo\Catalogo;
 use App\Models\Catalogo\CategoriaCatalogo;
-use App\Models\Catalogo\CategoriaTag;
+use App\Models\Catalogo\CategoriaCaracteristica;
 use App\Models\Catalogo\Cordenada;
 use App\Models\Catalogo\Icon;
 use App\Models\Catalogo\Imagem;
 use App\Models\Catalogo\Preco;
 use App\Models\Catalogo\Regiao;
 use App\Models\Catalogo\Regra;
-use App\Models\Catalogo\Tag;
+use App\Models\Catalogo\Caracteristica;
 use App\Models\Catalogo\TipoRegra;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -43,15 +43,17 @@ class FactoryConfig extends FactoryAuthConfig
         $this->administrador = Administrador::factory()->create();
         $this->regiao = Regiao::factory()->create();
         $this->cordenadas = Cordenada::factory()->create();
+        $this->categoriaCatalogo = CategoriaCatalogo::factory()->create();
+        $this->icon = Icon::factory()->create();
         $this->catalogo = Catalogo::factory()->create();
-        $this->imagem = Imagem::factory()->create();
-        $this->categoria = CategoriaTag::factory()->create();
-        $this->tag = Tag::factory()->create();
+        $this->categoria = CategoriaCaracteristica::factory()->create();
+        $this->tag = Caracteristica::factory()->create();
         $this->preco = Preco::factory()->create();
         $this->tipoRegra = TipoRegra::factory()->create();
         $this->regra = Regra::factory()->create();
-        $this->icon = Icon::factory()->create();
-        $this->categoriaCatalogo = CategoriaCatalogo::factory()->create();
+        $this->imagem = Imagem::factory()->create();
+
+
     }
 
 }

@@ -9,10 +9,10 @@ return new class extends Migration
 
     public function up()
     {
-        Schema::create('tags_catalogo', function (Blueprint $table) {
-            $table->unsignedBigInteger('tag_id');
+        Schema::create('caracteristicas_catalogo', function (Blueprint $table) {
+            $table->unsignedBigInteger('caracteristica_id');
             $table->unsignedBigInteger('catalogo_id');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('caracteristica_id')->references('id')->on('caracteristicas');
             $table->foreign('catalogo_id')->references('id')->on('catalogos');
    //         $table->primary(['tag_id', 'catalogo_id'])->unique();
         });
@@ -21,11 +21,11 @@ return new class extends Migration
     public function down()
     {
         //Removendo relacionamento
-        Schema::table('tags_catalogo', function (Blueprint $table) {
+        Schema::table('caracteristicas_catalogo', function (Blueprint $table) {
             $table->dropForeign('tags_catalogo_catalogo_id_foreign');
-            $table->dropForeign('tags_catalogo_tag_id_foreign');
+            $table->dropForeign('tags_catalogo_caracteristica_id_foreign');
         });
 
-        Schema::dropIfExists('tags_catalogo');
+        Schema::dropIfExists('caracteristicas_catalogo');
     }
 };

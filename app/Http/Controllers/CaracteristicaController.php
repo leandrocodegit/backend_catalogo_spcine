@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Enums\StatusAgenda;
+use App\Models\util\MapError;
 use Illuminate\Http\Request;
-use App\Models\Catalogo\Tag;
-use App\Models\Catalogo\CategoriaTag;
+use App\Models\Catalogo\Caracteristica;
+use App\Models\Catalogo\CategoriaCaracteristica;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class TagController extends Controller
+class CaracteristicaController extends Controller
 {
 
     public function index()
@@ -20,7 +21,7 @@ class TagController extends Controller
 
     public function list()
     {
-        return Tag::with('categoria')->get();
+        return Caracteristica::all();
     }
 
     public function store(Request $request)
@@ -28,28 +29,33 @@ class TagController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nome' => 'bail|required',
-            'categoria_tag_id' => 'bail|required'
+            'categoria_id' => 'bail|required'
           ],
           [
             'nome.required' => 'Nome é obrigatório!',
-            'categoria_tag_id.required' => 'Categoria é obrigatório!'
+            'categoria_id.required' => 'Categoria é obrigatório!'
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+              return response()->json(['errors' =>  MapError::format($validator->messages()), 'status' => 400], 400);
 
-       $tag = Tag::updateOrCreate(
+        $mensagem = "Tag criada com sucesso!";
+
+        if(isset($request['id']))
+            $mensagem = "Tag atualizada com sucesso!";
+
+        $caracteristica = Caracteristica::updateOrCreate(
         [ 'id' => isset($request['id']) ? $request->id : null],[
             'nome' => $request->nome,
-            "categoria_tag_id" => $request->categoria_tag_id
+            "categoria_id" => $request->categoria_id
         ]);
 
-        return $this->find($tag->id);
+        return response()->json(['message' => $mensagem, 'status' => 200], 200);
     }
 
     public function find($id)
     {
-        return Tag::with('categoria')
+        return Caracteristica::with('categoria')
         ->findOrFail($id);
     }
 
@@ -57,10 +63,10 @@ class TagController extends Controller
 
     public function destroy($id)
     {
-        Tag::findOrFail($id)
+        Caracteristica::findOrFail($id)
         ->delete();
         return response()->json([
-            'message' => 'Tag removida com sucesso!',
+            'message' => 'Caracteristica removida com sucesso!',
              'status' => 200], 200);
     }
 }

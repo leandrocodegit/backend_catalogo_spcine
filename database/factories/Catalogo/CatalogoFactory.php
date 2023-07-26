@@ -21,9 +21,9 @@ class CatalogoFactory extends Factory
             "nome" => "Praça da sé",
             "endereco" => "Rua serra da prata, cooperativa, São Bernardo do Campo - SP",
             "home" => 1,
-            "mediaPreco" => 505.05,
             "active" => 1,
             "regiao_id" => 1,
+            "categoria_id" => 1,
             "administrador_id" => 1,
             "cordenadas_id" => 1
         ];

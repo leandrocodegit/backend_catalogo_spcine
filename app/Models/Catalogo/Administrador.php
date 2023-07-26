@@ -14,10 +14,16 @@ class Administrador extends Model
     protected $hidden = [
         'catalogo_id',
         'created_at',
-        'updated_at' 
+        'updated_at'
     ];
- 
-    public function catalogo(){
-        return $this->belongsTo(Catalogo::class);
+
+    protected $appends = array('count');
+
+    public function getCountAttribute()
+    {
+        return $this->catalogos()->count();
+    }
+    public function catalogos(){
+        return $this->hasMany(Catalogo::class, 'administrador_id');
     }
 }

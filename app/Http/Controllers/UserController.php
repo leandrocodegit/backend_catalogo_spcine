@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\EnviarEmail;
 use App\Models\Account\TokenAccess;
 use App\Models\Account\User;
+use App\Models\util\MapError;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +43,7 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
 
         if (User:: where('email', '=', $request->email)->orWhere('cpf', '=', $request->cpf)->exists())
@@ -86,7 +87,7 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         return User::with('perfil')->findOrFail($id);
     }
@@ -101,7 +102,7 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         if($request['nome'] == "all")
             return DB::table('users')->paginate(20);
@@ -133,7 +134,7 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         try {
             $userAuth = auth()->user();
@@ -198,7 +199,7 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         if($request['perfil.id'] === 1000 )
             return response()->json(['errors' => 'Operação não permitida', 'status' => 403], 403);

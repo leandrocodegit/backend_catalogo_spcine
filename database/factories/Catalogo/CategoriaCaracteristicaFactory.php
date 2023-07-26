@@ -5,9 +5,9 @@ namespace Database\Factories\Catalogo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalogo\CategoriaTag>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Catalogo\CategoriaCaracteristica>
  */
-class CategoriaTagFactory extends Factory
+class CategoriaCaracteristicaFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -5,11 +5,11 @@ namespace App\Models\Catalogo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CategoriaCatalogo extends Model
+class CategoriaCaracteristica extends Model
 {
     use HasFactory;
 
-    protected $table = "categoria_catalogo";
+    protected $table = "categoria_caracteristicas";
 
     protected $fillable = [
         'nome'
@@ -19,10 +19,10 @@ class CategoriaCatalogo extends Model
 
     public function getCountAttribute()
     {
-        return $this->catalogos()->count();
+        return $this->caractericticas()->count();
     }
 
-    public function catalogos(){
-        return $this->hasMany(Catalogo::class, 'categoria_id');
+    public function caractericticas(){
+        return $this->hasMany(Caracteristica::class, 'categoria_id');
     }
 }

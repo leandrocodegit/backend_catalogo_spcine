@@ -13,8 +13,16 @@ class Regiao extends Model
 
     protected $hidden = [
         'created_at',
-        'updated_at' 
+        'updated_at'
     ];
+
+    protected $appends = array('count');
+
+    public function getCountAttribute()
+    {
+        return $this->catalogos()->count();
+    }
+
 
     public function catalogos(){
         return $this->hasMany(Catalogo::class);

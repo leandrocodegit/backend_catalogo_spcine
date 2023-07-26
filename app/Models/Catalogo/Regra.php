@@ -23,11 +23,16 @@ class Regra extends Model
         'pivot'
     ];
 
-    protected $appends = array('host');
+    protected $appends = array('host', 'count');
 
     public function getHostAttribute()
     {
         return env('URL_FILE'). $this->imagem;
+    }
+
+    public function getCountAttribute()
+    {
+        return $this->catalogos()->count();
     }
 
     public function catalogos(){

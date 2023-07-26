@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Regiao::create([
-            'nome' => 'Cliente'
+            'nome' => 'Centro'
         ]);
 
         Administrador::create([
@@ -94,7 +94,7 @@ class DatabaseSeeder extends Seeder
 
         CategoriaCatalogo::create([
             'id' => 1,
-            'nome' => "Todas",
+            'nome' => "Sem categoria",
         ]);
 
     }

@@ -29,8 +29,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Recurso não encontrado!',
-                    'error' => [$e->getPrevious()]
+                    'errors' => array('Recurso não encontrado!'),
                 ], 404);
             }else{
                 return response(view('angular'), 404);
@@ -40,7 +39,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (MethodNotAllowedHttpException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Recurso não encontrado!'
+                    'errors' => array('Recurso não encontrado!')
                 ], 404);
             }
         });
@@ -48,8 +47,8 @@ class Handler extends ExceptionHandler
         $this->renderable(function (QueryException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Falha na requisição!',
-                    'error' => [$e->getPrevious()]
+                    'errors' => array('Falha na requisição!'),
+                    'codigo' => $e->getCode()
                 ], 404);
             }
         });
@@ -58,8 +57,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (InvalidArgumentException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Formato inválido!',
-                    'error' => [$e->getPrevious()]
+                    'errors' => array('Formato inválido!')
                 ], 404);
             }
         });
@@ -67,8 +65,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ValidationException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'A requisição não foi processada!',
-                    'error' => [$e->getPrevious()]
+                    'errors' => array('A requisição não foi processada!')
                 ], 422);
             }
         });
@@ -77,8 +74,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (NoTypeDetectedException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Erro ao processar arquivo!',
-                    'error' => [$e->getPrevious()]
+                    'errors' => array('Erro ao processar arquivo!')
                 ], 422);
             }
         });

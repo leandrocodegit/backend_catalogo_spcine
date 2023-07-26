@@ -36,6 +36,6 @@ class Imagem extends Model
     }
 
     public function catalogo(){
-        return $this->belongsTo(Catalogo::class);
+        return $this->belongsTo(Catalogo::class, 'catalogo_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\util\MapError;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Catalogo\Imagem;
@@ -10,7 +11,7 @@ use App\Models\Catalogo\Descricao;
 use App\Models\Catalogo\Cordenada;
 use App\Models\Catalogo\Regiao;
 use App\Models\Catalogo\Administrador;
-use App\Models\Catalogo\Tag;
+use App\Models\Catalogo\Caracteristica;
 use App\Models\Catalogo\Preco;
 use Symfony\Component\HttpFoundation\Response;
 use App\Events\EventResponse;
@@ -25,7 +26,7 @@ class CatalogoController extends Controller
     public function random(Request $request)
 
     {
-        return Catalogo::with('administrador', 'cordenadas', 'tags', 'precos', 'imagens', 'regiao', 'regras')
+        return Catalogo::with('administrador', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
             ->where('home', true)
             ->where('active', true)
             ->orderByRaw('RAND() LIMIT 15')
@@ -47,64 +48,93 @@ class CatalogoController extends Controller
 
     public function filter(Request $request)
     {
-        return Catalogo::with(
-            'categoria',
-            'administrador',
-            'descricoes',
-            'cordenadas',
-            'icon',
-            'tags',
-            'precos',
-            'imagens',
-            'regiao',
-            'regras')
-            ->when($request->orderPrice !== null)
-            ->orderBy('mediaPreco', $request->orderPrice)
-            //Aplica filtro por seu nome
-            ->when($request->nome !== null)
-            ->where('nome', 'LIKE', '%' . $request->nome . '%')
-            //Aplica filtro por catalogos ativos ou inativos
-            ->when($request->active !== null)
-            ->where('active', $request->active)
-            //Aplica filtro por administração
-            ->when($request->administrador !== null)
-            ->whereHas('administrador', function ($query) use ($request) {
-                $query->whereIn('id', $request->administrador);
-            })
-            //Aplica filtro por categoria
-            ->when($request->categorias !== null)
-            ->whereHas('categoria', function ($query) use ($request) {
-                $query->whereIn('id', $request->categorias);
-            })
-            //Aplica filtro por tags descritivas
-            ->when($request->tags !== null)
-            ->whereHas('tags', function ($query) use ($request) {
-                $query->whereIn('id', $request->tags);
-            })
-            //Aplica filtro por regras
-            ->when($request->regras !== null)
-            ->whereHas('regras', function ($query) use ($request) {
-                $query->whereIn('id', $request->regras);
 
-            })
-            //Aplica filtro por região
-            ->when($request->regiao !== null)
-            ->whereHas('regiao', function ($query) use ($request) {
-                $query->whereIn('id', $request->regioes);
-            })
-            //Aplica filtro por preço maior menor
-            ->when($request->preco !== null)
-            ->whereHas('precos', function ($query) use ($request) {
-                $query->where('valor', '>=', $request->preco);
 
-            })
-            ->simplePaginate(20);
+        if ($request->isAll != null && $request->isAll) {
+            return Catalogo::with(
+                'categoria',
+                'administrador',
+                'descricoes',
+                'cordenadas',
+                'icon',
+                'caracteristicas',
+                'precos',
+                'imagens',
+                'regiao',
+                'regras')
+                ->simplePaginate(100);
+        }
+
+       return Catalogo::with(
+        'categoria',
+        'administrador',
+        'descricoes',
+        'cordenadas',
+        'icon',
+        'caracteristicas',
+        'precos',
+        'imagens',
+        'regiao',
+        'regras')
+            ->groupByRaw('id')
+            ->orderByRaw('MAX(id) asc')
+        ->when($request->orderPrice !== null)
+        ->orderBy('mediaPreco', $request->orderPrice)
+        //Aplica filtro por seu nome
+        ->when($request->nome !== null)
+        ->where('nome', 'LIKE', '%' . $request->nome . '%')
+        //Aplica filtro por catalogos ativos ou inativos
+        ->when($request->active !== null)
+        ->where('active', $request->active)
+        //Aplica filtro por administração
+        ->when($request->administrador !== null && count($request->administrador) > 0)
+        ->whereHas('administrador', function ($query) use ($request) {
+            $query->whereIn('id', $request->administrador);
+        })
+        //Aplica filtro por categoria
+        ->when($request->categorias !== null && count($request->categorias) > 0)
+        ->whereHas('categoria', function ($query) use ($request) {
+            $query->whereIn('id', $request->categorias);
+        })
+        //Aplica filtro por caracteristicas descritivas
+        ->when($request->caracteristicas !== null && count($request->caracteristicas) > 0)
+        ->whereHas('caracteristicas', function ($query) use ($request) {
+            $query->whereIn('id', $request->caracteristicas);
+        })
+        //Aplica filtro por regras
+        ->when($request->regras !== null && count($request->regras) > 0)
+        ->whereHas('regras', function ($query) use ($request) {
+            $query->whereIn('id', $request->regras);
+        })
+        //Aplica filtro por região
+        ->when($request->regioes !== null && count($request->regioes) > 0)
+        ->whereHas('regiao', function ($query) use ($request) {
+            $query->whereIn('id', $request->regioes);
+        })
+        //Aplica filtro por preço maior menor
+        ->when($request->preco !== null && $request->preco > 0)
+        ->whereHas('precos', function ($query) use ($request) {
+            $query->where('valor', '<=', $request->preco);
+        })->simplePaginate(100);
+
     }
 
     public function find($id)
     {
-        return Catalogo::with('categoria', 'administrador', 'descricoes', 'cordenadas', 'tags', 'precos', 'imagens', 'regiao', 'regras')
+        return Catalogo::with('categoria', 'administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
             ->findOrFail($id);
+    }
+
+    public function update(Request $request)
+    {
+        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $output->write('LAT: ' . $request['cordenadas.latitude']);
+        $output->write('LON: ' . $request['cordenadas.longitude']);
+
+        Cordenada::firstWhere('id', $request['cordenadas.id'])->update([
+            'latitude' => $request['cordenadas.latitude'],
+            'longitude' => $request['cordenadas.longitude']
+        ]);
     }
 
     public function store(Request $request)
@@ -126,7 +156,7 @@ class CatalogoController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         $cordenadas = null;
 
@@ -175,9 +205,9 @@ class CatalogoController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
-        Catalogo::with('administrador', 'descricoes', 'cordenadas', 'tags', 'precos', 'imagens', 'regiao', 'regras')
+        Catalogo::with('administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
             ->findOrFail($request->id)
             ->update([
                 'nome' => $request->nome,
@@ -233,11 +263,11 @@ class CatalogoController extends Controller
             }
         }
 
-        if ($request->tags !== null) {
+        if ($request->caracteristicas !== null) {
             try {
-                $catalogo->tags()->detach();
-                $catalogo->tags()->attach(
-                    collect($request->tags)
+                $catalogo->caracteristicas()->detach();
+                $catalogo->caracteristicas()->attach(
+                    collect($request->caracteristicas)
                         ->map(function ($value, $key) {
                             return $value['id'];
                         }));

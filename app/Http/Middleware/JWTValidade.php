@@ -20,6 +20,7 @@ class JWTValidade extends BaseMiddleware
         try {
 
             $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $output->write('');
 
             $token = JWTAuth::parseToken();
             $user = $token->authenticate();
@@ -67,9 +68,9 @@ class JWTValidade extends BaseMiddleware
             return $this->unauthorized();
         }
 
-        private function unauthorized($message = null){
-            return response()->json([
-                'message' => $message ? $message : 'Não autorizado!'
-            ], 401);
-        }
+    private function unauthorized($message = null){
+        return response()->json([
+            'errors' => $message ? array($message) : array('Não autorizado!')
+        ], 401);
+    }
     }

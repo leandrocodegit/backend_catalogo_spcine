@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\util\MapError;
 use Illuminate\Http\Request;
 use App\Models\Catalogo\Catalogo;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +29,7 @@ class RegraController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         $regra = Regra::create([
             'tipo_id' => $request->tipo_id,
@@ -51,7 +52,7 @@ class RegraController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => $validator->messages(), 'status' => 400], 400);
+            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         $regra = Regra::with('tipo')->findOrFail($request->id);
 
