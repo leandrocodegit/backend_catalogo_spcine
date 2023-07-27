@@ -6,7 +6,6 @@ use App\Models\util\MapError;
 use Illuminate\Http\Request;
 use App\Models\Catalogo\CategoriaCaracteristica;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Enums\MessageResponse;
 
 class CategoriaCaracteristicaController extends Controller
 {
@@ -37,7 +36,7 @@ class CategoriaCaracteristicaController extends Controller
             'nome' => $request->nome
         ]);
 
-        return response()->json(['message' => MessageResponse::SUCCESS_CREATE, 'status' => 200], 200);
+        return response()->json(['message' => $mensagem, 'status' => 200], 200);
      }
 
      public function find($id){

@@ -25,7 +25,7 @@ class FiltroController extends Controller
         $maiorPreco = Preco::max('valor');
 
         return response()->json([
-            'categoriasTag' => [$categoriaCaracteristicas],
+            'categoriaCaracteristicas' => $categoriaCaracteristicas,
             'categoriasCatalogo' => $categoriasCatalogo,
             'regioes' => $regioes,
             'tipos' => $tipos,

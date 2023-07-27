@@ -16,16 +16,22 @@ class Icon extends Model
         'imagem'
     ];
 
-    protected $hidden = [
-        'created_at',
-        'updated_at'
-    ];
 
-    protected $appends = array('host');
+    protected $appends = array('host', 'count');
+
+    public function getCountAttribute()
+    {
+        return $this->catalogos()->count();
+    }
+
 
     public function getHostAttribute()
     {
         return env('URL_FILE'). $this->imagem;
+    }
+
+    public function catalogos(){
+        return $this->hasMany(Catalogo::class);
     }
 
 }

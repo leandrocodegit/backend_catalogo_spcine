@@ -42,11 +42,27 @@ class ImagemControllerTest extends FactoryConfig
         Storage::fake('imagens/1');
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->post('/api/imagem/file',
+        ])->post('/api/imagem',
         [
             "file" => UploadedFile::fake()->image('teste.jpg'),
-            "id" => $this->imagem->id
+            "id" => $this->imagem->id,
+            "catalogo_id" => 1
         ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_upload_alterar_imagem_sem_file()
+    {
+
+        Storage::fake('imagens/1');
+        $response = $this->withHeaders([
+            'Authorization' =>  $this->token,
+        ])->post('/api/imagem',
+            [
+                "id" => $this->imagem->id,
+                "catalogo_id" => 1
+            ]);
 
         $response->assertStatus(200);
     }
@@ -56,13 +72,13 @@ class ImagemControllerTest extends FactoryConfig
 
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->post('/api/imagem/file',
+        ])->post('/api/imagem',
         [
-            "file" => null,
-            "id" => 20
+            "id" => 20,
+            "catalogo_id" => 1
         ]);
 
-        $response->assertStatus(404);
+        $response->assertStatus(200);
     }
 
     public function test_upload_nova_imagem_catalogo_nao_cadastrado()

@@ -37,7 +37,7 @@ class ImagemControllerNotAuthTest extends FactoryConfig
     {
 
         Storage::fake('imagens/1');
-        $response = $this->post('/api/imagem/file',
+        $response = $this->post('/api/imagem',
         [
             "file" => UploadedFile::fake()->image('teste.jpg'),
             "id" => $this->imagem->id
@@ -49,10 +49,11 @@ class ImagemControllerNotAuthTest extends FactoryConfig
     public function test_upload_alterar_imagem_nao_cadastrada_autenticado()
     {
 
-        $response = $this->post('/api/imagem/file',
+        $response = $this->post('/api/imagem',
         [
             "file" => null,
-            "id" => 20
+            "id" => 20,
+            "catalogo_id" => 1
         ]);
 
         $response->assertStatus(401);

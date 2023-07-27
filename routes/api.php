@@ -16,6 +16,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\IconController;
 use App\Http\Controllers\FiltroController;
 use App\Http\Controllers\CategoriaCatalogoController;
+use App\Http\Controllers\RegiaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,7 +133,6 @@ Route::group([
 
 ], function ($router) {
     Route::post('/', [ImagemController::class, 'store']);
-    Route::post('/file', [ImagemController::class, 'upload']);
     Route::patch('/', [ImagemController::class, 'edit']);
     Route::get('/{id}', [ImagemController::class, 'find']);
     Route::delete('/{id}', [ImagemController::class, 'destroy']);
@@ -155,6 +155,18 @@ Route::group([
     Route::patch('/cordenada', [CatalogoController::class, 'update']);
 });
 
+//Route:: Regioes
+Route::group([
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'regiao',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::get('/list', [RegiaoController::class, 'list']);
+    Route::post('/', [RegiaoController::class, 'store']);
+    Route::get('/{id}', [RegiaoController::class, 'find']);
+    Route::delete('/{id}', [RegiaoController::class, 'destroy']);
+});
 
 //Route:: categorias de caracteristicas
 Route::group([

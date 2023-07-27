@@ -55,8 +55,9 @@ class RegraController extends Controller
             return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
 
         $regra = Regra::with('tipo')->findOrFail($request->id);
+        $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
 
-        if ($request->file != null) {
+        if ($isPresentFile) {
             if (Storage::disk('public')->exists($regra->imagem))
                 Storage::disk('public')->delete($regra->imagem);
             $request->file->store('regras', 'public');
@@ -65,7 +66,7 @@ class RegraController extends Controller
         $regra->update([
             'descricao' => $request->descricao == null ? $regra->descricao : $request->descricao,
             'tipo_id' => $request->tipo_id == null ? $regra->tipo->id : $request->tipo_id,
-            'imagem' => $request->file == null ? $regra->imagem : '/regras/' . $request->file->hashName()
+            'imagem' => $isPresentFile ? '/regras/' . $request->file->hashName() : $regra->imagem
         ]);
         return $this->show($regra->id);
     }

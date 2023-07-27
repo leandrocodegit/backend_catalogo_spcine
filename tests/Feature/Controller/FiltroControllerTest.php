@@ -20,7 +20,7 @@ class FiltroControllerTest extends FactoryConfig
 
         $response->assertStatus(200);
         $response->assertJson(fn (AssertableJson $json) =>
-        $json->hasAll(['categoriasTag', 'categoriasCatalogo', 'regioes', 'tipos', 'administrador', 'preco']));
+        $json->hasAll(['categoriaCaracteristicas', 'categoriasCatalogo', 'regioes', 'tipos', 'administrador', 'preco']));
     }
 
     public function test_busca_filtros_nao_autenticado()
@@ -29,7 +29,7 @@ class FiltroControllerTest extends FactoryConfig
 
         $response->assertStatus(200);
         $response->assertJson(fn (AssertableJson $json) =>
-        $json->hasAll(['categoriasTag', 'categoriasCatalogo', 'regioes', 'tipos', 'administrador', 'preco']));
+        $json->hasAll(['categoriaCaracteristicas', 'categoriasCatalogo', 'regioes', 'tipos', 'administrador', 'preco']));
     }
 
 

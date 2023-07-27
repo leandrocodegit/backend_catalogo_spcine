@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
 
         Icon::create([
             'id' => 1,
-            'descricao' => "",
+            'descricao' => "Posição",
             'imagem' => '/default/icon_default.png'
         ]);
 

@@ -11,9 +11,8 @@ class Regiao extends Model
 
     protected $table = "regioes";
 
-    protected $hidden = [
-        'created_at',
-        'updated_at'
+    protected $fillable = [
+        'nome'
     ];
 
     protected $appends = array('count');

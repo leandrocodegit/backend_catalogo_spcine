@@ -32,26 +32,41 @@ class ImagemController extends Controller
 
         Catalogo::findOrFail($request->catalogo_id);
 
-        $request->file->store('imagens/' .$request->catalogo_id, 'public');
+        $mensagem = "Imagem criado com sucesso!";
+        $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
+
+        if($isPresentFile)
+            $request->file->store('imagens/' .$request->catalogo_id, 'public');
+
         $imagem = Imagem::where('catalogo_id', $request->catalogo_id)
         ->orderByRaw('ordem desc')
         ->get()
         ->first();
 
+        if (isset($request['id']))
+            $mensagem = "Imagem atualizado com sucesso!";
+
         $imagem;
         $ordem = 0;
-        if($imagem !== null)
-           $ordem = $imagem->ordem + 1;
+        if($imagem !== null) {
+            $ordem = $imagem->ordem + 1;
 
-       $imagemDB = Imagem::create([
+            if ($isPresentFile) {
+                if (Storage::disk('public')->exists($imagem->url))
+                    Storage::disk('public')->delete($imagem->url);
+            }
+        }
+
+       $imagemDB = Imagem::updateOrCreate(
+           ['id' => isset($request['id']) ? $request->id : null],[
             'titulo' => $request->titulo,
             'descricao' => $request->descricao,
             'ordem' => $ordem,
             'principal' => false,
-            'url' => '/imagens/' .$request->catalogo_id. '/' .$request->file->hashName(),
-            'originalExtension' => $request->file->getClientOriginalExtension(),
-            'originalName' => $request->file->getClientOriginalName(),
-            'hashName' => $request->file->hashName(),
+            'url' => $isPresentFile ? '/imagens/' .$request->catalogo_id. '/' .$request->file->hashName() : $imagem->url,
+            'originalExtension' => $isPresentFile ? $request->file->getClientOriginalExtension() : $imagem->url,
+            'originalName' => $isPresentFile ? $request->file->getClientOriginalName() : $imagem->url,
+            'hashName' => $isPresentFile ? $request->file->hashName() : $imagem->url,
             'catalogo_id' => $request->catalogo_id
         ]);
 
@@ -59,29 +74,9 @@ class ImagemController extends Controller
             'Criado imagem ' .$imagemDB->id. ' catalogo ' .$request->catalogo_id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
 
         return response()->json([
-            'message' => 'Imagem gravada com sucesso!',
+            'message' => $mensagem,
              'status' => 200], 200);
 
-    }
-
-    public function upload(Request $request){
-
-        Imagem::findOrFail($request->id);
-        $imagem = Imagem::with('catalogo')
-        ->firstWhere('id', $request->id);
-
-        if (Storage::disk('public')->exists('imagens/' .$imagem->catalogo->id))
-            Storage::disk('public')->delete($imagem->url);
-
-        $request->file->store('imagens/' .$imagem->catalogo->id, 'public');
-
-        Log::channel('db')->info(
-            'Upload imagem ' .$imagem->id. ' catalogo ' .$imagem->catalogo->id. ' com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
-
-
-        return response()->json([
-            'message' => 'Imagem gravada com sucesso!',
-             'status' => 200], 200);
     }
 
     public function destroy($id){
