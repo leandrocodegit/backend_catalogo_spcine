@@ -45,15 +45,18 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'id' => 1,
             'nome' => 'Root',
             'email' => 'root@root.com.br',
-            'cpf' => '0000000000',
-            'telefone' => '000000000',
-            'empresa' => 'Root',
             'password' => '$2y$10$s8kHHuz1INnJ50RK5pHDbe2eYlBlO3xbWHI5MN.Q/PTfRe.s/S2OK',
             'active' => true,
             'email_verificado' => true,
             'perfil_id' => 1000
+        ]);
+
+        Regiao::create([
+            'id' => 1,
+            'nome' => 'Sem região'
         ]);
 
         Regiao::create([

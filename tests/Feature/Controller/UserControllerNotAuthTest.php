@@ -59,7 +59,7 @@ class UserControllerTestNotAuth extends TestCase
         [
             "id" => $this->user->id,
             "nome" => "Fake new",
-            "cpf" => "9845213154",
+            "documento" => "9845213154",
             "email" => "fake@gmail.com",
             "empresa" => "Spcine"
         ]);

@@ -13,6 +13,8 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('endereco');
+            $table->string('like', 2048);
+            $table->string('like_langue', 2048);
             $table->boolean('home')->default(false);
             $table->boolean('active')->default(false);
             $table->timestamps();

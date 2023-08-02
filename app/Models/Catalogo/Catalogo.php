@@ -3,6 +3,7 @@
 namespace App\Models\Catalogo;
 
 
+use App\Models\Account\User;
 use Illuminate\Database\Eloquent\Relations\belongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,10 @@ class Catalogo extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'nome',
+        'like',
+        'like_langue',
         'endereco',
         'home',
         'active',
@@ -22,7 +26,8 @@ class Catalogo extends Model
         'cordenadas_id',
         'administrador_id',
         'icon_id',
-        'categoria_id'
+        'categoria_id',
+        'user_id'
     ];
 
     protected $hidden = [
@@ -34,6 +39,18 @@ class Catalogo extends Model
     ];
 
     protected $table = "catalogos";
+
+    protected $appends = array('countx');
+
+
+    public function getCountxAttribute()
+    {
+        $id = [1,2];
+        return Catalogo::with('caracteristicas')->whereHas('caracteristicas', function ($query) use ($id) {
+            $query->whereIn('id', [4,8]);
+        })->count();
+    }
+
 
     public function imagens(){
         return $this->hasMany(Imagem::class)->orderByRaw('ordem and principal desc');
@@ -60,6 +77,9 @@ class Catalogo extends Model
         return $this->belongsTo(Regiao::class);
     }
 
+    public function responsavel(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
     public function administrador(){
         return $this->belongsTo(Administrador::class);
     }

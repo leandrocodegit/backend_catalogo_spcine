@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\util\MapUtil;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use App\Models\Catalogo\Cordenada;
@@ -27,8 +28,10 @@ class ImportCatalogos implements ToCollection
                     'longitude' => $row[11]
                 ]);
 
-           $catalogo = Catalogo::create([
+           $catalogo = Catalogo::updateOrCreate([
+                    'id' => $row[2],
                     'nome' => $row[3],
+                    'like' => $row[3],
                     'endereco' => $row[4],
                     'home' => $row[5] === 1 ? true : false,
                     'active' => $row[6] === 1 ? true : false,
@@ -36,15 +39,26 @@ class ImportCatalogos implements ToCollection
                     'cordenadas_id' => $cordenadas->id,
                     'administrador_id' => ($row->count() >= 13) ? $row[12] : 1,
                     'icon_id' => ($row->count() >= 14) ? $row[13] : 1,
-                    'categoria_id' => ($row->count() >= 15) ? $row[14] : 1
+                    'categoria_id' => ($row->count() >= 15) ? $row[14] : 1,
+                    'user_id' => ($row->count() >= 16) ? $row[15] : 1,
+                    'like_langue' => ($row->count() >= 17) ? $row[16] : "l",
+
             ]);
 
-            $cordenadas = Descricao::create(
+            $descricao = Descricao::create(
                 [
                     'titulo' => $row[7],
                     'descricao' => $row[8],
                     'catalogo_id' => $catalogo->id
                 ]);
+
+            $catalogo->update([
+                'like' => $catalogo->nome . ' ' .
+                    $catalogo->endereco . ' ' .
+                    MapUtil::merge(collect([$descricao]), 'titulo', 'descricao') . ' ' .
+                    $catalogo->nome
+            ]);
+
             }
             else if( $row[0] === 'UPD' && $row[1] === 'UPD'){
 

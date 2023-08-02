@@ -18,18 +18,25 @@ class Regra extends Model
     ];
 
     protected $hidden = [
-        'created_at',
-        'updated_at',
+        'tipo_id',
         'pivot'
     ];
 
-    protected $appends = array('host', 'count');
+    protected $appends = array('host', 'count', 'tipo');
 
     public function getHostAttribute()
     {
         return env('URL_FILE'). $this->imagem;
     }
 
+    public function getTipoAttribute()
+    {
+        return [
+            'id' => $this->tipo()->first()->id,
+            'nome' => $this->tipo()->first()->nome,
+            'destaque' => $this->tipo()->first()->destaque
+        ];
+    }
     public function getCountAttribute()
     {
         return $this->catalogos()->count();

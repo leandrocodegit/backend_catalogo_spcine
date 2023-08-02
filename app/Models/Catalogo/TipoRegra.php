@@ -13,13 +13,16 @@ class TipoRegra extends Model
 
     protected $fillable = [
         'id',
-        'nome'
+        'nome',
+        'destaque'
     ];
 
-    protected $hidden = [
-        'created_at',
-        'updated_at'
-    ];
+    protected $appends = array('count');
+
+    public function getCountAttribute()
+    {
+        return $this->regras()->count();
+    }
 
     public function regras(){
         return $this->hasMany(Regra::class, 'tipo_id');

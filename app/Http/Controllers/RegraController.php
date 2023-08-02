@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\util\MapError;
+use App\Models\Catalogo\TipoRegra;
+use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use App\Models\Catalogo\Catalogo;
 use Illuminate\Support\Facades\Storage;
@@ -20,57 +21,55 @@ class RegraController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'tipo_id' => 'bail|required',
-            'descricao' => 'bail|required'
+            'descricao' => 'bail|required',
+            'tipo_id' => 'bail|required'
         ],
             [
-                'tipo_id.required' => 'O tipo é obrigatório!',
-                'descricao.required' => 'Descrição é obrigatório!'
+                'descricao.required' => 'Descrição é obrigatório!',
+                'tipo_id.required' => 'Tipo é obrigatório!'
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-        $regra = Regra::create([
-            'tipo_id' => $request->tipo_id,
-            'descricao' => $request->descricao,
-            'imagem' => '/regras/' . $request->file->hashName()
-        ]);
+        if(TipoRegra::where('id', $request->tipo_id)->exists() == false)
+            return response()->json(['errors' => array("Tipo inválido ou removido!"), 'status' => 400], 400);
 
-        $request->file->store('regras', 'public');
-
-        return $this->show($regra->id);
-    }
-
-    public function update(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'id' => 'bail|required'
-        ],
-            [
-                'id.required' => 'Id é obrigatório!'
-            ]);
-
-        if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
-
-        $regra = Regra::with('tipo')->findOrFail($request->id);
+        $mensagem = "Regra criada com sucesso!";
         $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
 
-        if ($isPresentFile) {
-            if (Storage::disk('public')->exists($regra->imagem))
-                Storage::disk('public')->delete($regra->imagem);
-            $request->file->store('regras', 'public');
+
+        if (isset($request['id']) && Regra::where('id', $request->id)->exists()){
+                $regraDB = $this->show($request->id);
+
+            if ($isPresentFile) {
+                if (Storage::disk('public')->exists($regraDB->imagem))
+                    Storage::disk('public')->delete($regraDB->imagem);
+            }
+
+            $mensagem = "Regra atualizada com sucesso!";
+
+            Regra::updateOrCreate(
+                ['id' => isset($request['id']) ? $request->id : null], [
+                'descricao' => isset($request['descricao']) ? $request->descricao : $regraDB->descricao,
+                'imagem' => $isPresentFile ? '/regras/' . $request->file->hashName() : $regraDB->imagem,
+                'tipo_id' => $request->tipo_id
+            ]);
+        } else {
+            Regra::create([
+                'descricao' => $request->descricao,
+                'imagem' => $isPresentFile ? '/regras/' . $request->file->hashName() : "",
+                 'tipo_id' => $request->tipo_id
+            ]);
         }
 
-        $regra->update([
-            'descricao' => $request->descricao == null ? $regra->descricao : $request->descricao,
-            'tipo_id' => $request->tipo_id == null ? $regra->tipo->id : $request->tipo_id,
-            'imagem' => $isPresentFile ? '/regras/' . $request->file->hashName() : $regra->imagem
-        ]);
-        return $this->show($regra->id);
-    }
+        if ($isPresentFile)
+            $file = $request->file->store('regras', 'public');
 
+        return response()->json([
+            'message' => $mensagem,
+            'status' => 200], 200);
+    }
     public function show($id)
     {
         return Regra::with('tipo')

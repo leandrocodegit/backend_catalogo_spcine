@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\util\MapError;
+use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use App\Models\Catalogo\TipoRegra;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +14,7 @@ class TipoRegraController extends Controller
 
     public function list()
     {
-        return TipoRegra::all();
+        return TipoRegra::with('regras')->get();
     }
 
     public function store(Request $request)
@@ -28,14 +28,21 @@ class TipoRegraController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+              return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
+
+        $mensagem = "Tipo criado com sucesso!";
+
+        if (isset($request['id']))
+            $mensagem = "Tipo atualizado com sucesso!";
 
        $tipo = TipoRegra::updateOrCreate(
         [ 'id' => isset($request['id']) ? $request->id : null],[
             'nome' => $request->nome
         ]);
 
-        return $this->find($tipo->id);
+        return response()->json([
+            'message' => $mensagem,
+            'status' => 200], 200);
     }
 
     public function find($id)

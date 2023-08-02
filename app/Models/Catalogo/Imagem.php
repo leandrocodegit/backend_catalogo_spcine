@@ -32,7 +32,8 @@ class Imagem extends Model
 
     public function getHostAttribute()
     {
-        return env('URL_FILE'). $this->url;
+       // return env('URL_FILE'). $this->url;
+        return $this->url;
     }
 
     public function catalogo(){

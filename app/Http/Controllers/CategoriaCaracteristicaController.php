@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\util\MapError;
+use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use App\Models\Catalogo\CategoriaCaracteristica;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +24,7 @@ class CategoriaCaracteristicaController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+              return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         $mensagem = "Categoria criada com sucesso!";
 
@@ -55,7 +55,7 @@ class CategoriaCaracteristicaController extends Controller
       ]);
 
       if ($validator->fails())
-          return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+          return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
            return CategoriaCaracteristica::updateOrCreate(
                 [ 'id' => isset($request['id']) ? $request->id : null],

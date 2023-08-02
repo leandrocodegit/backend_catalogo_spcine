@@ -28,6 +28,8 @@ class CatalogoControllerTest extends FactoryConfig
         ])->post('/api/catalogo',
         [
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "descricao"  => [
                 "titulo" => "titulo fake",
@@ -48,6 +50,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "nome" => "Leandro",
             "endereco" => "endereco fake",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "home" => true,
             "active" => true,
             "descricao"  => [
@@ -68,6 +72,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "nome" => "Leandro",
             "endereco" => "endereco fake",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "home" => true,
             "active" => true,
             "cordenadas"  => [
@@ -92,6 +98,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "nome" => "Leandro",
             "endereco" => "endereco fake",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "home" => true,
             "active" => true,
             "cordenadas"  => [
@@ -115,6 +123,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "nome" => "Leandro",
             "endereco" => "endereco fake",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "home" => true,
             "active" => true,
             "cordenadas"  => [
@@ -138,6 +148,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "nome" => "Leandro",
             "endereco" => "endereco fake",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "home" => true,
             "active" => true,
             "cordenadas"  => [
@@ -158,6 +170,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "endereco" => "endereco fake",
             "home" => true,
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "active" => true,
             "cordenadas"  => [
                 "latitude" => "-23.731546855968322",
@@ -181,6 +195,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "nome" => "Leandro",
             "home" => true,
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "active" => true,
             "cordenadas"  => [
                 "latitude" => "-23.731546855968322",
@@ -204,6 +220,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
@@ -226,6 +244,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true
@@ -243,6 +263,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
@@ -267,6 +289,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
@@ -290,6 +314,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
@@ -314,6 +340,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
@@ -336,6 +364,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
@@ -360,6 +390,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,
@@ -386,6 +418,8 @@ class CatalogoControllerTest extends FactoryConfig
         [
             "id" => 1,
             "nome" => "Leandro",
+            "like" => "Praça da sé",
+            "like_langue" => "Praça da sé",
             "endereco" => "endereco fake",
             "home" => true,
             "active" => true,

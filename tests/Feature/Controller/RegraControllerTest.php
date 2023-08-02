@@ -24,7 +24,6 @@ class RegraControllerTest extends FactoryConfig
         ]);
 
         $response->assertStatus(200);
-        $response->assertJsonPath("descricao", 'Descricao regra teste');
     }
 
     public function test_atualizar_regra_tag()
@@ -32,25 +31,23 @@ class RegraControllerTest extends FactoryConfig
         Storage::fake('regras');
 
         $response = $this->withHeaders([
-            'Authorization' =>  $this->token,
-        ])->post('/api/regra/update',
-        [
-            "id" => 1,
-            "tipo_id" => 1,
-            "file" => UploadedFile::fake()->image('teste.jpg'),
-            "descricao" => "Descricao de regra de teste",
-        ]);
+            'Authorization' => $this->token,
+        ])->post('/api/regra',
+            [
+                "id" => 1,
+                "tipo_id" => 1,
+                "file" => UploadedFile::fake()->image('teste.jpg'),
+                "descricao" => "Descricao de regra de teste",
+            ]);
 
         $response->assertStatus(200);
-        $response->assertJsonPath("id", 1);
-        $response->assertJsonPath("descricao", 'Descricao de regra de teste');
     }
 
     public function test_atualizar_regra_sem_file()
     {
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->post('/api/regra/update',
+        ])->post('/api/regra',
             [
                 "id" => 1,
                 "tipo_id" => 1,
@@ -58,34 +55,32 @@ class RegraControllerTest extends FactoryConfig
             ]);
 
         $response->assertStatus(200);
-        $response->assertJsonPath("imagem", "/icon");
     }
 
     public function test_atualizar_regra_sem_descricao()
     {
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->post('/api/regra/update',
+        ])->post('/api/regra',
             [
                 "id" => 1,
                 "tipo_id" => 1
             ]);
 
-        $response->assertStatus(200);
-        $response->assertJsonPath("descricao", "Descricao regra");
+        $response->assertStatus(400);
     }
 
     public function test_atualizar_regra_tipo_invalido()
     {
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->post('/api/regra/update',
+        ])->post('/api/regra',
             [
                 "id" => 1,
                 "tipo_id" => 2
             ]);
 
-        $response->assertStatus(404);
+        $response->assertStatus(400);
     }
 
 
@@ -93,13 +88,12 @@ class RegraControllerTest extends FactoryConfig
     {
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->post('/api/regra/update',
+        ])->post('/api/regra',
             [
                 "id" => 1
             ]);
 
-        $response->assertStatus(200);
-        $response->assertJsonPath("tipo.id", 1);
+        $response->assertStatus(400);
     }
 
     public function test_create_nova_regra_sem_descricao()

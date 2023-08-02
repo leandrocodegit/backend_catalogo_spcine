@@ -17,6 +17,8 @@ use App\Http\Controllers\IconController;
 use App\Http\Controllers\FiltroController;
 use App\Http\Controllers\CategoriaCatalogoController;
 use App\Http\Controllers\RegiaoController;
+use \App\Http\Controllers\AdministradorController;
+use \App\Http\Controllers\PainelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,7 +91,6 @@ Route::group([
     Route::get('/{id}', [RegraController::class, 'show']);
     Route::get('/find/list', [RegraController::class, 'list']);
     Route::post('/', [RegraController::class, 'store']);
-    Route::post('/update', [RegraController::class, 'update']);
     Route::delete('/{id}', [RegraController::class, 'destroy']);
 });
 
@@ -150,9 +151,10 @@ Route::group([
     Route::patch('/', [CatalogoController::class, 'edit']);
     Route::get('/random', [CatalogoController::class, 'random']);
     Route::get('/{id}', [CatalogoController::class, 'find']);
-    Route::get('/search/list/{nome}', [CatalogoController::class, 'search']);
+    Route::post('/search/list', [CatalogoController::class, 'search']);
     Route::post('/filter/list', [CatalogoController::class, 'filter']);
     Route::patch('/cordenada', [CatalogoController::class, 'update']);
+    Route::patch('/active/{id}', [CatalogoController::class, 'active']);
 });
 
 //Route:: Regioes
@@ -166,6 +168,19 @@ Route::group([
     Route::post('/', [RegiaoController::class, 'store']);
     Route::get('/{id}', [RegiaoController::class, 'find']);
     Route::delete('/{id}', [RegiaoController::class, 'destroy']);
+});
+
+//Route:: administradores
+Route::group([
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'administrador',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::get('/list', [AdministradorController::class, 'list']);
+    Route::post('/', [AdministradorController::class, 'store']);
+    Route::get('/{id}', [AdministradorController::class, 'find']);
+    Route::delete('/{id}', [AdministradorController::class, 'destroy']);
 });
 
 //Route:: categorias de caracteristicas
@@ -211,6 +226,16 @@ Route::group([
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('refresh', [AuthController::class, 'refresh']);
+
+});
+
+//Route:: Dashboard
+Route::group([
+    'prefix' => 'painel'
+
+], function ($router) {
+
+    Route::get('count', [PainelController::class, 'dash']);
 
 });
 

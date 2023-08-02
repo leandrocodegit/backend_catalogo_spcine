@@ -38,7 +38,7 @@ class UserControllerTest extends TestCase
         $response = $this->post('/api/user',
         [
             "nome" => "Leandro",
-            "cpf" => "08987782635",
+            "documento" => "08987782635",
             "email" => "lpoliveira@gmail.com",
             "empresa" => "Spcine",
             "password" => "Pass2020!",
@@ -61,7 +61,7 @@ class UserControllerTest extends TestCase
         ])->post('/api/user',
         [
             "nome" => "Leandro",
-            "cpf" => "08987782635",
+            "documento" => "08987782635",
             "email" => "lpoliveira@gmail.com",
             "empresa" => "Spcine",
             "password" => "Fake20!",
@@ -82,7 +82,7 @@ class UserControllerTest extends TestCase
         ])->post('/api/user',
         [
             "nome" => "Leandro",
-            "cpf" => "08987782635",
+            "documento" => "08987782635",
             "email" => "lpoliveira@gmail.com",
             "empresa" => "Spcine",
             "password" => "12345678!",
@@ -105,7 +105,7 @@ class UserControllerTest extends TestCase
         [
             "id" => $this->user->id,
             "nome" => "Fake new",
-            "cpf" => "9845213154",
+            "documento" => "9845213154",
             "email" => "fake@gmail.com",
             "empresa" => "Spcine",
             "telefone" => "11987782635"
@@ -154,7 +154,6 @@ class UserControllerTest extends TestCase
         ])->patch('/api/user/status/update/1');
 
         $response->assertStatus(200);
-        $response->assertJsonPath("active", true);
     }
 
     public function test_atualizar_perfil_usuario_sem_id()

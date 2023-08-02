@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\EnviarEmail;
 use App\Models\Account\TokenAccess;
 use App\Models\Account\User;
-use App\Models\util\MapError;
+use App\Models\util\MapUtil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +27,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'nome' => 'bail|required',
             'email' => 'bail|required',
-            'cpf' => 'bail|required',
+            'documento' => 'bail|required',
             'empresa' => 'bail|required',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)],
             'perfil' => 'bail|required',
@@ -36,23 +36,23 @@ class UserController extends Controller
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
-                'cpf.required' => 'Documento é obrigatório!',
+                'documento.required' => 'Documento é obrigatório!',
                 'empresa.required' => 'Empresa é obrigatório!',
                 'telefone.required' => 'Telefone é obrigatório!',
                 'perfil' => 'Perfil é obrigatório!',
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
 
-        if (User:: where('email', '=', $request->email)->orWhere('cpf', '=', $request->cpf)->exists())
+        if (User:: where('email', '=', $request->email)->orWhere('documento', '=', $request->documento)->exists())
             return response()->json(['message' => 'Usuário já foi cadastrado!']);
 
         $user = User:: create([
             'nome' => $request->nome,
             'email' => $request->email,
-            'cpf' => $request->cpf,
+            'documento' => $request->documento,
             'empresa' => $request->empresa,
             'password' => Hash:: make($request->password),
             'active' => false,
@@ -87,7 +87,7 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         return User::with('perfil')->findOrFail($id);
     }
@@ -102,17 +102,19 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         if($request['nome'] == "all")
-            return DB::table('users')->paginate(20);
+            return User::with('perfil')->where('nome', '!=', 'Root')->paginate(50);
 
         if (Str::length($request->nome) > 2)
-            return User::where('nome', 'LIKE', '%' . $request->nome . '%')
+            return User::with('perfil')
+                ->where('nome', 'LIKE', '%' . $request->nome . '%')
                 ->orWhere('email', 'LIKE', '%' . $request->nome . '%')
-                ->orWhere('cpf', 'LIKE', '%' . $request->nome . '%')
+                ->orWhere('documento', 'LIKE', '%' . $request->nome . '%')
                 ->orWhere('empresa', 'LIKE', '%' . $request->nome . '%')
-                ->simplePaginate(20);
+                ->where('nome', '!=', 'Root')
+                ->simplePaginate(50);
         return response()->json(['message' => 'Necessário ao menos 3 caracteres!'], 201);
     }
 
@@ -121,20 +123,20 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'nome' => 'bail|required',
             'email' => 'bail|required',
-            'cpf' => 'bail|required',
+            'documento' => 'bail|required',
             'empresa' => 'bail|required',
             'telefone' => 'bail|required'
         ],
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
-                'cpf.required' => 'Documento é obrigatório!',
+                'documento.required' => 'Documento é obrigatório!',
                 'empresa.required' => 'Empresa é obrigatório!',
                 'telefone.required' => 'Empresa é obrigatório!',
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         try {
             $userAuth = auth()->user();
@@ -147,7 +149,7 @@ class UserController extends Controller
                 ->update([
                     'nome' => $request->email,
                     'nome' => $request->nome,
-                    'cpf' => $request->cpf,
+                    'documento' => $request->documento,
                     'empresa' => $request->empresa,
                     'telefone' => $request->telefone]);
 
@@ -199,7 +201,7 @@ class UserController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         if($request['perfil.id'] === 1000 )
             return response()->json(['errors' => 'Operação não permitida', 'status' => 403], 403);
@@ -236,6 +238,6 @@ class UserController extends Controller
         Log::channel('db')->info(
             'Alterado status de usuario ' .$active. ' ' . $id . ' com usuario ' . $userAuth->nome . ' e previlégios ' .$userAuth->perfil->nome);
 
-        return response()->json(['active' => $active, 'status' => 200], 200);
+        return response()->json(['message' =>  $active ? "Usuário ativado!" : "Usuário foi desativado!", 'status' => 200], 200);
     }
 }

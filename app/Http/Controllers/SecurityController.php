@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\util\MapError;
+use App\Models\util\MapUtil;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Account\User;
@@ -30,7 +30,7 @@ class SecurityController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+              return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         if (User:: where('email', $request -> email)
           -> where('active', '=', true)
@@ -59,7 +59,7 @@ class SecurityController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+              return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         if (User:: where('email', $request -> email)
           -> where('active', '=', false)
@@ -90,7 +90,7 @@ class SecurityController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+              return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         if (TokenAccess:: where('user_id', $request -> id)
           -> where('token', $request -> token)
@@ -129,7 +129,7 @@ class SecurityController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+              return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
           if (User:: firstWhere('id', $request -> id) -> exists()) {
             User:: firstWhere('id', $request -> id)

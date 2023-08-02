@@ -11,10 +11,9 @@ class Administrador extends Model
 
     protected $table = "administrador_catalogo";
 
-    protected $hidden = [
-        'catalogo_id',
-        'created_at',
-        'updated_at'
+    protected $fillable = [
+        'nome',
+        'active'
     ];
 
     protected $appends = array('count');

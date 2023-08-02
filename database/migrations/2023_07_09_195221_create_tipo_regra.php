@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tipo_regra', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->unique();
+            $table->boolean('destaque')->nullable()->default(false);
             $table->timestamps();
         });
     }

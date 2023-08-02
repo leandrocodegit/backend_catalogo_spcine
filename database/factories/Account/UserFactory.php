@@ -10,14 +10,14 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
- 
+
     public function definition()
     {
- 
+
         return [
-            'id' => env('ID_FAKE'), 
+            'id' => env('ID_FAKE'),
             'nome' => env('NOME_FAKE'),
-            'cpf' => env('CPF_FAKE'),
+            'documento' => env('CPF_FAKE'),
             'email' => env('EMAIL_FAKE'),
             'telefone' => env('TELEFONE_FAKE'),
             'email_verificado' => env('EMAIL_VERIFICADO_FAKE'),
@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'perfil_id' => env('PERFIL_FAKE'),
         ];
     }
- 
+
     public function unverified()
     {
         return $this->state(fn (array $attributes) => [

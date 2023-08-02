@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Catalogo\Catalogo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,6 +57,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function perfil(){
         return $this->belongsTo(PerfilUsuario::class);
+    }
+
+    public function catalogos(){
+        return $this->belongsToMany(Catalogo::class);
     }
 
 }

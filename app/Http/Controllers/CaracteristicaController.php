@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Enums\StatusAgenda;
-use App\Models\util\MapError;
+use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use App\Models\Catalogo\Caracteristica;
 use App\Models\Catalogo\CategoriaCaracteristica;
@@ -37,7 +37,7 @@ class CaracteristicaController extends Controller
           ]);
 
           if ($validator->fails())
-              return response()->json(['errors' =>  MapError::format($validator->messages()), 'status' => 400], 400);
+              return response()->json(['errors' =>  MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         $mensagem = "Tag criada com sucesso!";
 

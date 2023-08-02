@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Catalogo\Regiao;
+use App\Models\Catalogo\Administrador;
 use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
-use App\Models\Catalogo\CategoriaCaracteristica;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Enums\MessageResponse;
 
-class RegiaoController extends Controller
+class AdministradorController extends Controller
 {
 
     public function list(){
-       return Regiao::all();
+       return Administrador::all();
     }
 
     public function store(Request $request){
@@ -28,25 +26,26 @@ class RegiaoController extends Controller
           if ($validator->fails())
               return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-        $mensagem = "Região criada com sucesso!";
+        $mensagem = "Administrador criado com sucesso!";
 
         if(isset($request['id']))
-            $mensagem = "Região atualizada com sucesso!";
+            $mensagem = "Administrador atualizado com sucesso!";
 
-        Regiao::updateOrCreate(
+        Administrador::updateOrCreate(
             [ 'id' => isset($request['id']) ? $request->id : null],[
-            'nome' => $request->nome
+            'nome' => $request->nome,
+            'active' => isset($request['active']) ?  $request->active : false
         ]);
 
         return response()->json(['message' => $mensagem, 'status' => 200], 200);
      }
 
      public function find($id){
-         return Regiao::findOrfail($id);
+         return Administrador::findOrfail($id);
      }
 
     public function destroy($id){
-        Regiao::findOrfail($id)->delete();
-        return response()->json(['message' => 'Região removida com sucesso!', 'status' => 200], 200);
+        Administrador::findOrfail($id)->delete();
+        return response()->json(['message' => 'Administrador removido com sucesso!', 'status' => 200], 200);
     }
 }

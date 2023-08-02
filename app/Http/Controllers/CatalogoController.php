@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\util\MapError;
+use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Catalogo\Imagem;
@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Log;
 class CatalogoController extends Controller
 {
     public function random(Request $request)
-
     {
         return Catalogo::with('administrador', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
             ->where('home', true)
@@ -33,17 +32,17 @@ class CatalogoController extends Controller
             ->get();
     }
 
-    public function search($nome)
+    public function search(Request $request)
     {
-        if ($nome == "all")
-            return Catalogo::limit(1000)->get();
 
-        return Catalogo::with('descricoes')
-            ->when($nome !== null)
-            ->where('nome', 'LIKE', '%' . $nome . '%')
-            ->orWhere('endereco', 'LIKE', '%' . $nome . '%')
-            ->limit(10)
-            ->get();
+        if ($request->nome == null || $request->nome == "all")
+            return Catalogo::with('responsavel', 'regras','administrador','imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')->paginate(50);
+
+        return Catalogo::with('responsavel', 'administrador','imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+            ->when($request->nome !== null)
+            ->where('like', 'LIKE', '%' . $request->nome . '%')
+            ->orWhere('like-langue', 'LIKE', '%' .$request->nome . '%')
+            ->simplePaginate(100);
     }
 
     public function filter(Request $request)
@@ -52,6 +51,7 @@ class CatalogoController extends Controller
 
         if ($request->isAll != null && $request->isAll) {
             return Catalogo::with(
+                'responsavel',
                 'categoria',
                 'administrador',
                 'descricoes',
@@ -65,63 +65,64 @@ class CatalogoController extends Controller
                 ->simplePaginate(100);
         }
 
-       return Catalogo::with(
-        'categoria',
-        'administrador',
-        'descricoes',
-        'cordenadas',
-        'icon',
-        'caracteristicas',
-        'precos',
-        'imagens',
-        'regiao',
-        'regras')
+        return Catalogo::with(
+            'responsavel',
+            'categoria',
+            'administrador',
+            'descricoes',
+            'cordenadas',
+            'icon',
+            'caracteristicas',
+            'precos',
+            'imagens',
+            'regiao',
+            'regras')
             ->groupByRaw('id')
             ->orderByRaw('MAX(id) asc')
-        ->when($request->orderPrice !== null)
-        ->orderBy('mediaPreco', $request->orderPrice)
-        //Aplica filtro por seu nome
-        ->when($request->nome !== null)
-        ->where('nome', 'LIKE', '%' . $request->nome . '%')
-        //Aplica filtro por catalogos ativos ou inativos
-        ->when($request->active !== null)
-        ->where('active', $request->active)
-        //Aplica filtro por administração
-        ->when($request->administrador !== null && count($request->administrador) > 0)
-        ->whereHas('administrador', function ($query) use ($request) {
-            $query->whereIn('id', $request->administrador);
-        })
-        //Aplica filtro por categoria
-        ->when($request->categorias !== null && count($request->categorias) > 0)
-        ->whereHas('categoria', function ($query) use ($request) {
-            $query->whereIn('id', $request->categorias);
-        })
-        //Aplica filtro por caracteristicas descritivas
-        ->when($request->caracteristicas !== null && count($request->caracteristicas) > 0)
-        ->whereHas('caracteristicas', function ($query) use ($request) {
-            $query->whereIn('id', $request->caracteristicas);
-        })
-        //Aplica filtro por regras
-        ->when($request->regras !== null && count($request->regras) > 0)
-        ->whereHas('regras', function ($query) use ($request) {
-            $query->whereIn('id', $request->regras);
-        })
-        //Aplica filtro por região
-        ->when($request->regioes !== null && count($request->regioes) > 0)
-        ->whereHas('regiao', function ($query) use ($request) {
-            $query->whereIn('id', $request->regioes);
-        })
-        //Aplica filtro por preço maior menor
-        ->when($request->preco !== null && $request->preco > 0)
-        ->whereHas('precos', function ($query) use ($request) {
-            $query->where('valor', '<=', $request->preco);
-        })->simplePaginate(100);
+            ->when($request->orderPrice !== null)
+            ->orderBy('mediaPreco', $request->orderPrice)
+            //Aplica filtro por seu nome
+            ->when($request->nome !== null)
+            ->where('nome', 'LIKE', '%' . $request->nome . '%')
+            //Aplica filtro por catalogos ativos ou inativos
+            ->when($request->active !== null)
+            ->where('active', $request->active)
+            //Aplica filtro por administração
+            ->when($request->administrador !== null && count($request->administrador) > 0)
+            ->whereHas('administrador', function ($query) use ($request) {
+                $query->whereIn('id', $request->administrador);
+            })
+            //Aplica filtro por categoria
+            ->when($request->categorias !== null && count($request->categorias) > 0)
+            ->whereHas('categoria', function ($query) use ($request) {
+                $query->whereIn('id', $request->categorias);
+            })
+            //Aplica filtro por caracteristicas descritivas
+            ->when($request->caracteristicas !== null && count($request->caracteristicas) > 0)
+            ->whereHas('caracteristicas', function ($query) use ($request) {
+                $query->whereIn('id', $request->caracteristicas);
+            })
+            //Aplica filtro por região
+            ->when($request->regioes !== null && count($request->regioes) > 0)
+            ->whereHas('regiao', function ($query) use ($request) {
+                $query->whereIn('id', $request->regioes);
+            })
+            //Aplica filtro por regras
+            ->when($request->regras !== null && count($request->regras) > 0)
+            ->whereHas('regras', function ($query) use ($request) {
+                $query->whereIn('id', $request->regras);
+            })
+            //Aplica filtro por preço maior menor
+            ->when($request->preco !== null && $request->preco > 0)
+            ->whereHas('precos', function ($query) use ($request) {
+                $query->where('valor', '<=', $request->preco);
+            })->simplePaginate(100);
 
     }
 
     public function find($id)
     {
-        return Catalogo::with('categoria', 'administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
+        return Catalogo::with('responsavel','categoria', 'administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
             ->findOrFail($id);
     }
 
@@ -156,7 +157,7 @@ class CatalogoController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         $cordenadas = null;
 
@@ -176,12 +177,22 @@ class CatalogoController extends Controller
             'regiao_id' => $request->regiao !== null ? $request->input('regiao.id') : null,
             'administrador_id' => $request->administrador !== null ? $request->input('administrador.id') : null,
             'icon_id' => ($request->icon !== null && $request->input('icon.id') != null) ? $request->input('icon.id') : 1,
+            'like' => $request->nome . ' ' .
+                $request->endereco . ' ',
+            'like_langue' => ''
         ]);
 
         $descricao = Descricao::create([
             'titulo' => $request->input('descricao.titulo'),
             'descricao' => $request->input('descricao.descricao'),
             'catalogo_id' => $catalogo->id
+        ]);
+
+        $catalogo->update([
+            'like' => $catalogo->nome . ' ' .
+                $catalogo->endereco . ' ' .
+                MapUtil::merge(collect([$descricao]), 'titulo', 'descricao') . ' ' .
+                $catalogo->nome
         ]);
 
         Log::channel('db')->info(
@@ -205,7 +216,7 @@ class CatalogoController extends Controller
             ]);
 
         if ($validator->fails())
-            return response()->json(['errors' => MapError::format($validator->messages()), 'status' => 400], 400);
+            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         Catalogo::with('administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
             ->findOrFail($request->id)
@@ -291,6 +302,21 @@ class CatalogoController extends Controller
             'Editado imagem ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
 
         return $this->find($catalogo->id,);
+    }
+
+    public function active($id)
+    {
+        $active = $this->find($id)->active ? false : true;
+
+        Catalogo::findOrFail( $id)
+            ->update([
+                'active' => $active
+            ]);
+
+        Log::channel('db')->info(
+            'Alterado status de catalogo ' .$active. ' ' . $id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
+
+        return response()->json(['message' =>  $active ? "Catalogo ativado!" : "Catalogo foi desativado!", 'status' => 200], 200);
     }
 }
 

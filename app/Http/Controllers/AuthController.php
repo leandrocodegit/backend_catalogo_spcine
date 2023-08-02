@@ -42,7 +42,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'token' => $token,
+            'access_token' => $token,
             'type' => 'Bearer',
             'validate' => auth()->factory()->getTTL()
         ]);

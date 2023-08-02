@@ -48,13 +48,13 @@ class IconControllerTest extends FactoryConfig
 
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->post('/api/icon/update',
+        ])->post('/api/icon',
             [
                 "id" => 1,
                 "file" => UploadedFile::fake()->image('teste.jpg')
             ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(400);
     }
 
     public function test_atualizar_icon_sem_file()
