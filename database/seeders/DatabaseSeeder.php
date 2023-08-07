@@ -54,6 +54,16 @@ class DatabaseSeeder extends Seeder
             'perfil_id' => 1000
         ]);
 
+        User::create([
+            'id' => 2,
+            'nome' => 'Sistema',
+            'email' => 'contato@siste,a.com.br',
+            'password' => '$2y$10$s8kHHuz1INnJ50RK5pHDbe2eYlBlO3xbWHI5MN.Q/PTfRe.s/S2OK',
+            'active' => true,
+            'email_verificado' => true,
+            'perfil_id' => 2
+        ]);
+
         Regiao::create([
             'id' => 1,
             'nome' => 'Sem região'

@@ -22,7 +22,7 @@ class Regra extends Model
         'pivot'
     ];
 
-    protected $appends = array('host', 'count', 'tipo');
+    protected $appends = array('host', 'count', 'tipo', 'text');
 
     public function getHostAttribute()
     {
@@ -40,6 +40,12 @@ class Regra extends Model
     public function getCountAttribute()
     {
         return $this->catalogos()->count();
+    }
+
+    public function getTextAttribute()
+    {
+        $svgContent = \Illuminate\Support\Facades\Storage::disk('public')->get($this->imagem);
+        return response($svgContent, 200)->header('Content-Type', 'text')->original;
     }
 
     public function catalogos(){

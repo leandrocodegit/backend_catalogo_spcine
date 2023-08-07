@@ -19,6 +19,9 @@ use App\Http\Controllers\CategoriaCatalogoController;
 use App\Http\Controllers\RegiaoController;
 use \App\Http\Controllers\AdministradorController;
 use \App\Http\Controllers\PainelController;
+use App\Http\Controllers\DescricaoController;
+use App\Http\Controllers\PrecoController;
+use App\Http\Controllers\PerfilController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,7 +97,7 @@ Route::group([
     Route::delete('/{id}', [RegraController::class, 'destroy']);
 });
 
-//Route:: Tags
+//Route:: Caracteristicas
 Route::group([
     'middleware' => 'JWT:ROOT,ADMIN',
     'prefix' => 'caracteristica',
@@ -104,6 +107,8 @@ Route::group([
     Route::get('/{id}', [CaracteristicaController::class, 'find']);
     Route::get('/find/list', [CaracteristicaController::class, 'list']);
     Route::post('/', [CaracteristicaController::class, 'store']);
+    Route::post('/associar', [CaracteristicaController::class, 'associar']);
+    Route::post('/desassociar', [CaracteristicaController::class, 'desassociar']);
     Route::delete('/{id}', [CaracteristicaController::class, 'destroy']);
 });
 
@@ -124,6 +129,8 @@ Route::group([
 ], function ($router) {
     Route::post('/import/catalogo', [ExportImportController::class, 'importCatalogo']);
     Route::post('/import/usuario', [ExportImportController::class, 'importUsers']);
+    Route::post('/import/imagem', [ExportImportController::class, 'importImagens']);
+    Route::post('/import/descricao', [ExportImportController::class, 'importDescricoes']);
 });
 
 //Route:: Imagens upload
@@ -157,6 +164,30 @@ Route::group([
     Route::patch('/active/{id}', [CatalogoController::class, 'active']);
 });
 
+//Route:: catalogos descrições
+Route::group([
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'catalogo/descricao',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::post('/', [DescricaoController::class, 'store']);
+    Route::delete('/{id}', [DescricaoController::class, 'destroy']);
+    Route::patch('/destaque/{id}', [DescricaoController::class, 'destaque']);
+});
+
+//Route:: catalogos preços
+Route::group([
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'catalogo/preco',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::post('/', [PrecoController::class, 'store']);
+    Route::delete('/{id}', [PrecoController::class, 'destroy']);
+});
+
+
 //Route:: Regioes
 Route::group([
     'middleware' => 'JWT:ROOT,ADMIN',
@@ -168,6 +199,17 @@ Route::group([
     Route::post('/', [RegiaoController::class, 'store']);
     Route::get('/{id}', [RegiaoController::class, 'find']);
     Route::delete('/{id}', [RegiaoController::class, 'destroy']);
+});
+
+//Route:: Perfils
+Route::group([
+    'middleware' => 'JWT:ROOT,ADMIN',
+    'prefix' => 'perfil',
+    'roles' => ['ROOT', 'ADMIN']
+
+], function ($router) {
+    Route::get('/', [PerfilController::class, 'list']);
+    Route::post('/', [PerfilController::class, 'alter']);
 });
 
 //Route:: administradores
@@ -260,6 +302,11 @@ Route::group([
     Route::delete('/{id}', [UserController::class, 'destroy']);
 });
 
+
+Route::get('/svg-file/', function () {
+    $svgContent = \Illuminate\Support\Facades\Storage::disk('public')->get('regras/NP1lY7FwRG78pHsGEtx5L6P5x6veOzzLSwcHNYgr.svg');
+    return response($svgContent, 200)->header('Content-Type', 'text');
+});
 
 
 

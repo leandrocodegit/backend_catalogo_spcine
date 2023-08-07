@@ -12,8 +12,10 @@ return new class extends Migration
         Schema::create('caracteristicas_catalogo', function (Blueprint $table) {
             $table->unsignedBigInteger('caracteristica_id');
             $table->unsignedBigInteger('catalogo_id');
+            $table->primary(['catalogo_id', 'caracteristica_id']);
             $table->foreign('caracteristica_id')->references('id')->on('caracteristicas');
             $table->foreign('catalogo_id')->references('id')->on('catalogos');
+
    //         $table->primary(['tag_id', 'catalogo_id'])->unique();
         });
     }

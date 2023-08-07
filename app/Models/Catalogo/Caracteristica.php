@@ -19,8 +19,6 @@ class Caracteristica extends Model
     ];
 
     protected $hidden = [
-        'created_at',
-        'updated_at',
         'categoria_id'
     ];
 

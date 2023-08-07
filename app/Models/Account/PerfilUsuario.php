@@ -14,10 +14,10 @@ class PerfilUsuario extends Model
     protected $fillable = [
         'id',
         'role',
-        'nome' 
+        'nome'
     ];
 
     public function usuarios(){
-        return $this->hasMany(Usuario::class);
+        return $this->hasMany(Usuario::class, 'perfil_id');
     }
 }

@@ -19,7 +19,7 @@ class TipoRegraFactory extends Factory
         return [
             'id' => 1,
             'nome' => 'Tipo de regra fake',
-            "destaque" => true,
+            'destaque' => true,
         ];
     }
 }

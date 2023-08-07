@@ -14,11 +14,12 @@ class Descricao extends Model
     protected $fillable = [
         'titulo',
         'descricao',
+        'destaque',
         'catalogo_id'
     ];
 
     protected $hidden = [
-        'catalogo_id'  
+        'catalogo_id'
     ];
 
     public function catalogo(){

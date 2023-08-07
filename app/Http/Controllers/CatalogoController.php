@@ -36,18 +36,17 @@ class CatalogoController extends Controller
     {
 
         if ($request->nome == null || $request->nome == "all")
-            return Catalogo::with('responsavel', 'regras','administrador','imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')->paginate(50);
+            return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')->paginate(50);
 
-        return Catalogo::with('responsavel', 'administrador','imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+        return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
             ->when($request->nome !== null)
             ->where('like', 'LIKE', '%' . $request->nome . '%')
-            ->orWhere('like-langue', 'LIKE', '%' .$request->nome . '%')
+            ->orWhere('like_langue', 'LIKE', '%' . $request->nome . '%')
             ->simplePaginate(100);
     }
 
     public function filter(Request $request)
     {
-
 
         if ($request->isAll != null && $request->isAll) {
             return Catalogo::with(
@@ -122,20 +121,31 @@ class CatalogoController extends Controller
 
     public function find($id)
     {
-        return Catalogo::with('responsavel','categoria', 'administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
+        return Catalogo::with('responsavel', 'categoria', 'administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'icon', 'regiao', 'regras')
             ->findOrFail($id);
     }
 
     public function update(Request $request)
     {
-        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $output->write('LAT: ' . $request['cordenadas.latitude']);
-        $output->write('LON: ' . $request['cordenadas.longitude']);
-
-        Cordenada::firstWhere('id', $request['cordenadas.id'])->update([
-            'latitude' => $request['cordenadas.latitude'],
-            'longitude' => $request['cordenadas.longitude']
+        Cordenada::firstWhere('id', $request['id'])->update([
+            'latitude' => $request['latitude'],
+            'longitude' => $request['longitude']
         ]);
+    }
+
+    public function editDescricao(Request $request)
+    {
+        if (Descricao::where('id', $request->id)->exists())
+            Descricao::firstWhere('id', $request->id)->update([
+                'titulo' => $request->titulo,
+                'descricao' => $request->descricao
+            ]);
+    }
+
+    public function deleteDescricao($id)
+    {
+        if (Descricao::where('id', $id)->exists())
+            Descricao::firstWhere('id', $id)->delete();
     }
 
     public function store(Request $request)
@@ -198,7 +208,7 @@ class CatalogoController extends Controller
         Log::channel('db')->info(
             'Criado catalogo ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
 
-        return $this->find($catalogo->id);
+        return response()->json(['message' => "Catalogo criado com sucesso!", 'status' => 200], 200);
     }
 
     public function edit(Request $request)
@@ -301,22 +311,22 @@ class CatalogoController extends Controller
         Log::channel('db')->info(
             'Editado imagem ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
 
-        return $this->find($catalogo->id,);
+        return response()->json(['message' => "Catalogo atualizado com sucesso!", 'status' => 200], 200);
     }
 
     public function active($id)
     {
         $active = $this->find($id)->active ? false : true;
 
-        Catalogo::findOrFail( $id)
+        Catalogo::findOrFail($id)
             ->update([
                 'active' => $active
             ]);
 
         Log::channel('db')->info(
-            'Alterado status de catalogo ' .$active. ' ' . $id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
+            'Alterado status de catalogo ' . $active . ' ' . $id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
 
-        return response()->json(['message' =>  $active ? "Catalogo ativado!" : "Catalogo foi desativado!", 'status' => 200], 200);
+        return response()->json(['message' => $active ? "Catalogo ativado!" : "Catalogo foi desativado!", 'status' => 200], 200);
     }
 }
 

@@ -56,7 +56,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function perfil(){
-        return $this->belongsTo(PerfilUsuario::class);
+        return $this->belongsTo(PerfilUsuario::class, 'perfil_id');
     }
 
     public function catalogos(){
