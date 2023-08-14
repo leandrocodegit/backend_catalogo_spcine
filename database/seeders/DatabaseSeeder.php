@@ -6,9 +6,12 @@ namespace Database\Seeders;
 use App\Models\Account\PerfilUsuario;
 use App\Models\Account\User;
 use App\Models\Catalogo\Administrador;
+use App\Models\Catalogo\Caracteristica;
+use App\Models\Catalogo\CategoriaCaracteristica;
 use App\Models\Catalogo\CategoriaCatalogo;
 use App\Models\Catalogo\Icon;
 use App\Models\Catalogo\Regiao;
+use App\Models\Catalogo\TipoRegra;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -109,6 +112,54 @@ class DatabaseSeeder extends Seeder
             'id' => 1,
             'nome' => "Sem categoria",
         ]);
+
+        CategoriaCaracteristica::create([
+            'id' => 1,
+            'nome' => "Dias da semana",
+        ]);
+
+        Caracteristica::create([
+            'id' => 1,
+            'nome' => "Domingo",
+            'categoria_id' => 1,
+        ]);
+        Caracteristica::create([
+            'id' => 2,
+            'nome' => "Segunda-feira",
+            'categoria_id' => 1,
+        ]);
+
+        Caracteristica::create([
+            'id' => 3,
+            'nome' => "Terça-feira",
+            'categoria_id' => 1,
+        ]);
+
+        Caracteristica::create([
+            'id' => 4,
+            'nome' => "Quarta-feira",
+            'categoria_id' => 1,
+        ]);
+
+        Caracteristica::create([
+            'id' => 5,
+            'nome' => "Quinta-feira",
+            'categoria_id' => 1,
+        ]);
+
+        Caracteristica::create([
+            'id' => 6,
+            'nome' => "Sexta-feira",
+            'categoria_id' => 1,
+        ]);
+
+        Caracteristica::create([
+            'id' => 7,
+            'nome' => "Sabado",
+            'categoria_id' => 1,
+        ]);
+
+
 
     }
 }

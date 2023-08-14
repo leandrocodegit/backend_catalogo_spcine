@@ -41,6 +41,7 @@ Route::group([
 
 ], function ($router) {
     Route::get('/filtro', [FiltroController::class, 'filtro']);
+    Route::post('/filtro', [FiltroController::class, 'count']);
 });
 
 //Route:: Icons
@@ -95,6 +96,8 @@ Route::group([
     Route::get('/find/list', [RegraController::class, 'list']);
     Route::post('/', [RegraController::class, 'store']);
     Route::delete('/{id}', [RegraController::class, 'destroy']);
+    Route::post('/associar', [RegraController::class, 'associar']);
+
 });
 
 //Route:: Caracteristicas
@@ -108,8 +111,7 @@ Route::group([
     Route::get('/find/list', [CaracteristicaController::class, 'list']);
     Route::post('/', [CaracteristicaController::class, 'store']);
     Route::post('/associar', [CaracteristicaController::class, 'associar']);
-    Route::post('/desassociar', [CaracteristicaController::class, 'desassociar']);
-    Route::delete('/{id}', [CaracteristicaController::class, 'destroy']);
+     Route::delete('/{id}', [CaracteristicaController::class, 'destroy']);
 });
 
 //Route:: Exports arquivos de relatorio
@@ -131,6 +133,8 @@ Route::group([
     Route::post('/import/usuario', [ExportImportController::class, 'importUsers']);
     Route::post('/import/imagem', [ExportImportController::class, 'importImagens']);
     Route::post('/import/descricao', [ExportImportController::class, 'importDescricoes']);
+    Route::post('/import/precos', [ExportImportController::class, 'importPrecos']);
+    Route::post('/import/caracteristicas', [ExportImportController::class, 'importCaracteristicas']);
 });
 
 //Route:: Imagens upload
@@ -149,19 +153,19 @@ Route::group([
 
 //Route:: catalogos
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
     'prefix' => 'catalogo',
     'roles' => ['ROOT', 'ADMIN']
 
 ], function ($router) {
-    Route::post('/', [CatalogoController::class, 'store']);
-    Route::patch('/', [CatalogoController::class, 'edit']);
+    Route::post('/', [CatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/', [CatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::get('/random', [CatalogoController::class, 'random']);
     Route::get('/{id}', [CatalogoController::class, 'find']);
     Route::post('/search/list', [CatalogoController::class, 'search']);
     Route::post('/filter/list', [CatalogoController::class, 'filter']);
-    Route::patch('/cordenada', [CatalogoController::class, 'update']);
-    Route::patch('/active/{id}', [CatalogoController::class, 'active']);
+    Route::patch('/cordenada', [CatalogoController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/active/{id}', [CatalogoController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/responsavel', [CatalogoController::class, 'alterarResponsavel'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: catalogos descrições

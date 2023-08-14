@@ -18,7 +18,11 @@ class PrecoFactory extends Factory
     {
         return [
             "id" => 1,
-            "valor" => 100, 
+            'minimo' => 100,
+            'maximo' => 200,
+            'tabela_descontos' => 'true',
+            'tabela_descontos' => 'tabela',
+            "descontos" => true,
             "descricao" => 'Descricao regra',
             "catalogo_id" => 1,
         ];

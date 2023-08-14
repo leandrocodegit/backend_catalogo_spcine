@@ -18,13 +18,17 @@ class PrecoController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'valor' => 'required|numeric|min:10',
+            'minimo' => 'required|numeric|min:0',
+            'maximo' => 'required|numeric|min:0',
             'catalogo_id' => 'bail|required'
         ],
             [
-                'valor.required' => 'Valor é obrigatório!',
-                'valor.numeric' => 'Valor não é um numero!',
-                'valor.min' => 'Valor não pode ser menor que 1!',
+                'minimo.required' => 'Valor é obrigatório!',
+                'minimo.numeric' => 'Valor não é um numero!',
+                'minimo.min' => 'Valor não pode ser menor que 1!',
+                'maximo.required' => 'Valor é obrigatório!',
+                'maximo.numeric' => 'Valor não é um numero!',
+                'maximo.min' => 'Valor não pode ser menor que 1!',
                 'catalogo_id' => 'Catalogo é obrigatório!'
             ]);
 
@@ -33,7 +37,10 @@ class PrecoController extends Controller
 
         return  Preco::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
-            'valor' => $request->valor,
+            'minimo' => $request->minimo,
+            'maximo' => $request->maximo,
+            'descontos' =>  $request->descontos,
+            'tabela_descontos' =>  $request->tabela_descontos,
             'descricao' =>  $request->descricao,
             'catalogo_id' => $request->catalogo_id,
         ]);

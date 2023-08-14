@@ -50,7 +50,8 @@ class IconController extends Controller
             ]);
         } else {
             Icon::create([
-                'descricao' => $request->descricao
+                'descricao' => $request->descricao,
+                'imagem' => $isPresentFile ? '/icons/' . $request->file->hashName() : "/default/icon_default.png"
             ]);
         }
 
@@ -79,7 +80,7 @@ class IconController extends Controller
 
 
         if (!(Str::contains($iconDB->imagem, 'defaul')))
-            if (Storage::disk('public')->exists($iconDB->imagem))
+            if ($iconDB->imagem != null && Storage::disk('public')->exists($iconDB->imagem))
                 Storage::disk('public')->delete($iconDB->imagem);
 
         $iconDB->delete();
@@ -97,5 +98,8 @@ class IconController extends Controller
             ->icon()
             ->associate(Icon::findOrFail($request->icon_id))
             ->save();
+        return response()->json([
+            'message' => 'Icone associado com sucesso!',
+            'status' => 200], 200);
     }
 }

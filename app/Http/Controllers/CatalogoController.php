@@ -36,13 +36,13 @@ class CatalogoController extends Controller
     {
 
         if ($request->nome == null || $request->nome == "all")
-            return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')->paginate(50);
+            return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')->paginate($request->limite);
 
         return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
             ->when($request->nome !== null)
             ->where('like', 'LIKE', '%' . $request->nome . '%')
             ->orWhere('like_langue', 'LIKE', '%' . $request->nome . '%')
-            ->simplePaginate(100);
+            ->paginate($request->limite);
     }
 
     public function filter(Request $request)
@@ -61,7 +61,7 @@ class CatalogoController extends Controller
                 'imagens',
                 'regiao',
                 'regras')
-                ->simplePaginate(100);
+                ->paginate($request->limite);
         }
 
         return Catalogo::with(
@@ -114,8 +114,13 @@ class CatalogoController extends Controller
             //Aplica filtro por preço maior menor
             ->when($request->preco !== null && $request->preco > 0)
             ->whereHas('precos', function ($query) use ($request) {
-                $query->where('valor', '<=', $request->preco);
-            })->simplePaginate(100);
+                $query->where('maximo', '<=', $request->preco);
+            })
+            //Aplica filtro por horario
+            ->when($request->horario !== null)
+            ->where('hora_inicial', '>=', $request['horario.inicial'])
+            ->where('hora_final', '<=', $request['horario.final'])
+            ->paginate($request->limite);
 
     }
 
@@ -131,6 +136,16 @@ class CatalogoController extends Controller
             'latitude' => $request['latitude'],
             'longitude' => $request['longitude']
         ]);
+    }
+
+    public function alterarResponsavel(Request $request)
+    {
+        Catalogo::firstWhere('id', $request['catalogo_id'])->update([
+            'user_id' => $request['user_id']
+        ]);
+
+        return response()->json(['message' => "Responsável alterado criado com sucesso!", 'status' => 200], 200);
+
     }
 
     public function editDescricao(Request $request)
@@ -275,9 +290,12 @@ class CatalogoController extends Controller
                     Preco::updateOrCreate(
                         ['id' => isset($preco['id']) ? $preco['id'] : null],
                         [
-                            'valor' => $preco['valor'],
-                            'descricao' => $preco['descricao'],
-                            'catalogo_id' => $catalogo->id
+                            'minimo' => $preco->minimo,
+                            'maximo' => $preco->maximo,
+                            'descontos' => $preco->descontos,
+                            'tabela_descontos' => $preco->tabela_descontos,
+                            'descricao' => $preco->descricao,
+                            'catalogo_id' => $preco->catalogo_id,
                         ]);
                 }
             } catch (Exception $e) {

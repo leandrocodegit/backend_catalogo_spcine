@@ -19,6 +19,7 @@ class CatalogoFactory extends Factory
         return [
             "id" => 1,
             "nome" => "Praça da sé",
+            "status" => 1,
             "like" => "Praça da sé",
             "like_langue" => "Praça da sé",
             "endereco" => "Rua serra da prata, cooperativa, São Bernardo do Campo - SP",

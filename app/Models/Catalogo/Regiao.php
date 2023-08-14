@@ -22,7 +22,6 @@ class Regiao extends Model
         return $this->catalogos()->count();
     }
 
-
     public function catalogos(){
         return $this->hasMany(Catalogo::class);
     }

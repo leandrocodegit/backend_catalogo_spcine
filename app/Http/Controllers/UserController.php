@@ -26,20 +26,22 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nome' => 'bail|required',
-            'email' => 'bail|required',
+            'email' => 'bail|required|email',
             'documento' => 'bail|required',
             'empresa' => 'bail|required',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)],
-            'perfil' => 'bail|required',
+            'password_confirmation' => 'bail|required',
             'telefone' => 'bail|required'
         ],
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
+                'email.email' => 'Email não é válido!',
                 'documento.required' => 'Documento é obrigatório!',
                 'empresa.required' => 'Empresa é obrigatório!',
                 'telefone.required' => 'Telefone é obrigatório!',
-                'perfil' => 'Perfil é obrigatório!',
+                'password.required' => 'Senha é obrigatório!',
+                'password_confirmation.required' => 'Confirmação de senha é obrigatório!'
             ]);
 
         if ($validator->fails())
@@ -47,7 +49,7 @@ class UserController extends Controller
 
 
         if (User:: where('email', '=', $request->email)->orWhere('documento', '=', $request->documento)->exists())
-            return response()->json(['message' => 'Usuário já foi cadastrado!']);
+            return response()->json(['message' => 'Usuário já foi cadastrado!'], 422);
 
         $user = User:: create([
             'nome' => $request->nome,
@@ -71,6 +73,8 @@ class UserController extends Controller
             'Criado usuario' . $user->id . ' com usuario ' . $user->nome . ' e previlégios ' . $user->perfil->role);
 
         EnviarEmail:: dispatch($user, $tokenAcess, 'CHECK');
+
+        return response()->json(['message' => 'Usuário cadastrado com sucesso!'], 200);
     }
 
 

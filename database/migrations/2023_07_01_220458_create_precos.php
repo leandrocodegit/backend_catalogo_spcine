@@ -12,7 +12,10 @@ return new class extends Migration
         Schema::create('precos', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
-            $table->float('valor', 10, 2);
+            $table->boolean('descontos')->default(false);
+            $table->float('minimo', 10, 2);
+            $table->float('maximo', 10, 2);
+            $table->string('tabela_descontos')->nullable();
             $table->timestamps();
         });
     }

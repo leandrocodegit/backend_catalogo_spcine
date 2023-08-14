@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportCaracteristicas;
 use App\Imports\ImportDescricao;
 use App\Imports\ImportImagens;
+use App\Imports\ImportPrecos;
 use Illuminate\Http\Request;
 use App\Exports\ExportCatalogos;
 use Maatwebsite\Excel\Facades\Excel;
@@ -47,5 +49,19 @@ public function importUsers(Request $request)
         Log::channel('db')->info(
             'Importando descrições com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
         Excel::import(new ImportDescricao(), $request->file('file'));
+    }
+
+    public function importPrecos(Request $request)
+    {
+        Log::channel('db')->info(
+            'Importando preços com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
+        Excel::import(new ImportPrecos(), $request->file('file'));
+    }
+
+    public function importCaracteristicas(Request $request)
+    {
+        Log::channel('db')->info(
+            'Importando caracteristicas com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
+        Excel::import(new ImportCaracteristicas(), $request->file('file'));
     }
 }

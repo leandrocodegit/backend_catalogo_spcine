@@ -20,7 +20,6 @@ class PainelController extends Controller
     public function dash(){
 
         return response()->json([
-            'agendas' => Agenda::all()->count(),
             'catalogos' => Catalogo::all()->count(),
             'usuarios' => User::all()->count() - 1,
 

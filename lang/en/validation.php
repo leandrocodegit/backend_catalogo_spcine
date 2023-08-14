@@ -114,9 +114,9 @@ return [
     'numeric' => 'The :attribute must be a number.',
     'password' => [
         'letters' => 'The :attribute must contain at least one letter.',
-        'mixed' => 'Deve conter pelo menos uma letra maiúscula e uma minúscula.',
-        'numbers' => 'Deve conter pelo menos um número.',
-        'symbols' => 'Deve conter pelo menos um símbolo.',
+        'mixed' => 'Senha deve conter pelo menos uma letra maiúscula e uma minúscula.',
+        'numbers' => 'Senha deve conter pelo menos um número.',
+        'symbols' => 'Senha deve conter pelo menos um símbolo.',
         'uncompromised' => 'The given :attribute has appeared in a data leak. Please choose a different :attribute.',
     ],
     'present' => 'The :attribute field must be present.',

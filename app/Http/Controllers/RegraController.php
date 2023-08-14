@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogo\RegrasCatalogo;
 use App\Models\Catalogo\TipoRegra;
 use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
@@ -69,6 +70,30 @@ class RegraController extends Controller
         return response()->json([
             'message' => $mensagem,
             'status' => 200], 200);
+    }
+
+    public function associar(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'regra_id' => 'bail|required',
+            'catalogo_id' => 'bail|required'
+        ],
+            [
+                'regra_id' => 'Regra é obrigatório!',
+                'catalogo_id.required' => 'Catalogo é obrigatório!'
+            ]);
+
+        if ($validator->fails())
+            return response()->json(['errors' =>  MapUtil::format($validator->messages()), 'status' => 400], 400);
+
+        if(RegrasCatalogo::where('regra_id', $request->regra_id)
+            ->where('catalogo_id', $request->catalogo_id)->exists()){
+            Catalogo::with('regras')->find($request->catalogo_id)->regras()->detach($request->regra_id);
+            return response()->json(['message' => "Regra foi desassociada com sucesso!", 'status' => 200], 200);
+        }
+
+        Catalogo::with('regras')->find($request->catalogo_id)->regras()->attach($request->regra_id);
+        return response()->json(['message' => "Regra foi associada com sucesso!", 'status' => 200], 200);
     }
     public function show($id)
     {

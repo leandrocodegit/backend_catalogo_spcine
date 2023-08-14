@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogo\CaracteristicasCatalogo;
 use App\Models\Catalogo\Catalogo;
 use App\Models\Enums\StatusAgenda;
 use App\Models\util\MapUtil;
@@ -29,34 +30,20 @@ class CaracteristicaController extends Controller
         if ($validator->fails())
             return response()->json(['errors' =>  MapUtil::format($validator->messages()), 'status' => 400], 400);
 
+        if(CaracteristicasCatalogo::where('caracteristica_id', $request->caracteristica_id)
+            ->where('catalogo_id', $request->catalogo_id)->exists()){
+            Catalogo::with('caracteristicas')->find($request->catalogo_id)->caracteristicas()->detach($request->caracteristica_id);
+            return response()->json(['message' => "Tag foi desassociada com sucesso!", 'status' => 200], 200);
+        }
+
         Catalogo::with('caracteristicas')->find($request->catalogo_id)->caracteristicas()->attach($request->caracteristica_id);
         return response()->json(['message' => "Tag foi associada com sucesso!", 'status' => 200], 200);
-    }
-
-    public function desassociar(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'caracteristica_id' => 'bail|required',
-            'catalogo_id' => 'bail|required'
-        ],
-            [
-                'caracteristica_id' => 'Caracteristica é obrigatório!',
-                'catalogo_id.required' => 'Catalogo é obrigatório!'
-            ]);
-
-        if ($validator->fails())
-            return response()->json(['errors' =>  MapUtil::format($validator->messages()), 'status' => 400], 400);
-
-        Catalogo::with('caracteristicas')->find($request->catalogo_id)->caracteristicas()->detach($request->caracteristica_id);
-        return response()->json(['message' => "Tag foi desassociada com sucesso!", 'status' => 200], 200);
-
     }
 
     public function list()
     {
         return Caracteristica::all();
     }
-
 
 
     public function store(Request $request)

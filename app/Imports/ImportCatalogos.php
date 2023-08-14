@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\util\MapUtil;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use App\Models\Catalogo\Cordenada;
 use App\Models\Catalogo\Descricao;
@@ -28,6 +29,9 @@ class ImportCatalogos implements ToCollection
                     'longitude' => $row[11]
                 ]);
 
+              $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+              $output->write($row[18] . '  ' . $row[19]);
+
            $catalogo = Catalogo::updateOrCreate([
                     'id' => $row[2],
                     'nome' => $row[3],
@@ -42,8 +46,12 @@ class ImportCatalogos implements ToCollection
                     'categoria_id' => ($row->count() >= 15) ? $row[14] : 1,
                     'user_id' => ($row->count() >= 16) ? $row[15] : 1,
                     'like_langue' => ($row->count() >= 17) ? $row[16] : "l",
+                    'hora_inicial' => ($row->count() >= 19) ? $row[18] : "00:00:00",
+                    'hora_final' => ($row->count() >= 20) ? $row[19] : "23:59:59",
 
             ]);
+
+           $catalogo->caracteristicas()->attach(Str::of($row[17])->explode(','));
 
             $descricao = Descricao::create(
                 [

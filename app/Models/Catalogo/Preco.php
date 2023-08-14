@@ -13,8 +13,11 @@ class Preco extends Model
 
     protected $fillable = [
         'descricao',
-        'valor',
-        'catalogo_id'  
+        'minimo',
+        'maximo',
+        'descontos',
+        'tabela_descontos',
+        'catalogo_id'
     ];
 
     protected $hidden = [

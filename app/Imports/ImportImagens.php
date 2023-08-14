@@ -28,10 +28,9 @@ class ImportImagens implements ToCollection
                'titulo' => $row[5],
                'descricao' => $row[6],
                'ordem' => $row[7],
-               'originalExtension' => $row[8],
-               'originalName' => $row[9],
-               'hashName' => $row[10],
-               'url' => $row[11],
+               'originalName' => $row[8],
+               'hashName' => $row[9],
+               'url' => $row[10],
             ]);
 
             }

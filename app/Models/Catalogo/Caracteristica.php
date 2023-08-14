@@ -22,12 +22,13 @@ class Caracteristica extends Model
         'categoria_id'
     ];
 
-    protected $appends = array('count', 'categoria');
+    protected $appends = ['count', 'categoria'];
 
     public function getCountAttribute()
     {
         return $this->catalogos()->count();
     }
+
 
     public function getCategoriaAttribute()
     {

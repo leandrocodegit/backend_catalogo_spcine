@@ -20,6 +20,7 @@ class Catalogo extends Model
         'like',
         'like_langue',
         'endereco',
+        'status',
         'home',
         'active',
         'regiao_id',
@@ -27,7 +28,9 @@ class Catalogo extends Model
         'administrador_id',
         'icon_id',
         'categoria_id',
-        'user_id'
+        'user_id',
+        'hora_inicial',
+        'hora_final'
     ];
 
     protected $hidden = [
