@@ -59,6 +59,7 @@ class UserController extends Controller
             'password' => Hash:: make($request->password),
             'active' => false,
             'telefone' => $request->telefone,
+            'celular' => $request->celular,
             'perfil_id' => 4
         ]);
 
@@ -129,14 +130,16 @@ class UserController extends Controller
             'email' => 'bail|required',
             'documento' => 'bail|required',
             'empresa' => 'bail|required',
-            'telefone' => 'bail|required'
+            'telefone' => 'bail|required',
+            'celular' => 'bail|required'
         ],
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
                 'documento.required' => 'Documento é obrigatório!',
                 'empresa.required' => 'Empresa é obrigatório!',
-                'telefone.required' => 'Empresa é obrigatório!',
+                'telefone.required' => 'Telefone é obrigatório!',
+                'celular.required' => 'Celular é obrigatório!',
             ]);
 
         if ($validator->fails())
@@ -151,11 +154,13 @@ class UserController extends Controller
 
             $userDB = User::firstWhere('id', $request->id)
                 ->update([
-                    'nome' => $request->email,
+                    'email' => $request->email,
                     'nome' => $request->nome,
                     'documento' => $request->documento,
                     'empresa' => $request->empresa,
-                    'telefone' => $request->telefone]);
+                    'telefone' => $request->telefone,
+                    'celular' => $request->celular,
+                ]);
 
             Log::channel('db')->info(
                 'Editado usuario' . $request->email . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
@@ -165,7 +170,9 @@ class UserController extends Controller
                 'status' => 200], 200);
 
         } catch (Throwable $e) {
-            return response()->json(['error' => 'Falha ao atualizar cadastro!']);
+            if($e->getCode() === "23000")
+                return response()->json(['message' => 'Email ou documento já existe!', 'status' => 422], 422);
+            return response()->json(['message' => 'Falha ao atualizar cadastro!' . $e->getCode(), 'status' => 422], 422);
         }
     }
 

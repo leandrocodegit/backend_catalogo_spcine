@@ -15,8 +15,8 @@ class ExportCatalogos implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        $ca = Catalogo::with('administrador','cordenadas','tags', 'precos', 'imagens', 'regiao', 'regras') 
-        ->get(); 
+        $ca = Catalogo::with('administrador','cordenadas','caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
+        ->get();
         return $ca;
     }
 
@@ -48,7 +48,7 @@ class ExportCatalogos implements FromCollection, WithHeadings, WithMapping
                 $catalogo->cordenadas->longitute,
                 $catalogo->active === 1 ? 'Ativo' : 'Inativo',
                 $catalogo->administrador->nome,
-            ] 
+            ]
         ];
     }
 }

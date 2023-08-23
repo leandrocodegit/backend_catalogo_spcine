@@ -42,7 +42,11 @@ class CatalogoControllerFiltrosTest extends FactoryConfig
             "categorias" =>  [1],
             "regras" =>  [],
             "administrador" =>  [],
-            "preco" =>  0
+            "preco" =>  0,
+            "horario" => [
+                "inicial" => "00:00",
+                "final" => "23:59"
+            ]
         ]);
 
         $response->assertStatus(200);

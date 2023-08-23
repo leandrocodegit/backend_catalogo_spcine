@@ -13,6 +13,7 @@ use App\Models\Catalogo\Regiao;
 use App\Models\Catalogo\Administrador;
 use App\Models\Catalogo\Caracteristica;
 use App\Models\Catalogo\Preco;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use App\Events\EventResponse;
 use Illuminate\Support\Facades\DB;
@@ -32,21 +33,46 @@ class CatalogoController extends Controller
             ->get();
     }
 
+    public function searchID($id)
+    {
+        return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+            ->firstWhere('id', $id)
+            ->paginate(1);
+    }
+
     public function search(Request $request)
     {
+        $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
         if ($request->nome == null || $request->nome == "all")
-            return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')->paginate($request->limite);
+            return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+                ->when($request->ordem !== null)
+                ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
+                ->paginate($request->limite);
+
+        if ($validNome) {
+            $catalogoID = Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+                ->when($validNome)
+                ->where('id', $request->nome)
+                ->paginate($request->limite);
+
+            if($catalogoID->total() == 1)
+                return $catalogoID;
+        }
 
         return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
-            ->when($request->nome !== null)
+            ->when($validNome)
             ->where('like', 'LIKE', '%' . $request->nome . '%')
             ->orWhere('like_langue', 'LIKE', '%' . $request->nome . '%')
+            ->when($request->ordem !== null)
+            ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
             ->paginate($request->limite);
     }
 
     public function filter(Request $request)
     {
+
+        $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
         if ($request->isAll != null && $request->isAll) {
             return Catalogo::with(
@@ -61,7 +87,19 @@ class CatalogoController extends Controller
                 'imagens',
                 'regiao',
                 'regras')
+                ->when($request->ordem !== null)
+                ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
                 ->paginate($request->limite);
+        }
+
+        if ($validNome) {
+          $catalogoID = Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+                ->when($validNome)
+                ->where('id', $request->nome)
+                ->paginate($request->limite);
+
+          if($catalogoID->total() == 1)
+              return $catalogoID;
         }
 
         return Catalogo::with(
@@ -76,12 +114,11 @@ class CatalogoController extends Controller
             'imagens',
             'regiao',
             'regras')
-            ->groupByRaw('id')
-            ->orderByRaw('MAX(id) asc')
-            ->when($request->orderPrice !== null)
-            ->orderBy('mediaPreco', $request->orderPrice)
+            ->when($request->ordem !== null)
+            ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
+
             //Aplica filtro por seu nome
-            ->when($request->nome !== null)
+            ->when(isset($request->nome) && strlen($request->nome) > 0)
             ->where('nome', 'LIKE', '%' . $request->nome . '%')
             //Aplica filtro por catalogos ativos ou inativos
             ->when($request->active !== null)
@@ -169,15 +206,11 @@ class CatalogoController extends Controller
         $validator = Validator::make($request->all(), [
             'nome' => 'bail|required',
             'endereco' => 'bail|required',
-            'descricao' => 'bail|required',
-            'descricao.titulo' => 'bail|required',
             'descricao.descricao' => 'bail|required'
         ],
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'endereco.required' => 'Endereço é obrigatório!',
-                'descricao' => 'Objeto descrição é obrigatório',
-                'descricao.titulo' => 'Titulo é obrigatório!',
                 'descricao.descricao' => 'Descrição é obrigatório!'
             ]);
 
@@ -195,6 +228,8 @@ class CatalogoController extends Controller
         $catalogo = Catalogo::create([
             'nome' => $request->nome,
             'endereco' => $request->endereco,
+            'hora_inicial' => $request->hora_inicial,
+            'hora_final' => $request->hora_final,
             'home' => $request->home !== null ? $request->home : false,
             'active' => $request->active !== null ? $request->active : false,
             'cordenadas_id' => $cordenadas !== null ? $cordenadas->id : null,
@@ -204,7 +239,8 @@ class CatalogoController extends Controller
             'icon_id' => ($request->icon !== null && $request->input('icon.id') != null) ? $request->input('icon.id') : 1,
             'like' => $request->nome . ' ' .
                 $request->endereco . ' ',
-            'like_langue' => ''
+            'like_langue' => '',
+            'user_id' => 1
         ]);
 
         $descricao = Descricao::create([
@@ -248,6 +284,8 @@ class CatalogoController extends Controller
             ->update([
                 'nome' => $request->nome,
                 'endereco' => $request->endereco,
+                'hora_inicial' => $request->hora_inicial,
+                'hora_final' => $request->hora_final,
                 'home' => $request->home,
                 'active' => $request->active,
                 'regiao_id' => $request->input('regiao.id'),
@@ -345,6 +383,32 @@ class CatalogoController extends Controller
             'Alterado status de catalogo ' . $active . ' ' . $id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
 
         return response()->json(['message' => $active ? "Catalogo ativado!" : "Catalogo foi desativado!", 'status' => 200], 200);
+    }
+
+    public function destroy($id)
+    {
+        $catalogo = Catalogo::findOrFail($id);
+
+        $catalogo->caracteristicas()->detach();
+        $catalogo->regras()->detach();
+
+        $catalogo->descricoes()->delete();
+        $catalogo->precos()->delete();
+
+        if ($catalogo->imagens()->count() > 0)
+            return response()->json([
+                'message' => 'Primeiro remova as imagens!',
+                'status' => 400], 400);
+
+
+        $catalogo->delete();
+        $catalogo->cordenadas()->delete();
+
+        Log::channel('db')->info(
+            'Removido ' . $id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
+        return response()->json([
+            'message' => 'Catalogo removido com sucesso!',
+            'status' => 200], 200);
     }
 }
 

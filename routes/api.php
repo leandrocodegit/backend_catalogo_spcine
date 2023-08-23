@@ -46,80 +46,63 @@ Route::group([
 
 //Route:: Icons
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'icon',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'icon'
 ], function ($router) {
-    Route::get('/{id}', [IconController::class, 'show']);
-    Route::get('/find/list', [IconController::class, 'list']);
-    Route::post('/', [IconController::class, 'store']);
-    Route::post('/update', [IconController::class, 'update']);
-    Route::post('/associar', [IconController::class, 'associar']);
-    Route::delete('/{id}', [IconController::class, 'destroy']);
+    Route::get('/{id}', [IconController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/find/list', [IconController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [IconController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('/update', [IconController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('/associar', [IconController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [IconController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: Agendas
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'agenda',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'agenda'
 ], function ($router) {
-    Route::get('/{id}', [AgendaController::class, 'find']);
-    Route::get('/find/list', [AgendaController::class, 'list']);
-    Route::post('/', [AgendaController::class, 'store']);
-    Route::delete('/{id}', [AgendaController::class, 'destroy']);
+    Route::get('/{id}', [AgendaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/find/list', [AgendaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [AgendaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [AgendaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: Tipo de regas
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'tipo/regra',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'tipo/regra'
 ], function ($router) {
-    Route::get('/{id}', [TipoRegraController::class, 'find']);
-    Route::get('/find/list', [TipoRegraController::class, 'list']);
-    Route::post('/', [TipoRegraController::class, 'store']);
-    Route::delete('/{id}', [TipoRegraController::class, 'destroy']);
+    Route::get('/{id}', [TipoRegraController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/find/list', [TipoRegraController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [TipoRegraController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [TipoRegraController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: Regas
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'regra',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'regra'
 ], function ($router) {
-    Route::get('/{id}', [RegraController::class, 'show']);
-    Route::get('/find/list', [RegraController::class, 'list']);
-    Route::post('/', [RegraController::class, 'store']);
-    Route::delete('/{id}', [RegraController::class, 'destroy']);
-    Route::post('/associar', [RegraController::class, 'associar']);
+    Route::get('/{id}', [RegraController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/find/list', [RegraController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [RegraController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [RegraController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('/associar', [RegraController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 
 });
 
 //Route:: Caracteristicas
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'caracteristica',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'caracteristica'
 ], function ($router) {
-    Route::get('/{id}', [CaracteristicaController::class, 'find']);
-    Route::get('/find/list', [CaracteristicaController::class, 'list']);
-    Route::post('/', [CaracteristicaController::class, 'store']);
-    Route::post('/associar', [CaracteristicaController::class, 'associar']);
-     Route::delete('/{id}', [CaracteristicaController::class, 'destroy']);
+    Route::get('/{id}', [CaracteristicaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/find/list', [CaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [CaracteristicaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('/associar', [CaracteristicaController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+     Route::delete('/{id}', [CaracteristicaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: Exports arquivos de relatorio
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'data',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'middleware' => 'JWT:ROOT,ADMIN,GUEST',
+    'prefix' => 'data'
 ], function ($router) {
     Route::get('/export/catalogo', [ExportImportController::class, 'catalogosXLS']);
 });
@@ -139,7 +122,7 @@ Route::group([
 
 //Route:: Imagens upload
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
+    'middleware' => 'JWT:ROOT,ADMIN,GUEST',
     'prefix' => 'imagem',
     'roles' => ['ROOT', 'ADMIN']
 
@@ -153,16 +136,16 @@ Route::group([
 
 //Route:: catalogos
 Route::group([
-    'prefix' => 'catalogo',
-    'roles' => ['ROOT', 'ADMIN']
+    'prefix' => 'catalogo'
 
 ], function ($router) {
     Route::post('/', [CatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/', [CatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::get('/random', [CatalogoController::class, 'random']);
-    Route::get('/{id}', [CatalogoController::class, 'find']);
-    Route::post('/search/list', [CatalogoController::class, 'search']);
-    Route::post('/filter/list', [CatalogoController::class, 'filter']);
+    Route::delete('/{id}', [CatalogoController::class, 'destroy'])->middleware(['middleware' => 'no_inject']);
+    Route::get('/{id}', [CatalogoController::class, 'find'])->middleware(['middleware' => 'no_inject']);
+    Route::post('/search/list', [CatalogoController::class, 'search'])->middleware(['middleware' => 'no_inject']);
+    Route::post('/filter/list', [CatalogoController::class, 'filter'])->middleware(['middleware' => 'no_inject']);
     Route::patch('/cordenada', [CatalogoController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/active/{id}', [CatalogoController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/responsavel', [CatalogoController::class, 'alterarResponsavel'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
@@ -170,7 +153,7 @@ Route::group([
 
 //Route:: catalogos descrições
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
+    'middleware' => 'JWT:ROOT,ADMIN,GUEST',
     'prefix' => 'catalogo/descricao',
     'roles' => ['ROOT', 'ADMIN']
 
@@ -194,20 +177,17 @@ Route::group([
 
 //Route:: Regioes
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'regiao',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'regiao'
 ], function ($router) {
-    Route::get('/list', [RegiaoController::class, 'list']);
-    Route::post('/', [RegiaoController::class, 'store']);
-    Route::get('/{id}', [RegiaoController::class, 'find']);
-    Route::delete('/{id}', [RegiaoController::class, 'destroy']);
+    Route::get('/list', [RegiaoController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [RegiaoController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [RegiaoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [RegiaoController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: Perfils
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
+    'middleware' => 'JWT:ROOT',
     'prefix' => 'perfil',
     'roles' => ['ROOT', 'ADMIN']
 
@@ -218,15 +198,12 @@ Route::group([
 
 //Route:: administradores
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'administrador',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'administrador'
 ], function ($router) {
-    Route::get('/list', [AdministradorController::class, 'list']);
-    Route::post('/', [AdministradorController::class, 'store']);
-    Route::get('/{id}', [AdministradorController::class, 'find']);
-    Route::delete('/{id}', [AdministradorController::class, 'destroy']);
+    Route::get('/list', [AdministradorController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [AdministradorController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [AdministradorController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [AdministradorController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: categorias de caracteristicas
@@ -236,25 +213,22 @@ Route::group([
     'roles' => ['ROOT', 'ADMIN']
 
 ], function ($router) {
-    Route::get('/list', [CategoriaCaracteristicaController::class, 'list']);
-    Route::post('/', [CategoriaCaracteristicaController::class, 'store']);
-    Route::patch('/', [CategoriaCaracteristicaController::class, 'edit']);
-    Route::get('/{id}', [CategoriaCaracteristicaController::class, 'find']);
-    Route::delete('/{id}', [CategoriaCaracteristicaController::class, 'destroy']);
+    Route::get('/list', [CategoriaCaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [CategoriaCaracteristicaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [CategoriaCaracteristicaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/', [CategoriaCaracteristicaController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [CategoriaCaracteristicaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: Categorias catalogo
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-    'prefix' => 'catalogo/categoria',
-    'roles' => ['ROOT', 'ADMIN']
-
+    'prefix' => 'catalogo/categoria'
 ], function ($router) {
-    Route::get('/list', [CategoriaCatalogoController::class, 'list']);
-    Route::post('/', [CategoriaCatalogoController::class, 'store']);
-    Route::patch('/', [CategoriaCatalogoController::class, 'edit']);
-    Route::get('/{id}', [CategoriaCatalogoController::class, 'find']);
-    Route::delete('/{id}', [CategoriaCatalogoController::class, 'destroy']);
+    Route::get('/list', [CategoriaCatalogoController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [CategoriaCatalogoController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/', [CategoriaCatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/', [CategoriaCatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [CategoriaCatalogoController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 
@@ -266,12 +240,10 @@ Route::put('/forgot/reset/password', [SecurityController::class, 'reset']);
 //Route:: Auth
 Route::group([
     'prefix' => 'auth'
-
 ], function ($router) {
-
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('refresh', [AuthController::class, 'refresh']);
+    Route::get('refresh', [AuthController::class, 'refresh'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT']);
 
 });
 
@@ -280,9 +252,7 @@ Route::group([
     'prefix' => 'painel'
 
 ], function ($router) {
-
     Route::get('count', [PainelController::class, 'dash']);
-
 });
 
 //Route:: Users
@@ -290,20 +260,16 @@ Route::post('/user', [UserController::class, 'store']);
 
 //Route:: Users
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN,USER',
-    'prefix' => 'user',
-    'roles' => ['ROOT', 'ADMIN', 'USER']
-
+    'prefix' => 'user'
 ], function ($router) {
 
-    Route::get('/{id}', [UserController::class, 'show']);
-    Route::post('/filter/list', [UserController::class, 'search']);
-
-    Route::put('/reset/password', [SecurityController::class, 'editPassword']);
-    Route::patch('/', [UserController::class, 'edit']);
-    Route::patch('/perfil/update', [UserController::class, 'update']);
-    Route::patch('/status/update/{id}', [UserController::class, 'active']);
-    Route::delete('/{id}', [UserController::class, 'destroy']);
+    Route::get('/{id}', [UserController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::post('/filter/list', [UserController::class, 'search'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST', 'no_inject']);
+    Route::put('/reset/password', [SecurityController::class, 'editPassword'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT']);
+    Route::patch('/', [UserController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::patch('/perfil/update', [UserController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT']);
+    Route::patch('/status/update/{id}', [UserController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [UserController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT']);
 });
 
 

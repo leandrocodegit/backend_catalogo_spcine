@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('regras_catalogo', function (Blueprint $table) {
             $table->unsignedBigInteger('regra_id');
             $table->unsignedBigInteger('catalogo_id');
-            $table->primary(['regra_id', 'caracteristica_id']);
+            $table->primary(['regra_id', 'catalogo_id']);
             $table->foreign('regra_id')->references('id')->on('regras');
             $table->foreign('catalogo_id')->references('id')->on('catalogos');
         });

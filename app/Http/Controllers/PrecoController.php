@@ -35,7 +35,12 @@ class PrecoController extends Controller
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-        return  Preco::updateOrCreate(
+        $mensagem = "Preço criado com sucesso!";
+
+        if (isset($request['id']) && Preco::where('id', $request->id)->exists())
+            $mensagem = "Preço atualizado com sucesso!";
+
+        Preco::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'minimo' => $request->minimo,
             'maximo' => $request->maximo,
@@ -44,6 +49,10 @@ class PrecoController extends Controller
             'descricao' =>  $request->descricao,
             'catalogo_id' => $request->catalogo_id,
         ]);
+
+        return response()->json([
+            'message' => $mensagem,
+            'status' => 200], 200);
     }
 
     public function destroy($id)

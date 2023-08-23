@@ -16,6 +16,7 @@ use App\Models\Catalogo\Preco;
 use App\Models\Catalogo\Regiao;
 use App\Models\Catalogo\Regra;
 use App\Models\Catalogo\Caracteristica;
+use App\Models\Catalogo\RegrasCatalogo;
 use App\Models\Catalogo\TipoRegra;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -36,6 +37,7 @@ class FactoryConfig extends FactoryAuthConfig
     protected $preco;
     protected $icon;
     protected $categoriaCatalogo;
+    protected $regrasCatalogo;
 
     public function setUp(): void
     {
@@ -52,6 +54,7 @@ class FactoryConfig extends FactoryAuthConfig
         $this->tipoRegra = TipoRegra::factory()->create();
         $this->regra = Regra::factory()->create();
         $this->imagem = Imagem::factory()->create();
+        $this->regrasCatalogo = RegrasCatalogo::factory();
 
 
     }

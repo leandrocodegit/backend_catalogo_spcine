@@ -14,23 +14,13 @@ use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Testing\Fluent\AssertableJson;
 
-class UserControllerTest extends TestCase
+class UserControllerTest  extends FactoryAuthConfig
 {
 
     use RefreshDatabase;
 
-    private string $token;
-    protected $perfil;
-    protected $user;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->perfil = PerfilUsuario::factory()->create();
-        $this->user = User::factory()->create();
 
-        $this->token = 'Bearer ' .JWTAuth::fromUser($this->user);
-    }
 
     public function test_create_novo_usuario()
     {
@@ -192,7 +182,7 @@ class UserControllerTest extends TestCase
         ])->get('/api/user/' .$this->user->id);
 
         $response->assertStatus(200);
-        $response->assertJsonPath("perfil.role", 'ADMIN');
+        $response->assertJsonPath("nome", env('NOME_FAKE'));
     }
 
     public function test_busca_usuario_nao_existe()
