@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <meta charset="utf-8">
@@ -7,11 +8,12 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <style type="text/css">@font-face {
+    <style type="text/css">
+        @font-face {
             font-family: 'Material Symbols Outlined';
             font-style: normal;
             font-weight: 100 700;
-            src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v133/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2) format('woff2');
+            src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v134/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2) format('woff2');
         }
 
         .material-symbols-outlined {
@@ -28,10 +30,12 @@
             direction: ltr;
             -webkit-font-feature-settings: 'liga';
             -webkit-font-smoothing: antialiased;
-        }</style>
-    <style>@import "https://fonts.googleapis.com/css2?family=Montserrat&family=REM:wght@300&display=swap";
-
+        }
+    </style>
+    <style>
+        @import"https://fonts.googleapis.com/css2?family=Montserrat&family=REM:wght@300&display=swap";
         @charset "UTF-8";
+
         :root {
             --bs-blue: #0d6efd;
             --bs-indigo: #6610f2;
@@ -151,11 +155,13 @@
             --bs-form-invalid-border-color: #dc3545
         }
 
-        *, :after, :before {
+        *,
+        :after,
+        :before {
             box-sizing: border-box
         }
 
-        @media (prefers-reduced-motion: no-preference) {
+        @media (prefers-reduced-motion:no-preference) {
             :root {
                 scroll-behavior: smooth
             }
@@ -183,12 +189,13 @@
             --bs-breakpoint-xxl: 1400px
         }
 
-        html, body {
+        html,
+        body {
             font-family: Montserrat, sans-serif;
             height: 100%
-        }</style>
-    <link rel="stylesheet" href="styles.1a9f01c603c278a7.css" media="print" onload="this.media='all'">
-    <noscript>
+        }
+    </style>
+    <link rel="stylesheet" href="styles.1a9f01c603c278a7.css" media="print" onload="this.media='all'"><noscript>
         <link rel="stylesheet" href="styles.1a9f01c603c278a7.css">
     </noscript>
 </head>
@@ -202,14 +209,15 @@
             "detect_browser_language": true, "languages": ["pt", "es", "en"],
             "wrapper_selector": ".gtranslate_wrapper",
             "switcher_horizontal_position": "right",
-            "alt_flags": {"en": "usa", "pt": "brazil"}
+            "alt_flags": { "en": "usa", "pt": "brazil" }
         }
 </script>
 <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
 <script src="runtime.b03ecd31bdb34a74.js" type="module"></script>
 <script src="polyfills.82537142afde1e35.js" type="module"></script>
 <script src="scripts.4e6d6f582996c29b.js" defer></script>
-<script src="main.80f59dc12ae04872.js" type="module"></script>
+<script src="main.2def1c2c749aaec9.js" type="module"></script>
 
 </body>
+
 </html>
