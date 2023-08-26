@@ -25,9 +25,9 @@ class Icon extends Model
     }
 
 
-    public function getHostAttribute()
+    public function getHostAttribute(): string
     {
-        return env('URL_FILE'). $this->imagem;
+        return 'http://localhost:8000/storage'. $this->imagem;
     }
 
     public function catalogos(){

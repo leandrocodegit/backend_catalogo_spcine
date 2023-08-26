@@ -74,7 +74,7 @@ class CatalogoController extends Controller
 
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
-        if ($request->isAll != null && $request->isAll) {
+        if ($validNome && $request->nome == "all") {
             return Catalogo::with(
                 'responsavel',
                 'categoria',
@@ -118,7 +118,7 @@ class CatalogoController extends Controller
             ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
 
             //Aplica filtro por seu nome
-            ->when(isset($request->nome) && strlen($request->nome) > 0)
+            ->when($validNome)
             ->where('nome', 'LIKE', '%' . $request->nome . '%')
             //Aplica filtro por catalogos ativos ou inativos
             ->when($request->active !== null)
