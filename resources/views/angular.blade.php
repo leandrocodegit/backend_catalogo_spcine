@@ -200,11 +200,12 @@
 <script>window.gtranslateSettings = {
         "default_language": "pt", "languages": ["pt", "es"],
         "wrapper_selector": ".gtranslate_wrapper",
-        "flag_size": 30,
+        "flag_size": 32,
         "horizontal_position": "right",
-        "vertical_position": "bottom", "alt_flags": {
+        "vertical_position": "bottom",
+        "alt_flags": {
             "en": "usa",
-            "pt": "brazil"
+            "pt": "brazil",
         }
     }
 </script>
