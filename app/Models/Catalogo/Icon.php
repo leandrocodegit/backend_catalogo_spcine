@@ -27,7 +27,7 @@ class Icon extends Model
 
     public function getHostAttribute()
     {
-        return env('URL_FILE'). $this->imagem;
+        return 'storage'. $this->imagem;
     }
 
     public function catalogos(){
