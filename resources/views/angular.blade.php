@@ -186,6 +186,22 @@
         html, body {
             font-family: Montserrat, sans-serif;
             height: 100%
+        }
+
+        body::-webkit-scrollbar {
+            width: 7px
+        }
+
+        body::-webkit-scrollbar-track {
+            background: transparent
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: #c5c5c5
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background: #818181
         }</style>
     <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
     <noscript>
@@ -198,14 +214,12 @@
 <!-- botao idioma -->
 <div class="gtranslate_wrapper"></div>
 <script>window.gtranslateSettings = {
-        "default_language": "pt", "languages": ["pt", "es"],
+        "default_language": "pt", "languages": ["pt", "es", "en"],
         "wrapper_selector": ".gtranslate_wrapper",
-        "flag_size": 32,
-        "horizontal_position": "right",
-        "vertical_position": "bottom",
-        "alt_flags": {
+        "flag_size": 32, "horizontal_position": "right",
+        "vertical_position": "bottom", "alt_flags": {
             "en": "usa",
-            "pt": "brazil",
+            "pt": "brazil"
         }
     }
 </script>
