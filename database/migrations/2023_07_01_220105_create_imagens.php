@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->integer('ordem');
             $table->boolean('principal');
-            $table->string('originalName')->nullable();
-            $table->string('hashName')->nullable();
             $table->timestamps();
         });
     }

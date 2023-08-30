@@ -72,8 +72,6 @@ class ImagemController extends Controller
             'ordem' => $ordem,
             'principal' => false,
             'url' => $isPresentFile ? '/imagens/' . $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagem->url : ''),
-            'originalName' => $isPresentFile ? $request->file->getClientOriginalName() : ($imagemDB != null ? $imagem->originalName : ''),
-            'hashName' => $isPresentFile ? $request->file->hashName() : ($imagemDB != null ? $imagem->hashName : ''),
             'catalogo_id' => $request->catalogo_id
         ]);
 

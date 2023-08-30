@@ -23,8 +23,6 @@ class ImagemFactory extends Factory
             "ordem" => 0,
             "principal" => false,
             "url" => "imagens/2/fake.png",
-            "originalName" => "fake.png",
-            "hashName" => "fake.png",
             "catalogo_id" => 1,
             "updated_at" => "2023-07-06T00:17:47.000000Z",
             "created_at" => "2023-07-06T00:17:47.000000Z",

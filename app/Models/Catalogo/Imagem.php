@@ -18,9 +18,6 @@ class Imagem extends Model
         'ordem',
         'principal',
         'url',
-        'originalExtension',
-        'originalName',
-        'hashName',
         'catalogo_id'
     ];
 
