@@ -55,6 +55,7 @@ class ImportImagens implements ToCollection
 
             return  $destinationPath . '/' . $id . '.webp';
         } catch (\Exception $e) {
+            echo $e . "\n";
             echo "Failed to copy imagem from url\n";
         }
     }
