@@ -64,6 +64,9 @@ class ImportImagens implements ToCollection
 
     function convert($inputImagePath, $outputImagePath)
     {
+        echo $inputImagePath . "\n";
+        echo  $outputImagePath . "\n";
+
         $image = imagecreatefromjpeg($inputImagePath);
         if ($image !== false) {
             if (Storage::disk('public')->exists($inputImagePath)) {
