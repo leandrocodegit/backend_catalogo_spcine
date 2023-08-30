@@ -54,7 +54,7 @@ class ImportImagens implements ToCollection
             Storage::disk('public')->put('imagens/' . $destinationPath . '/' . $fileName, $response->getBody());
 
             sleep(10);
-            $this->convert('storage/app/public/imagens/' . $destinationPath . '/' . $fileName, 'storage/app/public/imagens/' . $destinationPath . '/' . $id . '.webp' );
+            $this->convert('imagens/' . $destinationPath . '/' . $fileName, 'imagens/' . $destinationPath . '/' . $id . '.webp' );
 
             return  $destinationPath . '/' . $id . '.webp';
         } catch (\Exception $e) {
