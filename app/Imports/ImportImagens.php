@@ -46,11 +46,12 @@ class ImportImagens implements ToCollection
             $id = uniqid();
             $fileName = $id . '.' . $extension;
 
+            echo 'imagens/' . $destinationPath . '/' . $fileName ."\n";
             Storage::disk('public')->put('imagens/' . $destinationPath . '/' . $fileName, $response->getBody());
 
             return  $destinationPath . '/' . $id . '.webp';
         } catch (\Exception $e) {
-            echo "Failed to copy imagem from url";
+            echo "Failed to copy imagem from url\n";
         }
     }
 
