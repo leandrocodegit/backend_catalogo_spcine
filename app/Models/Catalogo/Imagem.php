@@ -21,13 +21,15 @@ class Imagem extends Model
         'catalogo_id'
     ];
 
+    protected $appends = array('host');
+
     protected $hidden = [
 
     ];
 
-    public function getURLAttribute()
+    public function getHostAttribute()
     {
-        return env('URL_FILE'). $this->url;
+        return 'storage/imagens/'. $this->url;
     }
 
     public function catalogo(){
