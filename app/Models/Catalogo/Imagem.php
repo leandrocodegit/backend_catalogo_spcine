@@ -25,7 +25,7 @@ class Imagem extends Model
 
     ];
 
-    public function getUrlAttribute()
+    public function getURLAttribute()
     {
         return env('URL_FILE'). $this->url;
     }
