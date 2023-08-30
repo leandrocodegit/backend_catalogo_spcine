@@ -53,7 +53,7 @@ class ImportImagens implements ToCollection
             echo 'imagens/' . $destinationPath . '/' . $fileName ."\n";
             Storage::disk('public')->put('imagens/' . $destinationPath . '/' . $fileName, $response->getBody());
 
-           // sleep(10);
+            sleep(3);
             $this->convert('imagens/' . $destinationPath . '/' . $fileName, 'imagens/' . $destinationPath . '/' . $id . '.webp' );
 
             return  $destinationPath . '/' . $id . '.webp';
