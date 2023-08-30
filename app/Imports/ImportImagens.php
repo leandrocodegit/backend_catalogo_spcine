@@ -39,6 +39,10 @@ class ImportImagens implements ToCollection
     {
         $client = new Client();
 
+        echo $url  ."\n";
+        echo $destinationPath  ."\n";
+
+
         try {
             $response = $client->get($url);
             $contentType = $response->getHeaderLine('content-type');
