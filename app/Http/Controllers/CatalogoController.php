@@ -181,7 +181,17 @@ class CatalogoController extends Controller
             'user_id' => $request['user_id']
         ]);
 
-        return response()->json(['message' => "Responsável alterado criado com sucesso!", 'status' => 200], 200);
+        return response()->json(['message' => "Responsável alterado com sucesso!", 'status' => 200], 200);
+
+    }
+
+    public function alterarRegiao(Request $request)
+    {
+        Catalogo::firstWhere('id', $request['catalogo_id'])->update([
+            'regiao_id' => $request['regiao_id']
+        ]);
+
+        return response()->json(['message' => "Região alterado com sucesso!", 'status' => 200], 200);
 
     }
 

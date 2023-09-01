@@ -147,6 +147,7 @@ Route::group([
     Route::post('/search/list', [CatalogoController::class, 'search'])->middleware(['middleware' => 'no_inject']);
     Route::post('/filter/list', [CatalogoController::class, 'filter'])->middleware(['middleware' => 'no_inject']);
     Route::patch('/cordenada', [CatalogoController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/regiao', [CatalogoController::class, 'alterarRegiao'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/active/{id}', [CatalogoController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/responsavel', [CatalogoController::class, 'alterarResponsavel'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
