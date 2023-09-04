@@ -154,7 +154,7 @@ class CatalogoController extends Controller
                 $query->where('maximo', '<=', $request->preco);
             })
             //Aplica filtro por horario
-            ->when($request->horario !== null)
+            ->when(isset($request['horario.final']) && isset($request['horario.inicial']))
             ->where('hora_inicial', '>=', $request['horario.inicial'])
             ->where('hora_final', '<=', $request['horario.final'])
             ->paginate($request->limite);
