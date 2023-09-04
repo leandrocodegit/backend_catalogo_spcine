@@ -69,23 +69,23 @@ class DatabaseSeeder extends Seeder
 
         Regiao::create([
             'id' => 1,
-            'nome' => 'Sem região'
+            'nome' => 'Outros'
         ]);
 
         Regiao::create([
-            'nome' => 'Região sul'
+            'nome' => 'Sul'
         ]);
 
         Regiao::create([
-            'nome' => 'Região norte'
+            'nome' => 'Norte'
         ]);
 
         Regiao::create([
-            'nome' => 'Região leste'
+            'nome' => 'Leste'
         ]);
 
         Regiao::create([
-            'nome' => 'Região oeste'
+            'nome' => 'Oeste'
         ]);
 
         Regiao::create([
@@ -98,7 +98,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Administrador::create([
-            'nome' => 'Prefeitura de São Paulo',
+            'nome' => 'Municipal',
             'active' => true
         ]);
 

@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Catalogo\CategoriaCatalogo;
 use App\Models\util\MapUtil;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -23,6 +24,17 @@ class ImportCatalogos implements ToCollection
               continue;
           if( $row[0] === 'INS' && $row[1] === 'INS'){
 
+          $categoria = 1;
+
+          if(CategoriaCatalogo::where('nome', $row[14])->exists())
+              $categoria = CategoriaCatalogo::firstWhere('nome', $row[14])->id;
+          else {
+              $categoriaDB = CategoriaCatalogo::create([
+                  'nome' => $row[14]
+              ]);
+              $categoria =  $categoriaDB->id;
+          }
+
           $cordenadas = Cordenada::create(
                 [
                     'latitude' => $row[10],
@@ -43,7 +55,7 @@ class ImportCatalogos implements ToCollection
                     'cordenadas_id' => $cordenadas->id,
                     'administrador_id' => ($row->count() >= 13) ? $row[12] : 1,
                     'icon_id' => ($row->count() >= 14) ? $row[13] : 1,
-                    'categoria_id' => ($row->count() >= 15) ? $row[14] : 1,
+                    'categoria_id' => $categoria,
                     'user_id' => ($row->count() >= 16) ? $row[15] : 1,
                     'like_langue' => ($row->count() >= 17) ? $row[16] : "l",
                     'hora_inicial' => ($row->count() >= 19) ? $row[18] : "00:00:00",

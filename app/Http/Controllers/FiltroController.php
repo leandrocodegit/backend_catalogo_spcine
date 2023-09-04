@@ -23,7 +23,7 @@ class FiltroController extends Controller
     public function filtro()
     {
         $categoriaCaracteristicas = CategoriaCaracteristica::with('caracteristicas')->get();
-        $categoriasCatalogo = CategoriaCatalogo::all();
+        $categoriasCatalogo = CategoriaCatalogo::orderBy('nome')->get();
         $regioes = Regiao::orderBy('nome')->get();
         $tipos = TipoRegra::with('regras')->get();
         $administrador = Administrador::all();
@@ -32,10 +32,10 @@ class FiltroController extends Controller
 
         return response()->json([
             'categoriaCaracteristicas' => $categoriaCaracteristicas,
-            'categoriasCatalogo' => $categoriasCatalogo,
-            'regioes' => $regioes,
+            'categoriasCatalogo' => collect($categoriasCatalogo)->sortBy('count', SORT_ASC, true)->values()->all(),
+            'regioes' => collect($regioes)->sortBy('count', SORT_ASC, true)->values()->all(),
             'tipos' => $tipos,
-            'administrador' => $administrador,
+            'administrador' => collect($administrador)->sortBy('count', SORT_ASC, true)->values()->all(),
             'preco' => [
                 'menor' => $menorPreco,
                 'maior' => $maiorPreco
