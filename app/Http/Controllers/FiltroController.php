@@ -32,7 +32,7 @@ class FiltroController extends Controller
 
         return response()->json([
             'categoriaCaracteristicas' => $categoriaCaracteristicas,
-            'categoriasCatalogo' => collect($categoriasCatalogo)->sortBy('count', SORT_ASC, true)->values()->all(),
+            'categoriasCatalogo' => $categoriasCatalogo,
             'regioes' => collect($regioes)->sortBy('count', SORT_ASC, true)->values()->all(),
             'tipos' => $tipos,
             'administrador' => collect($administrador)->sortBy('count', SORT_ASC, true)->values()->all(),
