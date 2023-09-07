@@ -299,6 +299,7 @@ class CatalogoController extends Controller
                 'hora_final' => $request->hora_final,
                 'home' => $request->home,
                 'active' => $request->active,
+                'categoria_id' => $request->input('categoria.id'),
                 'regiao_id' => $request->input('regiao.id'),
                 'administrador_id' => $request->input('administrador.id')
             ]);
