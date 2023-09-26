@@ -27,18 +27,17 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'nome' => 'bail|required',
             'email' => 'bail|required|email',
-            'documento' => 'bail|required',
-            'empresa' => 'bail|required',
+            // 'documento' => 'bail|required',
+            // 'empresa' => 'bail|required',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)],
-            'password_confirmation' => 'bail|required',
             'telefone' => 'bail|required'
         ],
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
                 'email.email' => 'Email não é válido!',
-                'documento.required' => 'Documento é obrigatório!',
-                'empresa.required' => 'Empresa é obrigatório!',
+                //   'documento.required' => 'Documento é obrigatório!',
+                //   'empresa.required' => 'Empresa é obrigatório!',
                 'telefone.required' => 'Telefone é obrigatório!',
                 'password.required' => 'Senha é obrigatório!',
                 'password_confirmation.required' => 'Confirmação de senha é obrigatório!'
@@ -48,14 +47,14 @@ class UserController extends Controller
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
 
-        if (User:: where('email', '=', $request->email)->orWhere('documento', '=', $request->documento)->exists())
+        if (User:: where('email', '=', $request->email)->exists())
             return response()->json(['message' => 'Usuário já foi cadastrado!'], 422);
 
         $user = User:: create([
             'nome' => $request->nome,
             'email' => $request->email,
             'documento' => $request->documento,
-            'empresa' => $request->empresa,
+            //  'empresa' => $request->empresa,
             'password' => Hash:: make($request->password),
             'active' => false,
             'telefone' => $request->telefone,
@@ -109,7 +108,7 @@ class UserController extends Controller
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-        if($request['nome'] == "all")
+        if ($request['nome'] == "all")
             return User::with('perfil')->where('nome', '!=', 'Root')->paginate(50);
 
         if (Str::length($request->nome) > 2)
@@ -128,7 +127,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'nome' => 'bail|required',
             'email' => 'bail|required',
-            'documento' => 'bail|required',
+            //    'documento' => 'bail|required',
             'empresa' => 'bail|required',
             'telefone' => 'bail|required',
             'celular' => 'bail|required'
@@ -136,8 +135,8 @@ class UserController extends Controller
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
-                'documento.required' => 'Documento é obrigatório!',
-                'empresa.required' => 'Empresa é obrigatório!',
+                //    'documento.required' => 'Documento é obrigatório!',
+                //    'empresa.required' => 'Empresa é obrigatório!',
                 'telefone.required' => 'Telefone é obrigatório!',
                 'celular.required' => 'Celular é obrigatório!',
             ]);
@@ -156,8 +155,8 @@ class UserController extends Controller
                 ->update([
                     'email' => $request->email,
                     'nome' => $request->nome,
-                    'documento' => $request->documento,
-                    'empresa' => $request->empresa,
+                    //    'documento' => $request->documento,
+                    //    'empresa' => $request->empresa,
                     'telefone' => $request->telefone,
                     'celular' => $request->celular,
                 ]);
@@ -170,7 +169,7 @@ class UserController extends Controller
                 'status' => 200], 200);
 
         } catch (Throwable $e) {
-            if($e->getCode() === "23000")
+            if ($e->getCode() === "23000")
                 return response()->json(['message' => 'Email ou documento já existe!', 'status' => 422], 422);
             return response()->json(['message' => 'Falha ao atualizar cadastro!' . $e->getCode(), 'status' => 422], 422);
         }
@@ -214,14 +213,14 @@ class UserController extends Controller
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-        if($request['perfil.id'] === 1000 )
+        if ($request['perfil.id'] === 1000)
             return response()->json(['errors' => 'Operação não permitida', 'status' => 403], 403);
 
-        if($userAuth->perfil->id === 4 )
+        if ($userAuth->perfil->id === 4)
             return response()->json(['errors' => 'Operação não permitida', 'status' => 403], 403);
 
         User::with('perfil')
-            ->findOrFail( $request->id)
+            ->findOrFail($request->id)
             ->update([
                 'perfil_id' => $request['perfil.id']
             ]);
@@ -236,19 +235,22 @@ class UserController extends Controller
     {
         $userAuth = auth()->user();
 
-        if($userAuth->perfil->id !== 1000 && $userAuth->perfil->id !== 2)
+        if ($userAuth->perfil->id !== 1000 && $userAuth->perfil->id !== 2)
             return response()->json(['errors' => 'Operação não permitida', 'status' => 403], 403);
 
         $active = $this->show($id)->active ? false : true;
 
-        User::findOrFail( $id)
+        User::findOrFail($id)
             ->update([
                 'active' => $active
             ]);
 
         Log::channel('db')->info(
-            'Alterado status de usuario ' .$active. ' ' . $id . ' com usuario ' . $userAuth->nome . ' e previlégios ' .$userAuth->perfil->nome);
+            'Alterado status de usuario ' . $active . ' ' . $id . ' com usuario ' . $userAuth->nome . ' e previlégios ' . $userAuth->perfil->nome);
 
-        return response()->json(['message' =>  $active ? "Usuário ativado!" : "Usuário foi desativado!", 'status' => 200], 200);
+        return response()->json(['message' => $active ? "Usuário ativado!" : "Usuário foi desativado!", 'status' => 200], 200);
     }
+
+
+
 }

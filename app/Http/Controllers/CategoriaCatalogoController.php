@@ -13,7 +13,7 @@ class CategoriaCatalogoController extends Controller
 
 
     public function list(){
-        return CategoriaCatalogo::all();
+        return CategoriaCatalogo::orderBy('nome')->get();
     }
 
     public function store(Request $request){

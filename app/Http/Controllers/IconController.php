@@ -15,7 +15,7 @@ class IconController extends Controller
 {
     public function list()
     {
-        return Icon::all();
+        return Icon::orderBy('descricao')->get();;
     }
 
     public function store(Request $request)

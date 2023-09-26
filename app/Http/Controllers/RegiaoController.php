@@ -13,7 +13,7 @@ class RegiaoController extends Controller
 {
 
     public function list(){
-       return Regiao::all();
+       return Regiao::orderBy('nome')->get();;
     }
 
     public function store(Request $request){

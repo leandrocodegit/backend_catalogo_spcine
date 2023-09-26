@@ -11,7 +11,7 @@ class AdministradorController extends Controller
 {
 
     public function list(){
-       return Administrador::all();
+       return Administrador::orderBy('nome')->get();;
     }
 
     public function store(Request $request){

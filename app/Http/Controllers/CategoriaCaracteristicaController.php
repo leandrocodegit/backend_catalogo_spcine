@@ -11,7 +11,7 @@ class CategoriaCaracteristicaController extends Controller
 {
 
     public function list(){
-       return CategoriaCaracteristica::with('caracteristicas')->get();
+       return CategoriaCaracteristica::orderBy('nome')->with('caracteristicas')->get();
     }
 
     public function store(Request $request){

@@ -87,6 +87,8 @@ class CatalogoController extends Controller
                 'imagens',
                 'regiao',
                 'regras')
+                ->when($request->active !== null)
+                ->where('active', $request->active)
                 ->when($request->ordem !== null)
                 ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
                 ->paginate($request->limite);
