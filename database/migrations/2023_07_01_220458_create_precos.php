@@ -16,6 +16,7 @@ return new class extends Migration
             $table->float('minimo', 10, 2);
             $table->float('maximo', 10, 2);
             $table->string('tabela_descontos')->nullable();
+            $table->string('tabela_precos')->nullable();
             $table->timestamps();
         });
     }

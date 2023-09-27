@@ -139,17 +139,19 @@ Route::group([
     'prefix' => 'catalogo'
 
 ], function ($router) {
-    Route::post('/', [CatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::patch('/', [CatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+
     Route::get('/random', [CatalogoController::class, 'random']);
-    Route::delete('/{id}', [CatalogoController::class, 'destroy'])->middleware(['middleware' => 'no_inject']);
-    Route::get('/{id}', [CatalogoController::class, 'find'])->middleware(['middleware' => 'no_inject']);
+    Route::get('/list', [CatalogoController::class, 'list']);
     Route::post('/search/list', [CatalogoController::class, 'search'])->middleware(['middleware' => 'no_inject']);
     Route::post('/filter/list', [CatalogoController::class, 'filter'])->middleware(['middleware' => 'no_inject']);
     Route::patch('/cordenada', [CatalogoController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/regiao', [CatalogoController::class, 'alterarRegiao'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/active/{id}', [CatalogoController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/responsavel', [CatalogoController::class, 'alterarResponsavel'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::delete('/{id}', [CatalogoController::class, 'destroy'])->middleware(['middleware' => 'no_inject']);
+    Route::get('/{id}', [CatalogoController::class, 'find'])->middleware(['middleware' => 'no_inject']);
+    Route::post('/', [CatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/', [CatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: catalogos descrições
@@ -264,13 +266,15 @@ Route::group([
     'prefix' => 'user'
 ], function ($router) {
 
-    Route::get('/{id}', [UserController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
     Route::post('/filter/list', [UserController::class, 'search'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST', 'no_inject']);
     Route::put('/reset/password', [SecurityController::class, 'editPassword'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT']);
-    Route::patch('/', [UserController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
     Route::patch('/perfil/update', [UserController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT']);
     Route::patch('/status/update/{id}', [UserController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::get('/list', [UserController::class, 'list']);
+    Route::get('/{id}', [UserController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
     Route::delete('/{id}', [UserController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT']);
+    Route::patch('/', [UserController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+
 });
 
 

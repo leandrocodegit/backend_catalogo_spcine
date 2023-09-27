@@ -17,6 +17,7 @@ class Preco extends Model
         'maximo',
         'descontos',
         'tabela_descontos',
+        'tabela_precos',
         'catalogo_id'
     ];
 

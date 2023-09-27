@@ -21,6 +21,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class UserController extends Controller
 {
 
+    public function list(){
+        return User::all();
+    }
+
     public function store(Request $request)
     {
 

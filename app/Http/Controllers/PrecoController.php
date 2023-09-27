@@ -46,6 +46,7 @@ class PrecoController extends Controller
             'maximo' => $request->maximo,
             'descontos' =>  $request->descontos,
             'tabela_descontos' =>  $request->tabela_descontos,
+            'tabela_precos' =>  $request->tabela_precos,
             'descricao' =>  $request->descricao,
             'catalogo_id' => $request->catalogo_id,
         ]);

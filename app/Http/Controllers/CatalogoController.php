@@ -24,6 +24,10 @@ use Illuminate\Support\Facades\Log;
 
 class CatalogoController extends Controller
 {
+
+    public function list(){
+        return Catalogo::all();
+    }
     public function random(Request $request)
     {
         return Catalogo::with('administrador', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
