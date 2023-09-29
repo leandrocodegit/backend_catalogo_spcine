@@ -132,7 +132,7 @@ class UserController extends Controller
             'nome' => 'bail|required',
             'email' => 'bail|required',
             //    'documento' => 'bail|required',
-            'empresa' => 'bail|required',
+           // 'empresa' => 'bail|required',
             'telefone' => 'bail|required',
             'celular' => 'bail|required'
         ],
