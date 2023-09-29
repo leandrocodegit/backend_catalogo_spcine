@@ -82,7 +82,9 @@ class ImagemController extends Controller
             'catalogo_id' => $request->catalogo_id
         ]);
 
-       ImagemUtil::convert($imagemDB);
+      if($isPresentFile)
+          if($request->file->getClientOriginalExtension() != '.webp')
+                ImagemUtil::convert($imagemDB);
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
