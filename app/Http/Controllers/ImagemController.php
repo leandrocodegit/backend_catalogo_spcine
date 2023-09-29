@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\util\ImagemUtil;
-use App\Models\util\MapUtil;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Catalogo\Imagem;
 use App\Models\Catalogo\Catalogo;
-use Illuminate\Http\File;
-use App\Models\Enums\MessageResponse;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-
+use App\Models\Catalogo\Imagem;
+use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ImagemController extends Controller
 {
@@ -72,7 +68,7 @@ class ImagemController extends Controller
                 'principal' => false
             ]);
 
-      $imagemDB = Imagem::updateOrCreate(
+      Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'titulo' => $request->titulo == null ? "" : $request->titulo,
             'descricao' => $request->descricao == null ? "" : $request->descricao,
@@ -81,10 +77,6 @@ class ImagemController extends Controller
             'url' => $isPresentFile ?   $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagem->url : ''),
             'catalogo_id' => $request->catalogo_id
         ]);
-
-      if($isPresentFile)
-          if($request->file->getClientOriginalExtension() != 'web')
-                ImagemUtil::convert($imagemDB);
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
