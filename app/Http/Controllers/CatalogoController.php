@@ -48,12 +48,6 @@ class CatalogoController extends Controller
     {
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
-        return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
-            ->when($request->ordem !== null)
-            ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
-            ->where('id', 100)
-            ->paginate($request->limite);
-
         if ($request->nome == null || $request->nome == "all")
             return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
                 ->when($request->ordem !== null)
@@ -207,7 +201,8 @@ class CatalogoController extends Controller
         return response()->json(['message' => "Região alterado com sucesso!", 'status' => 200], 200);
 
     }
-      public function store(Request $request)
+
+    public function store(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
