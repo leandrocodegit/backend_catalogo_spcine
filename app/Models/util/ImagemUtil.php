@@ -12,7 +12,7 @@ class ImagemUtil
     {
     }
 
-    public static function convert ($imagem)
+    public static function convert($imagem)
 
     {
 
@@ -25,27 +25,21 @@ class ImagemUtil
         $originalImagePath = $imagemDB->catalogo_id . '/' . uniqid() . '.webp';
         $outputImagePath = 'imagens/' . $originalImagePath;
 
-        $output->write( '$outputImagePath = ' . 'imagens/' . $originalImagePath);
-        $output->write( '              ');
+        $output->write('$outputImagePath = ' . 'imagens/' . $originalImagePath);
+        $output->write('              ');
 
-        $output->write( '$imagemDB->url = ' . 'imagens/' . $imagemDB->url);
+        $output->write('$imagemDB->url = ' . 'imagens/' . $imagemDB->url);
 
-        sleep(5);
+       // sleep(2);
 
-        $image = imagecreatefromjpeg('storage/app/public/imagens' . $imagemDB->url);
-        if ($image !== false) {
-            if (Storage::disk('public')->exists('imagens/' .$imagem->url)) {
-                exec("cwebp $inputImagePath -o $outputImagePath");
-                Storage::disk('public')->delete($inputImagePath);
-                $imagemDB->update([
-                    'url' => $originalImagePath
-                ]);
-            } else {
-                echo "Failed to convert image to WebP format.";
-            }
-
+        if (Storage::disk('public')->exists('imagens/' . $imagem->url)) {
+            exec("cwebp $inputImagePath -o $outputImagePath");
+            Storage::disk('public')->delete($inputImagePath);
+            $imagemDB->update([
+                'url' => $originalImagePath
+            ]);
         } else {
-            echo "Failed to load the input image.";
+            echo "Failed to convert image to WebP format.";
         }
     }
 
