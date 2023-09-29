@@ -31,7 +31,7 @@ class ImagemUtil
         $output->write( '$imagemDB->url = ' . 'imagens/' . $imagemDB->url);
 
 
-        $image = imagecreatefromjpeg('imagens/' . $imagemDB->host);
+        $image = imagecreatefromjpeg('storage/app/public/imagens' . $imagemDB->url);
         if ($image !== false) {
             if (Storage::disk('public')->exists('imagens/' .$imagem->url)) {
                 exec("cwebp $inputImagePath -o $outputImagePath");
