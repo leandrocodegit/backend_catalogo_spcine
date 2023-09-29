@@ -84,11 +84,6 @@ class ImagemController extends Controller
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
 
-
-        if($isPresentFile)
-            ImagemUtil::convert($imagem);
-
-
         return response()->json([
             'message' => $mensagem,
             'status' => 200], 200);
