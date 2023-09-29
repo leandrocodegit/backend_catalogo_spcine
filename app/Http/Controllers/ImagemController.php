@@ -71,7 +71,7 @@ class ImagemController extends Controller
                 'principal' => false
             ]);
 
-        $imagem = Imagem::updateOrCreate(
+       Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'titulo' => $request->titulo == null ? "" : $request->titulo,
             'descricao' => $request->descricao == null ? "" : $request->descricao,
