@@ -15,7 +15,7 @@ class ImagemUtil
 
         $imagemDB = Imagem::firstWhere('id', $imagem->id);
 
-        $id = uniqid()
+        $id = uniqid();
         $inputImagePath = 'imagens/' . $imagemDB->url;
         $originalImagePath = $imagemDB->catalogo_id . '/' . $id . '.webp';
         $outputImagePath = 'imagens/' . $originalImagePath;
