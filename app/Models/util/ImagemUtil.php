@@ -20,6 +20,7 @@ class ImagemUtil
         $originalImagePath = $imagemDB->catalogo_id . '/' . $id . '.webp';
         $outputImagePath = 'imagens/' . $originalImagePath;
 
+        try {
             if (Storage::disk('public')->exists('imagens/' . $imagem->url)) {
                 exec("cwebp $inputImagePath -o $outputImagePath");
                 Storage::disk('public')->delete($inputImagePath);
@@ -27,7 +28,8 @@ class ImagemUtil
                     'url' => $originalImagePath
                 ]);
             }
-
+        } catch (\Exception $err) {
+        }
     }
 
 }
