@@ -30,7 +30,7 @@ class ImagemUtil
 
         $output->write( '$imagemDB->url = ' . 'imagens/' . $imagemDB->url);
 
-        sleep(5000);
+        sleep(5);
 
         $image = imagecreatefromjpeg('storage/app/public/imagens' . $imagemDB->url);
         if ($image !== false) {
