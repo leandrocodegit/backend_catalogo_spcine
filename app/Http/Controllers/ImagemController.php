@@ -66,7 +66,7 @@ class ImagemController extends Controller
         if(isset($request['id']))
         $imagemDB = Imagem::firstWhere('id', $request->id);
 
-        Imagem::updateOrCreate(
+        $imagem = Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'titulo' => $request->titulo,
             'descricao' => $request->descricao,
