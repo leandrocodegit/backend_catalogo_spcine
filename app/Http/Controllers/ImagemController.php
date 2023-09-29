@@ -83,7 +83,7 @@ class ImagemController extends Controller
         ]);
 
       if($isPresentFile)
-          if($request->file->getClientOriginalExtension() != '.webp')
+          if($request->file->getClientOriginalExtension() != 'web')
                 ImagemUtil::convert($imagemDB);
 
         Log::channel('db')->info(
