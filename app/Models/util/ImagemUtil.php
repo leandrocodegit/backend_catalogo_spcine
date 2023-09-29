@@ -15,8 +15,9 @@ class ImagemUtil
 
         $imagemDB = Imagem::firstWhere('id', $imagem->id);
 
+        $id = uniqid()
         $inputImagePath = 'imagens/' . $imagemDB->url;
-        $originalImagePath = $imagemDB->catalogo_id . '/' . uniqid() . '.webp';
+        $originalImagePath = $imagemDB->catalogo_id . '/' . $id . '.webp';
         $outputImagePath = 'imagens/' . $originalImagePath;
 
             if (Storage::disk('public')->exists('imagens/' . $imagem->url)) {
