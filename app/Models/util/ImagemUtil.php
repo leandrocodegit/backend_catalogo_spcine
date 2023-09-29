@@ -16,13 +16,22 @@ class ImagemUtil
 
     {
 
+        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+
+
         $imagemDB = Imagem::firstWhere('id', $imagem->id);
 
         $inputImagePath = 'imagens/' . $imagemDB->url;
         $originalImagePath = $imagemDB->catalogo_id . '/' . uniqid() . '.webp';
         $outputImagePath = 'imagens/' . $originalImagePath;
 
-        $image = imagecreatefromjpeg('imagens/' . $imagemDB->url);
+        $output->write( '$outputImagePath = ' . 'imagens/' . $originalImagePath);
+        $output->write( '              ');
+
+        $output->write( '$imagemDB->url = ' . 'imagens/' . $imagemDB->url);
+
+
+        $image = imagecreatefromjpeg('imagens/' . $imagemDB->host);
         if ($image !== false) {
             if (Storage::disk('public')->exists('imagens/' .$imagem->url)) {
                 exec("cwebp $inputImagePath -o $outputImagePath");
