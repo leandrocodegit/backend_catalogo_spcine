@@ -37,7 +37,8 @@ class TipoRegraController extends Controller
 
        $tipo = TipoRegra::updateOrCreate(
         [ 'id' => isset($request['id']) ? $request->id : null],[
-            'nome' => $request->nome
+            'nome' => $request->nome,
+            'destaque' => $request->destaque
         ]);
 
         return response()->json([

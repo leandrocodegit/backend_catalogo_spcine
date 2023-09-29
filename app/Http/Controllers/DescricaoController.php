@@ -12,12 +12,23 @@ class DescricaoController extends Controller
 
     public function store(Request $request)
     {
-      return  Descricao::updateOrCreate(
+
+        $mensagem = "Descrição criada com sucesso!";
+
+        if (isset($request['id']) && Descricao::where('id', $request->id)->exists())
+            $mensagem = "Descrição atualizada com sucesso!";
+
+      Descricao::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'titulo' => $request->titulo,
             'descricao' =>  $request->descricao,
+            'destaque' => $request->destaque,
             'catalogo_id' => $request->catalogo_id,
         ]);
+
+        return response()->json([
+            'message' => $mensagem,
+            'status' => 200], 200);
     }
 
     public function destaque($id)

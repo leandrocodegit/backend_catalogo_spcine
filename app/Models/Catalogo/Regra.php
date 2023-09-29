@@ -18,7 +18,6 @@ class Regra extends Model
     ];
 
     protected $hidden = [
-        'tipo_id',
         'pivot'
     ];
 

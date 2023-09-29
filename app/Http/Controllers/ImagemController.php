@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\util\ImagemUtil;
 use App\Models\util\MapUtil;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Catalogo\Imagem;
@@ -55,8 +56,8 @@ class ImagemController extends Controller
             $ordem = $imagem->ordem + 1;
 
             if ($isPresentFile) {
-                if (Storage::disk('public')->exists($imagem->url))
-                    Storage::disk('public')->delete($imagem->url);
+                if (Storage::disk('public')->exists('imagens/' .$imagem->url))
+                    Storage::disk('public')->delete('imagens/' .$imagem->url);
             }
         }
 
@@ -71,12 +72,17 @@ class ImagemController extends Controller
             'descricao' => $request->descricao,
             'ordem' => $ordem,
             'principal' => false,
-            'url' => $isPresentFile ? '/imagens/' . $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagem->url : ''),
+            'url' => $isPresentFile ?   $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagem->url : ''),
             'catalogo_id' => $request->catalogo_id
         ]);
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
+
+
+        if($isPresentFile)
+            ImagemUtil::convert($imagem);
+
 
         return response()->json([
             'message' => $mensagem,

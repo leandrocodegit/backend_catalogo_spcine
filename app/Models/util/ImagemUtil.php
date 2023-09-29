@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models\util;
+
+use App\Models\Catalogo\Imagem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\MessageBag;
+
+class ImagemUtil
+{
+
+    public function __construct()
+    {
+    }
+
+    public static function convert ($imagem)
+
+    {
+
+        $imagemDB = Imagem::firstWhere('id', $imagem->id);
+
+        $inputImagePath = 'imagens/' . $imagemDB->url;
+        $originalImagePath = $imagemDB->catalogo_id . '/' . uniqid() . '.webp';
+        $outputImagePath = 'imagens/' . $originalImagePath;
+
+        $image = imagecreatefromjpeg('imagens/' . $imagemDB->url);
+        if ($image !== false) {
+            if (Storage::disk('public')->exists('imagens/' .$imagem->url)) {
+                exec("cwebp $inputImagePath -o $outputImagePath");
+                Storage::disk('public')->delete($inputImagePath);
+                $imagemDB->update([
+                    'url' => $originalImagePath
+                ]);
+            } else {
+                echo "Failed to convert image to WebP format.";
+            }
+
+        } else {
+            echo "Failed to load the input image.";
+        }
+    }
+
+}
