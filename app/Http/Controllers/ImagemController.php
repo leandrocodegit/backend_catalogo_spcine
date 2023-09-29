@@ -42,6 +42,11 @@ class ImagemController extends Controller
         if ($isPresentFile)
             $request->file->store('imagens/' . $request->catalogo_id, 'public');
 
+        $imagemDB = null;
+
+        if(isset($request['id']))
+            $imagemDB = Imagem::firstWhere('id', $request->id);
+
         $imagem = Imagem::where('catalogo_id', $request->catalogo_id)
             ->orderByRaw('ordem desc')
             ->get()
@@ -55,21 +60,19 @@ class ImagemController extends Controller
         if ($imagem !== null) {
             $ordem = $imagem->ordem + 1;
 
-            if ($isPresentFile) {
-                if (Storage::disk('public')->exists('imagens/' .$imagem->url))
-                    Storage::disk('public')->delete('imagens/' .$imagem->url);
+            if ($isPresentFile && $imagemDB != null) {
+                if (Storage::disk('public')->exists('imagens/' .$imagemDB->url))
+                    Storage::disk('public')->delete('imagens/' .$imagemDB->url);
             }
         }
 
-        $imagemDB = null;
 
-        if(isset($request['id']))
-        $imagemDB = Imagem::firstWhere('id', $request->id);
+        if($request->principal)
+            Imagem::where('catalogo_id', $request->catalogo_id)->update([
+                'principal' => false
+            ]);
 
-
-
-
-       Imagem::updateOrCreate(
+      $imagemDB = Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'titulo' => $request->titulo == null ? "" : $request->titulo,
             'descricao' => $request->descricao == null ? "" : $request->descricao,
@@ -78,6 +81,8 @@ class ImagemController extends Controller
             'url' => $isPresentFile ?   $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagem->url : ''),
             'catalogo_id' => $request->catalogo_id
         ]);
+
+       ImagemUtil::convert($imagemDB);
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
