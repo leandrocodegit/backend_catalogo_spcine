@@ -66,12 +66,17 @@ class ImagemController extends Controller
         if(isset($request['id']))
         $imagemDB = Imagem::firstWhere('id', $request->id);
 
+        if($request->principal)
+            Imagem::where('catalogo_id', $request->catalogo_id)->update([
+                'principal' => false
+            ]);
+
         $imagem = Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
-            'titulo' => $request->titulo,
-            'descricao' => $request->descricao,
+            'titulo' => $request->titulo == null ? "" : $request->titulo,
+            'descricao' => $request->descricao == null ? "" : $request->descricao,
             'ordem' => $ordem,
-            'principal' => false,
+            'principal' => $request->principal,
             'url' => $isPresentFile ?   $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagem->url : ''),
             'catalogo_id' => $request->catalogo_id
         ]);
