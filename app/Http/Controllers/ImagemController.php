@@ -66,10 +66,8 @@ class ImagemController extends Controller
         if(isset($request['id']))
         $imagemDB = Imagem::firstWhere('id', $request->id);
 
-        if($request->principal)
-            Imagem::where('catalogo_id', $request->catalogo_id)->update([
-                'principal' => false
-            ]);
+
+
 
        Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
