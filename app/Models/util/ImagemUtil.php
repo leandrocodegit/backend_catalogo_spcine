@@ -3,9 +3,7 @@
 namespace App\Models\util;
 
 use App\Models\Catalogo\Imagem;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\MessageBag;
 
 class ImagemUtil
 {
