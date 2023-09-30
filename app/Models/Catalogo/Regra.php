@@ -26,7 +26,7 @@ class Regra extends Model
 
     public function getHostAttribute()
     {
-        return ENV('APP_URL_REGRAS'). $this->imagem;
+        return 'storage/regras/'. $this->imagem;
     }
 
     public function getTipoAttribute()
