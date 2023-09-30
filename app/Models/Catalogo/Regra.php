@@ -18,10 +18,16 @@ class Regra extends Model
     ];
 
     protected $hidden = [
+        'imagem',
         'pivot'
     ];
 
-    protected $appends = array('count', 'tipo', 'text');
+    protected $appends = array('host', 'count', 'tipo', 'text');
+
+    public function getHostAttribute()
+    {
+        return ENV('APP_URL_REGRAS'). $this->imagem;
+    }
 
     public function getTipoAttribute()
     {

@@ -44,8 +44,8 @@ class RegraController extends Controller
                 $regraDB = $this->show($request->id);
 
             if ($isPresentFile) {
-                if (Storage::disk('public')->exists($regraDB->imagem))
-                    Storage::disk('public')->delete($regraDB->imagem);
+                if (Storage::disk('public')->exists(ENV('APP_URL_REGRAS').$regraDB->imagem))
+                    Storage::disk('public')->delete(ENV('APP_URL_REGRAS').$regraDB->imagem);
             }
 
             $mensagem = "Regra atualizada com sucesso!";
@@ -53,13 +53,13 @@ class RegraController extends Controller
             Regra::updateOrCreate(
                 ['id' => isset($request['id']) ? $request->id : null], [
                 'descricao' => isset($request['descricao']) ? $request->descricao : $regraDB->descricao,
-                'imagem' => $isPresentFile ? 'storage/regras/' . $request->file->hashName() : $regraDB->imagem,
+                'imagem' => $isPresentFile ?   $request->file->hashName() : $regraDB->imagem,
                 'tipo_id' => $request->tipo_id
             ]);
         } else {
             Regra::create([
                 'descricao' => $request->descricao,
-                'imagem' => $isPresentFile ? 'storage/regras/' . $request->file->hashName() : "",
+                'imagem' => $isPresentFile ? $request->file->hashName() : "",
                  'tipo_id' => $request->tipo_id
             ]);
         }
