@@ -98,7 +98,8 @@ class UserControllerTest  extends FactoryAuthConfig
             "documento" => "9845213154",
             "email" => "fake@gmail.com",
             "empresa" => "Spcine",
-            "telefone" => "11987782635"
+            "telefone" => "11987782635",
+            "celular" => "11987782635"
         ]);
 
         $response->assertStatus(200);

@@ -295,77 +295,78 @@ class CatalogoController extends Controller
                 'administrador_id' => $request->input('administrador.id')
             ]);
 
-        $catalogo = $this->find($request->id);
+//        $catalogo = $this->find($request->id);
 
-        if ($request->cordenadas !== null) {
-            try {
-                $cordenadas = Cordenada::updateOrCreate(
-                    ['id' => isset($request->cordenadas['id']) ? $request->cordenadas['id'] : null],
-                    [
-                        'latitude' => $request->cordenadas['latitude'],
-                        'longitude' => $request->cordenadas['longitude']
-                    ]);
-                $catalogo->cordenadas()->associate($cordenadas->id);
-            } catch (Exception $e) {
-            }
-        }
+//        if ($request->cordenadas !== null) {
+//            try {
+//                $cordenadas = Cordenada::updateOrCreate(
+//                    ['id' => isset($request->cordenadas['id']) ? $request->cordenadas['id'] : null],
+//                    [
+//                        'latitude' => $request->cordenadas['latitude'],
+//                        'longitude' => $request->cordenadas['longitude']
+//                    ]);
+//                $catalogo->cordenadas()->associate($cordenadas->id);
+//            } catch (Exception $e) {
+//            }
+//        }
 
-        if ($request->descricoes !== null) {
-            try {
-                foreach ($request->descricoes as $descricao) {
-                    Descricao::updateOrCreate(
-                        ['id' => isset($descricao['id']) ? $descricao['id'] : null],
-                        [
-                            'titulo' => $descricao['titulo'],
-                            'descricao' => $descricao['descricao'],
-                            'catalogo_id' => $catalogo->id,
-                        ]);
-                }
-            } catch (Exception $e) {
-            }
-        }
+//        if ($request->descricoes !== null) {
+//            try {
+//                foreach ($request->descricoes as $descricao) {
+//                    Descricao::updateOrCreate(
+//                        ['id' => isset($descricao['id']) ? $descricao['id'] : null],
+//                        [
+//                            'titulo' => $descricao['titulo'],
+//                            'descricao' => $descricao['descricao'],
+//                            'catalogo_id' => $catalogo->id,
+//                        ]);
+//                }
+//            } catch (Exception $e) {
+//            }
+//        }
 
-        if ($request->precos !== null) {
-            try {
-                foreach ($request->precos as $preco) {
-                    Preco::updateOrCreate(
-                        ['id' => isset($preco['id']) ? $preco['id'] : null],
-                        [
-                            'minimo' => $preco->minimo,
-                            'maximo' => $preco->maximo,
-                            'descontos' => $preco->descontos,
-                            'tabela_descontos' => $preco->tabela_descontos,
-                            'descricao' => $preco->descricao,
-                            'catalogo_id' => $preco->catalogo_id,
-                        ]);
-                }
-            } catch (Exception $e) {
-            }
-        }
+//        if ($request->precos !== null) {
+//            try {
+//                foreach ($request->precos as $preco) {
+//                    Preco::updateOrCreate(
+//                        ['id' => isset($preco['id']) ? $preco['id'] : null],
+//                        [
+//                            'minimo' => $preco->minimo,
+//                            'maximo' => $preco->maximo,
+//                            'descontos' => $preco->descontos,
+//                            'tabela_descontos' => $preco->tabela_descontos,
+//                            'tabela_precos' => $preco->tabela_precos,
+//                            'descricao' => $preco->descricao,
+//                            'catalogo_id' => $preco->catalogo_id,
+//                        ]);
+//                }
+//            } catch (Exception $e) {
+//            }
+//        }
 
-        if ($request->caracteristicas !== null) {
-            try {
-                $catalogo->caracteristicas()->detach();
-                $catalogo->caracteristicas()->attach(
-                    collect($request->caracteristicas)
-                        ->map(function ($value, $key) {
-                            return $value['id'];
-                        }));
-            } catch (Exception $e) {
-            }
-        }
+//        if ($request->caracteristicas !== null) {
+//            try {
+//                $catalogo->caracteristicas()->detach();
+//                $catalogo->caracteristicas()->attach(
+//                    collect($request->caracteristicas)
+//                        ->map(function ($value, $key) {
+//                            return $value['id'];
+//                        }));
+//            } catch (Exception $e) {
+//            }
+//        }
 
-        if ($request->regras !== null) {
-            try {
-                $catalogo->regras()->detach();
-                $catalogo->regras()->attach(
-                    collect($request->regras)
-                        ->map(function ($value, $key) {
-                            return $value['id'];
-                        }));
-            } catch (Exception $e) {
-            }
-        }
+//        if ($request->regras !== null) {
+//            try {
+//                $catalogo->regras()->detach();
+//                $catalogo->regras()->attach(
+//                    collect($request->regras)
+//                        ->map(function ($value, $key) {
+//                            return $value['id'];
+//                        }));
+//            } catch (Exception $e) {
+//            }
+//        }
 
         Log::channel('db')->info(
             'Editado imagem ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);

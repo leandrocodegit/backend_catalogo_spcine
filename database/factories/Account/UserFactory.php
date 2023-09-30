@@ -20,11 +20,12 @@ class UserFactory extends Factory
             'documento' => env('CPF_FAKE'),
             'email' => env('EMAIL_FAKE'),
             'telefone' => env('TELEFONE_FAKE'),
-            'email_verificado' => env('EMAIL_VERIFICADO_FAKE'),
+            'celular' => env('TELEFONE_FAKE'),
+            'email_verificado' => true,
             'empresa' => env('EMPRESA_FAKE'),
             'password' => '$2y$10$T395KFqulQVhixaqh7izn.xaBK0cg3In9qt9JvrAppbXloUosr0dG',
-            'active' => env('ACTIVE_FAKE'),
-            'perfil_id' => env('PERFIL_FAKE'),
+            'active' => false,
+            'perfil_id' => 1000,
         ];
     }
 

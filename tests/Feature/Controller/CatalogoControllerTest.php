@@ -29,6 +29,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "nome" => "Leandro",
                 "like" => "Praça da sé",
                 "like_langue" => "Praça da sé",
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "endereco" => "endereco fake",
                 "descricao" => [
                     "titulo" => "titulo fake",
@@ -52,6 +54,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "like_langue" => "Praça da sé",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "descricao" => [
                     "titulo" => "titulo fake",
                     "descricao" => "Descricao fake"
@@ -74,6 +78,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "like_langue" => "Praça da sé",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "cordenadas" => [
                     "latitude" => "-23.731546855968322",
                     "longitude" => "-46.60115020353316"
@@ -100,13 +106,7 @@ class CatalogoControllerTest extends FactoryConfig
                 "like_langue" => "Praça da sé",
                 "home" => true,
                 "active" => true,
-                "cordenadas" => [
-                    "latitude" => "-23.731546855968322",
-                    "longitude" => "-46.60115020353316"
-                ],
-                "descricao" => [
-                    "descricao" => "Descricao fake"
-                ]
+
             ]);
 
         $response->assertStatus(400);
@@ -125,13 +125,9 @@ class CatalogoControllerTest extends FactoryConfig
                 "like_langue" => "Praça da sé",
                 "home" => true,
                 "active" => true,
-                "cordenadas" => [
-                    "latitude" => "-23.731546855968322",
-                    "longitude" => "-46.60115020353316"
-                ],
-                "descricao" => [
-                    "descricao" => "Descricao fake"
-                ]
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
+
             ]);
 
         $response->assertStatus(400);
@@ -150,6 +146,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "like_langue" => "Praça da sé",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "cordenadas" => [
                     "latitude" => "-23.731546855968322",
                     "longitude" => "-46.60115020353316"
@@ -171,6 +169,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "like" => "Praça da sé",
                 "like_langue" => "Praça da sé",
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "cordenadas" => [
                     "latitude" => "-23.731546855968322",
                     "longitude" => "-46.60115020353316"
@@ -196,6 +196,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "like" => "Praça da sé",
                 "like_langue" => "Praça da sé",
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "cordenadas" => [
                     "latitude" => "-23.731546855968322",
                     "longitude" => "-46.60115020353316"
@@ -223,6 +225,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "cordenadas" => [
                     "id" => 1,
                     "latitude" => "-23.731546855968322",
@@ -246,7 +250,9 @@ class CatalogoControllerTest extends FactoryConfig
                 "like_langue" => "Praça da sé",
                 "endereco" => "endereco fake",
                 "home" => true,
-                "active" => true
+                "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
             ]);
 
         $response->assertStatus(200);
@@ -266,6 +272,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "descricoes" => [
                     [
                         "titulo" => "titulo fake",
@@ -290,6 +298,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "descricoes" => [
                     [
                     ]]
@@ -313,6 +323,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "caracteristicas" => [
                     [
                         "id" => 1
@@ -337,6 +349,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "regiao" => [
                     "id" => 1
                 ]
@@ -359,6 +373,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "regras" => [
                     [
                         "id" => 1
@@ -383,6 +399,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "precos" => [
                     [
                         "id" => 1,
@@ -409,6 +427,8 @@ class CatalogoControllerTest extends FactoryConfig
                 "endereco" => "endereco fake",
                 "home" => true,
                 "active" => true,
+                "hora_inicial" => "2023-09-04 12:01:24",
+                "hora_final" => "2023-09-04 12:01:24",
                 "precos" => [
                     [
                         "id" => 1

@@ -35,7 +35,7 @@ class AdministradorControllerTest extends FactoryConfig
             'Authorization' =>  $this->token,
         ])->post('/api/administrador',
             [
-                'nome' => 'regiao test'
+                'nome' => 'adminstrador test'
             ]);
 
         $response->assertStatus(200);
@@ -45,7 +45,7 @@ class AdministradorControllerTest extends FactoryConfig
     {
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->get('/api/administrador/' .$this->regiao->id);
+        ])->get('/api/administrador/' .$this->administrador->id);
 
         $response->assertStatus(200);
     }
@@ -54,7 +54,7 @@ class AdministradorControllerTest extends FactoryConfig
     {
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->get('/api/regiao/2');
+        ])->get('/api/adminstrador/2');
 
         $response->assertStatus(404);
     }
@@ -65,7 +65,7 @@ class AdministradorControllerTest extends FactoryConfig
             'Authorization' =>  $this->token,
         ])->post('/api/administrador',
             [
-                'id' => $this->regiao->id,
+                'id' => $this->administrador->id,
                 'nome' => 'response'
             ]);
 
@@ -73,7 +73,7 @@ class AdministradorControllerTest extends FactoryConfig
 
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->get('/api/administrador/' .$this->regiao->id);
+        ])->get('/api/administrador/' .$this->administrador->id);
 
         $response->assertStatus(200);
         $response->assertJsonPath("nome", "response");
@@ -83,7 +83,7 @@ class AdministradorControllerTest extends FactoryConfig
     {
         $response = $this->withHeaders([
             'Authorization' =>  $this->token,
-        ])->delete('/api/administrador/' .$this->regiao->id);
+        ])->delete('/api/administrador/' .$this->administrador->id);
 
         $response->assertStatus(404);
     }
