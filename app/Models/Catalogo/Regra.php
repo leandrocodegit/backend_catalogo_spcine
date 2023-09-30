@@ -21,12 +21,7 @@ class Regra extends Model
         'pivot'
     ];
 
-    protected $appends = array('host', 'count', 'tipo', 'text');
-
-    public function getHostAttribute()
-    {
-        return env('URL_FILE'). $this->imagem;
-    }
+    protected $appends = array('count', 'tipo', 'text');
 
     public function getTipoAttribute()
     {

@@ -53,13 +53,13 @@ class RegraController extends Controller
             Regra::updateOrCreate(
                 ['id' => isset($request['id']) ? $request->id : null], [
                 'descricao' => isset($request['descricao']) ? $request->descricao : $regraDB->descricao,
-                'imagem' => $isPresentFile ? '/regras/' . $request->file->hashName() : $regraDB->imagem,
+                'imagem' => $isPresentFile ? 'storage/regras/' . $request->file->hashName() : $regraDB->imagem,
                 'tipo_id' => $request->tipo_id
             ]);
         } else {
             Regra::create([
                 'descricao' => $request->descricao,
-                'imagem' => $isPresentFile ? '/regras/' . $request->file->hashName() : "",
+                'imagem' => $isPresentFile ? 'storage/regras/' . $request->file->hashName() : "",
                  'tipo_id' => $request->tipo_id
             ]);
         }
