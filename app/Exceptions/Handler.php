@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (QueryException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'errors' => array('Falha na requisição!'),
+                    'errors' => array('Falha na requisição!', $e->errorInfo),
                     'codigo' => $e->getCode()
                 ], 404);
             }

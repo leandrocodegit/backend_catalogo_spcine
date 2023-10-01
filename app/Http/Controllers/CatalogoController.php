@@ -233,7 +233,7 @@ class CatalogoController extends Controller
             'hora_inicial' => $request->hora_inicial,
             'hora_final' => $request->hora_final,
             'home' => $request->home !== null ? $request->home : false,
-            'active' => $request->active !== null ? $request->active : false,
+            'active' => false,
             'cordenadas_id' => $cordenadas !== null ? $cordenadas->id : null,
             'categoria_id' => $request->categoria !== null ? $request->input('categoria.id') : 1,
             'regiao_id' => $request->regiao !== null ? $request->input('regiao.id') : null,
@@ -251,12 +251,22 @@ class CatalogoController extends Controller
             'catalogo_id' => $catalogo->id
         ]);
 
+        $descricao = Preco::create([
+            'descricao' => '',
+            'descontos' => false,
+            'minimo' => 0,
+            'maximo' => 0,
+            'catalogo_id' => $catalogo->id
+        ]);
+
         $catalogo->update([
             'like' => $catalogo->nome . ' ' .
                 $catalogo->endereco . ' ' .
                 MapUtil::merge(collect([$descricao]), 'titulo', 'descricao') . ' ' .
                 $catalogo->nome
         ]);
+
+
 
         Log::channel('db')->info(
             'Criado catalogo ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);

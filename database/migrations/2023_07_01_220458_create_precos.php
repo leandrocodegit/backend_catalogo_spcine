@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('precos', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
-            $table->boolean('descontos')->default(false);
+            $table->boolean('descontos')->nullable()->default(false);
             $table->float('minimo', 10, 2);
             $table->float('maximo', 10, 2);
             $table->string('tabela_descontos')->nullable();
