@@ -252,7 +252,7 @@ class CatalogoController extends Controller
         ]);
 
         $descricao = Preco::create([
-            'descricao' => '',
+            'descricao' => 'Valores',
             'descontos' => false,
             'minimo' => 0,
             'maximo' => 0,

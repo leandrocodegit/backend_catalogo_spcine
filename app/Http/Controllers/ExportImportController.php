@@ -6,6 +6,7 @@ use App\Imports\ImportCaracteristicas;
 use App\Imports\ImportDescricao;
 use App\Imports\ImportImagens;
 use App\Imports\ImportPrecos;
+use App\Imports\ImportResponsavel;
 use Illuminate\Http\Request;
 use App\Exports\ExportCatalogos;
 use Maatwebsite\Excel\Facades\Excel;
@@ -63,5 +64,12 @@ public function importUsers(Request $request)
         Log::channel('db')->info(
             'Importando caracteristicas com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
         Excel::import(new ImportCaracteristicas(), $request->file('file'));
+    }
+
+    public function importUsuarios(Request $request)
+    {
+        Log::channel('db')->info(
+            'Importando usuarios com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
+        Excel::import(new ImportResponsavel(), $request->file('file'));
     }
 }

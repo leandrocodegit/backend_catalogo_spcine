@@ -118,6 +118,8 @@ Route::group([
     Route::post('/import/descricao', [ExportImportController::class, 'importDescricoes']);
     Route::post('/import/precos', [ExportImportController::class, 'importPrecos']);
     Route::post('/import/caracteristicas', [ExportImportController::class, 'importCaracteristicas']);
+    Route::post('/import/responsavel', [ExportImportController::class, 'importUsuarios']);
+
 });
 
 //Route:: Imagens upload
