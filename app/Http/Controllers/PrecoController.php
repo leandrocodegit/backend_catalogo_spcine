@@ -58,8 +58,23 @@ class PrecoController extends Controller
 
     public function destroy($id)
     {
-        if (Preco::where('id', $id)->exists())
-            Preco::firstWhere('id', $id)->delete();
+        if (Preco::where('id', $id)->exists()){
+           $preco = Preco::firstWhere('id', $id);
+
+           $countCatalogos = Preco::where('catalogo_id', $preco->catalogo_id)->count();
+           if($countCatalogos < 2){
+               return response()->json([
+                   'message' => "Não é possivel remover todos os preços do catalogo!",
+                   'status' => 422], 422);
+           }
+           else{
+               $preco->delete();
+               return response()->json([
+                   'message' => 'Preço removido com sucesso!',
+                   'status' => 200], 200);
+           }
+        }
+
     }
 
 
