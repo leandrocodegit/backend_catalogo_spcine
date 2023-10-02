@@ -49,13 +49,36 @@ class CatalogoController extends Controller
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
         if ($request->nome == null || $request->nome == "all")
-            return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'regras', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+            return Catalogo::with(
+                'caracteristicas',
+                'cordenadas',
+                'responsavel',
+                'regras',
+                'administrador',
+                'imagens',
+                'descricoes',
+                'regiao',
+                'icon',
+                'categoria',
+                'precos',
+                'regras')
                 ->when($request->ordem !== null)
                 ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
                 ->paginate($request->limite);
 
         if ($validNome) {
-            $catalogoID = Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+            $catalogoID = Catalogo::with(
+                'caracteristicas',
+                'cordenadas',
+                'responsavel',
+                'administrador',
+                'imagens',
+                'descricoes',
+                'regiao',
+                'icon',
+                'categoria',
+                'precos',
+                'regras')
                 ->when($validNome)
                 ->where('id', $request->nome)
                 ->paginate($request->limite);
@@ -64,7 +87,18 @@ class CatalogoController extends Controller
                 return $catalogoID;
         }
 
-        return Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+        return Catalogo::with(
+            'caracteristicas',
+            'cordenadas',
+            'responsavel',
+            'administrador',
+            'imagens',
+            'descricoes',
+            'regiao',
+            'icon',
+            'categoria',
+            'precos',
+            'regras')
             ->when($validNome)
             ->where('like', 'LIKE', '%' . $request->nome . '%')
             ->orWhere('like_langue', 'LIKE', '%' . $request->nome . '%')
@@ -99,7 +133,18 @@ class CatalogoController extends Controller
         }
 
         if ($validNome) {
-          $catalogoID = Catalogo::with('caracteristicas', 'cordenadas', 'responsavel', 'administrador', 'imagens', 'descricoes', 'regiao', 'icon', 'categoria', 'precos')
+          $catalogoID = Catalogo::with(
+              'caracteristicas',
+              'cordenadas',
+              'responsavel',
+              'administrador',
+              'imagens',
+              'descricoes',
+              'regiao',
+              'icon',
+              'categoria',
+              'precos',
+              'regras')
                 ->when($validNome)
                 ->where('id', $request->nome)
                 ->paginate($request->limite);
@@ -170,7 +215,18 @@ class CatalogoController extends Controller
 
     public function find($id)
     {
-        return Catalogo::with('responsavel', 'categoria', 'administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'icon', 'regiao', 'regras')
+        return Catalogo::with(
+            'responsavel',
+            'categoria',
+            'administrador',
+            'descricoes',
+            'cordenadas',
+            'caracteristicas',
+            'precos',
+            'imagens',
+            'icon',
+            'regiao',
+            'regras')
             ->findOrFail($id);
     }
 
