@@ -44,7 +44,7 @@ class Regra extends Model
 
     public function getTextAttribute()
     {
-        $svgContent = \Illuminate\Support\Facades\Storage::disk('public')->get($this->imagem);
+        $svgContent = \Illuminate\Support\Facades\Storage::disk('public')->get('regras/'.$this->imagem);
         return response($svgContent, 200)->header('Content-Type', 'text')->original;
     }
 
