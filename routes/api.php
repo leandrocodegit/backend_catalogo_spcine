@@ -106,6 +106,7 @@ Route::group([
 ], function ($router) {
     Route::get('/export/catalogo', [ExportImportController::class, 'catalogosXLS']);
 });
+
 Route::group([
     'middleware' => 'JWT:ROOT',
     'prefix' => 'data',
@@ -192,9 +193,8 @@ Route::group([
 
 //Route:: Perfils
 Route::group([
-    'middleware' => 'JWT:ROOT',
+    'middleware' => 'JWT:ROOT,ADMIN',
     'prefix' => 'perfil',
-    'roles' => ['ROOT', 'ADMIN']
 
 ], function ($router) {
     Route::get('/', [PerfilController::class, 'list']);
@@ -213,9 +213,7 @@ Route::group([
 
 //Route:: categorias de caracteristicas
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
-        'prefix' => 'caracteristica/categoria',
-    'roles' => ['ROOT', 'ADMIN']
+        'prefix' => 'caracteristica/categoria'
 
 ], function ($router) {
     Route::get('/list', [CategoriaCaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);

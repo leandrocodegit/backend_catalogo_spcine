@@ -26,9 +26,9 @@ class JWTValidade extends BaseMiddleware
             foreach ($roles as $role)
                 if($user->perfil->role == $role)
                     $isValidRole = true;
-            
+
             if($isValidRole == false)
-                return $this->unauthorized('Usuário sem permissão!');
+                return $this->unauthorized('Usuário sem permissões!');
 
             } catch (TokenExpiredException $e) {
                 return $this->unauthorized('Token expirado!');
