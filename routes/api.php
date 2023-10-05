@@ -228,7 +228,7 @@ Route::group([
 Route::group([
     'prefix' => 'catalogo/categoria'
 ], function ($router) {
-    Route::get('/list', [CategoriaCatalogoController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/list', [CategoriaCatalogoController::class, 'list']);
     Route::get('/{id}', [CategoriaCatalogoController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [CategoriaCatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/', [CategoriaCatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);

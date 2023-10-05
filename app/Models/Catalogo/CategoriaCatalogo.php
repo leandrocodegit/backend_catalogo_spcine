@@ -15,14 +15,24 @@ class CategoriaCatalogo extends Model
         'nome'
     ];
 
-    protected $appends = array('count');
+    protected $appends = array('count', 'capaCatalogo');
 
     public function getCountAttribute()
     {
         return $this->catalogos()->count();
     }
 
+    public function getCapaCatalogoAttribute()
+    {
+        $catalogo = $this->capaCatalogo();
+        return $catalogo->capa;
+    }
+
     public function catalogos(){
         return $this->hasMany(Catalogo::class, 'categoria_id');
+    }
+
+    public function capaCatalogo(){
+        return $this->hasMany(Catalogo::class, 'categoria_id')->with('capa')->first();
     }
 }

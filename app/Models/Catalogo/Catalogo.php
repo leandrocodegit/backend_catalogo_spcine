@@ -43,20 +43,12 @@ class Catalogo extends Model
 
     protected $table = "catalogos";
 
-    protected $appends = array('countx');
-
-
-    public function getCountxAttribute()
-    {
-        $id = [1,2];
-        return Catalogo::with('caracteristicas')->whereHas('caracteristicas', function ($query) use ($id) {
-            $query->whereIn('id', [4,8]);
-        })->count();
-    }
-
-
     public function imagens(){
         return $this->hasMany(Imagem::class)->orderByRaw('ordem and principal desc');
+    }
+
+    public function capa(){
+        return $this->hasMany(Imagem::class)->orderByRaw('ordem and principal desc')->limit(1);
     }
 
     public function regras(){
