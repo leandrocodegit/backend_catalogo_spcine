@@ -40,6 +40,9 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['count'];
+
+
     use Notifiable;
 
     public function getJWTIdentifier()
@@ -47,6 +50,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
+    public function getCountAttribute()
+    {
+        return $this->catalogos()->count();
+    }
     public function getJWTCustomClaims()
     {
         return [
@@ -61,7 +68,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function catalogos(){
-        return $this->belongsToMany(Catalogo::class);
+        return $this->hasMany(Catalogo::class);
     }
 
 }

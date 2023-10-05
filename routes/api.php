@@ -52,7 +52,7 @@ Route::group([
     Route::get('/find/list', [IconController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [IconController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::post('/update', [IconController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::post('/associar', [IconController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('/associar', [IconController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
     Route::delete('/{id}', [IconController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
@@ -84,7 +84,7 @@ Route::group([
     Route::get('/find/list', [RegraController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [RegraController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [RegraController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::post('/associar', [RegraController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('/associar', [RegraController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
 
 });
 
@@ -95,7 +95,7 @@ Route::group([
     Route::get('/{id}', [CaracteristicaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::get('/find/list', [CaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [CaracteristicaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::post('/associar', [CaracteristicaController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('/associar', [CaracteristicaController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
      Route::delete('/{id}', [CaracteristicaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
@@ -125,7 +125,7 @@ Route::group([
 
 //Route:: Imagens upload
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN,GUEST',
+    'middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER',
     'prefix' => 'imagem',
     'roles' => ['ROOT', 'ADMIN']
 
@@ -160,7 +160,7 @@ Route::group([
 
 //Route:: catalogos descrições
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN,GUEST',
+    'middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER',
     'prefix' => 'catalogo/descricao',
     'roles' => ['ROOT', 'ADMIN']
 
@@ -172,7 +172,7 @@ Route::group([
 
 //Route:: catalogos preços
 Route::group([
-    'middleware' => 'JWT:ROOT,ADMIN',
+    'middleware' => 'JWT:ROOT,ADMIN,MANAGER',
     'prefix' => 'catalogo/preco',
     'roles' => ['ROOT', 'ADMIN']
 
