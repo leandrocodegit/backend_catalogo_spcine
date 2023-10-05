@@ -5,7 +5,7 @@
  .button {
   background-color: #a53684;
   border: none;
-  color: #ffffff!important; 
+  color: #ffffff!important;
   padding: 4px 32px;
   text-align: center;
   text-decoration: none;
@@ -24,16 +24,16 @@ h4{
   color: orange;
 }
 
-a:hover{ 
-  background: #824ba1!important; 
+a:hover{
+  background: #824ba1!important;
 }
- 
+
 </style>
 </head>
-<body> 
-<img src="{{$message->embed(env('APP_URL').'/imagens/logo.png')}}"> 
-<h4>{{$emailSubject->mensagem}}</h4> 
-<a href="{{$emailSubject->link}}" class="button">{{$emailSubject->nameBottom}}</a> 
+<body>
+{{--<img src="{{$message->embed(env('APP_URL').'assets/imagens/logo-md.png')}}">--}}
+<h4>{{$emailSubject->mensagem}}</h4>
+<a href="{{$emailSubject->link}}" class="button">{{$emailSubject->nameBottom}}</a>
 <p id="alert">Este email não recebe mensagens!</p>
 </body>
 </html>

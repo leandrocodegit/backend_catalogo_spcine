@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (InvalidArgumentException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'errors' => array('Formato inválido!')
+                    'errors' => array('Formato inválido!', $e->getMessage())
                 ], 404);
             }
         });

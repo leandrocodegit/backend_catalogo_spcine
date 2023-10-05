@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotificacaoEmail;
 use App\Models\util\MapUtil;
+use Carbon\Traits\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Account\User;
 use App\Models\Account\TokenAccess;
 use App\Jobs\EnviarEmail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Nette\Utils\DateTime;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -187,5 +191,51 @@ class SecurityController extends Controller
             'Ativação de usuario não concluida ' . $id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
 
         return 'Link expirou ou é inválido!';
+    }
+
+    public function gerarToken(Request $request){
+
+        $this->deleteToken($request->user_id);
+
+        $tokenAcess = TokenAccess:: create([
+            'user_id' => $request->user_id,
+            'tipo' => 'TOKEN',
+            'token' => Str:: random(254),
+            'validade' => Carbon:: now()->addDay(1)
+        ]);
+
+        return $tokenAcess;
+    }
+
+    public function findToken($userId){
+        return TokenAccess::whereDate('validade', '>', Carbon::now())->firstWhere('user_id', $userId);
+    }
+
+    public function deleteToken($userId){
+        TokenAccess::where('user_id', $userId)->delete();
+    }
+
+    public function enviarToken(Request $request){
+       $user = User::firstWhere('id', $request->user_id);
+
+       $token = $this->findToken($request->user_id);
+
+        $porta = "";
+        $dominio = $request->getHost();
+        $protocolo = "http://";
+
+        if($request->getPort() != "80")
+            $porta = ":4200";
+        if(Str::contains($request->url(), "https", true))
+            $protocolo = "https://";
+
+       if($token != null){
+           $host = $protocolo . $dominio . $porta . '/meus-catalogos/autorize/' . $token->token;
+
+           $token->token = $host;
+           Mail::to('lpoliveira.ti@gmail.com')->send(new NotificacaoEmail($user, $token, 'TOKEN'));
+
+       }
+
     }
 }

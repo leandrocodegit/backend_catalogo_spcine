@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account\User;
 use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use Exception;
@@ -28,9 +29,39 @@ class CatalogoController extends Controller
     public function list(){
         return Catalogo::all();
     }
+
+    public function listPorUser($userId){
+         return Catalogo::with(
+            'caracteristicas',
+            'cordenadas',
+            'responsavel',
+            'regras',
+            'administrador',
+            'imagens',
+            'descricoes',
+            'regiao',
+            'icon',
+            'categoria',
+            'precos',
+            'regras')
+            ->where('user_id', $userId)
+            ->paginate();
+    }
     public function random(Request $request)
     {
-        return Catalogo::with('administrador', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
+        return Catalogo::with(
+        'caracteristicas',
+        'cordenadas',
+        'responsavel',
+        'regras',
+        'administrador',
+        'imagens',
+        'descricoes',
+        'regiao',
+        'icon',
+        'categoria',
+        'precos',
+        'regras')
             ->where('home', true)
             ->where('active', true)
             ->orderByRaw('RAND() LIMIT 15')
@@ -48,6 +79,15 @@ class CatalogoController extends Controller
     {
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
+        $user = \auth()->user();
+        $isIncludeUser = false;
+
+        $user = User::with('perfil')->find($user->id);
+
+        if($user != null && $user->perfil->role == "MANAGER")
+            $isIncludeUser = true;
+
+
         if ($request->nome == null || $request->nome == "all")
             return Catalogo::with(
                 'caracteristicas',
@@ -62,6 +102,8 @@ class CatalogoController extends Controller
                 'categoria',
                 'precos',
                 'regras')
+                ->when($isIncludeUser)
+                ->where('user_id', $user->id)
                 ->when($request->ordem !== null)
                 ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
                 ->paginate($request->limite);
@@ -79,6 +121,8 @@ class CatalogoController extends Controller
                 'categoria',
                 'precos',
                 'regras')
+                ->when($isIncludeUser)
+                ->where('user_id', $user->id)
                 ->when($validNome)
                 ->where('id', $request->nome)
                 ->paginate($request->limite);
@@ -99,6 +143,8 @@ class CatalogoController extends Controller
             'categoria',
             'precos',
             'regras')
+            ->when($isIncludeUser)
+            ->where('user_id', $user->id)
             ->when($validNome)
             ->where('like', 'LIKE', '%' . $request->nome . '%')
             ->orWhere('like_langue', 'LIKE', '%' . $request->nome . '%')

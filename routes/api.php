@@ -48,8 +48,8 @@ Route::group([
 Route::group([
     'prefix' => 'icon'
 ], function ($router) {
-    Route::get('/{id}', [IconController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/find/list', [IconController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [IconController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/find/list', [IconController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [IconController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::post('/update', [IconController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::post('/associar', [IconController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
@@ -60,8 +60,8 @@ Route::group([
 Route::group([
     'prefix' => 'agenda'
 ], function ($router) {
-    Route::get('/{id}', [AgendaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/find/list', [AgendaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [AgendaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/find/list', [AgendaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [AgendaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [AgendaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
@@ -70,8 +70,8 @@ Route::group([
 Route::group([
     'prefix' => 'tipo/regra'
 ], function ($router) {
-    Route::get('/{id}', [TipoRegraController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/find/list', [TipoRegraController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [TipoRegraController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/find/list', [TipoRegraController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [TipoRegraController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [TipoRegraController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
@@ -80,8 +80,8 @@ Route::group([
 Route::group([
     'prefix' => 'regra'
 ], function ($router) {
-    Route::get('/{id}', [RegraController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/find/list', [RegraController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [RegraController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/find/list', [RegraController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [RegraController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [RegraController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::post('/associar', [RegraController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
@@ -92,8 +92,8 @@ Route::group([
 Route::group([
     'prefix' => 'caracteristica'
 ], function ($router) {
-    Route::get('/{id}', [CaracteristicaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/find/list', [CaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/{id}', [CaracteristicaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/find/list', [CaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [CaracteristicaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::post('/associar', [CaracteristicaController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
      Route::delete('/{id}', [CaracteristicaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
@@ -145,16 +145,17 @@ Route::group([
 
     Route::get('/random', [CatalogoController::class, 'random']);
     Route::get('/list', [CatalogoController::class, 'list']);
+    Route::get('/list/user/{userId}', [CatalogoController::class, 'listPorUser'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
     Route::post('/search/list', [CatalogoController::class, 'search'])->middleware(['middleware' => 'no_inject']);
     Route::post('/filter/list', [CatalogoController::class, 'filter'])->middleware(['middleware' => 'no_inject']);
-    Route::patch('/cordenada', [CatalogoController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::patch('/regiao', [CatalogoController::class, 'alterarRegiao'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/cordenada', [CatalogoController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
+    Route::patch('/regiao', [CatalogoController::class, 'alterarRegiao'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
     Route::patch('/active/{id}', [CatalogoController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/responsavel', [CatalogoController::class, 'alterarResponsavel'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [CatalogoController::class, 'destroy'])->middleware(['middleware' => 'no_inject']);
     Route::get('/{id}', [CatalogoController::class, 'find'])->middleware(['middleware' => 'no_inject']);
     Route::post('/', [CatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::patch('/', [CatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::patch('/', [CatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
 });
 
 //Route:: catalogos descrições
@@ -185,8 +186,8 @@ Route::group([
 Route::group([
     'prefix' => 'regiao'
 ], function ($router) {
-    Route::get('/list', [RegiaoController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/{id}', [RegiaoController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/list', [RegiaoController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/{id}', [RegiaoController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [RegiaoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [RegiaoController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
@@ -205,8 +206,8 @@ Route::group([
 Route::group([
     'prefix' => 'administrador'
 ], function ($router) {
-    Route::get('/list', [AdministradorController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/{id}', [AdministradorController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/list', [AdministradorController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/{id}', [AdministradorController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [AdministradorController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [AdministradorController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
@@ -216,8 +217,8 @@ Route::group([
         'prefix' => 'caracteristica/categoria'
 
 ], function ($router) {
-    Route::get('/list', [CategoriaCaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/{id}', [CategoriaCaracteristicaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/list', [CategoriaCaracteristicaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/{id}', [CategoriaCaracteristicaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [CategoriaCaracteristicaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/', [CategoriaCaracteristicaController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [CategoriaCaracteristicaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
@@ -227,8 +228,8 @@ Route::group([
 Route::group([
     'prefix' => 'catalogo/categoria'
 ], function ($router) {
-    Route::get('/list', [CategoriaCatalogoController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
-    Route::get('/{id}', [CategoriaCatalogoController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/list', [CategoriaCatalogoController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
+    Route::get('/{id}', [CategoriaCatalogoController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
     Route::post('/', [CategoriaCatalogoController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/', [CategoriaCatalogoController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::delete('/{id}', [CategoriaCatalogoController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
@@ -246,7 +247,12 @@ Route::group([
 ], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('refresh', [AuthController::class, 'refresh'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT']);
+    Route::get('refresh', [AuthController::class, 'refresh'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT,MANAGER']);
+    Route::post('token', [SecurityController::class, 'gerarToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::get('token/{token}', [AuthController::class, 'loginToken']);
+    Route::delete('token/{userId}', [SecurityController::class, 'deleteToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::get('token/find/{userId}', [SecurityController::class, 'findToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::get('token/send/{userId}', [SecurityController::class, 'enviarToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 
 });
 
@@ -267,13 +273,13 @@ Route::group([
 ], function ($router) {
 
     Route::post('/filter/list', [UserController::class, 'search'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST', 'no_inject']);
-    Route::put('/reset/password', [SecurityController::class, 'editPassword'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT']);
+    Route::put('/reset/password', [SecurityController::class, 'editPassword'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::patch('/perfil/update', [UserController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT']);
     Route::patch('/status/update/{id}', [UserController::class, 'active'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::get('/list', [UserController::class, 'list']);
-    Route::get('/{id}', [UserController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::get('/list', [UserController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT,MANAGER']);
+    Route::get('/{id}', [UserController::class, 'show'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT,MANAGER']);
     Route::delete('/{id}', [UserController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT']);
-    Route::patch('/', [UserController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST']);
+    Route::patch('/', [UserController::class, 'edit'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,CLIENT,MANAGER']);
 
 });
 
