@@ -3,10 +3,10 @@
 <head>
 <style>
  .button {
-  background-color: #a53684;
+  background-color: #48a2b1;
   border: none;
   color: #ffffff!important;
-  padding: 4px 32px;
+  padding: 8px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -14,7 +14,7 @@
   margin: 4px 2px;
   cursor: pointer;
   width: 150px;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
 h4{

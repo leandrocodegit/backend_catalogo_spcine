@@ -28,7 +28,8 @@ class NotificacaoEmail extends Mailable
 
 
             if($tipo === 'TOKEN'){
-                $this->emailSubject->nameBottom = 'Atualizar locações';
+                $this->emailSubject->mensagem = 'Você recebeu um link de acesso ao portal de locações da Spcine.';
+                $this->emailSubject->nameBottom = 'Ir ao portal de locações';
                 $this->emailSubject->assunto =  'Link de acesso';
                 $this->emailSubject->link =  $tokenAccess->token;
             }
