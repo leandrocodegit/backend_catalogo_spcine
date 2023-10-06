@@ -32,7 +32,7 @@ class Handler extends ExceptionHandler
                     'errors' => array('Recurso não encontrado!'),
                 ], 404);
             }else{
-                return response(view('angular'), 404);
+                return response(view('angular'), 200);
             }
         });
 
@@ -57,8 +57,16 @@ class Handler extends ExceptionHandler
         $this->renderable(function (InvalidArgumentException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'errors' => array('Formato inválido!', $e->getMessage())
+                    'errors' => array('Formato inválido!')
                 ], 404);
+            }
+        });
+
+        $this->renderable(function (ValidationException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'errors' => array('A requisição não foi processada!')
+                ], 422);
             }
         });
 
