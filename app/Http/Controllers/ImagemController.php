@@ -118,7 +118,8 @@ class ImagemController extends Controller
             'Delete imagem ' . $id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
 
         $imagem = Imagem::findOrFail($id);
-        Storage::disk('public')->delete($imagem->url);
+        if (Storage::disk('public')->exists('imagens/' . $imagem->url))
+            Storage::disk('public')->delete('imagens/' .$imagem->url);
 
         $imagem->delete();
 
