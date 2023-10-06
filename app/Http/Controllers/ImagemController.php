@@ -19,7 +19,7 @@ class ImagemController extends Controller
 
     public function findPorCatalogo($id)
     {
-        return Imagem::where('catalogo_id',$id)->get();
+        return Imagem::where('catalogo_id', $id)->get();
     }
 
     public function store(Request $request)
@@ -45,7 +45,7 @@ class ImagemController extends Controller
 
         $imagemDB = null;
 
-        if(isset($request['id']))
+        if (isset($request['id']))
             $imagemDB = Imagem::firstWhere('id', $request->id);
 
         $imagem = Imagem::where('catalogo_id', $request->catalogo_id)
@@ -62,26 +62,32 @@ class ImagemController extends Controller
             $ordem = $imagem->ordem + 1;
 
             if ($isPresentFile && $imagemDB != null) {
-                if (Storage::disk('public')->exists('imagens/' .$imagemDB->url))
-                    Storage::disk('public')->delete('imagens/' .$imagemDB->url);
+                if (Storage::disk('public')->exists('imagens/' . $imagemDB->url))
+                    Storage::disk('public')->delete('imagens/' . $imagemDB->url);
             }
         }
 
 
-        if($request->principal)
+        if ($request->principal)
             Imagem::where('catalogo_id', $request->catalogo_id)->update([
                 'principal' => false
             ]);
 
-      Imagem::updateOrCreate(
+        $imagemSalva = Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'titulo' => $request->titulo == null ? "" : $request->titulo,
             'descricao' => $request->descricao == null ? "" : $request->descricao,
             'ordem' => $ordem,
             'principal' => $request->principal == null ? false : $request->principal,
-            'url' => $isPresentFile ?   $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagemDB->url : ''),
             'catalogo_id' => $request->catalogo_id
         ]);
+
+        if ($isPresentFile)
+            Imagem::updateOrCreate(
+                [
+                    'id' => $imagemSalva->id,
+                    'url' => $request->catalogo_id . '/' . $request->file->hashName()
+                ]);
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
