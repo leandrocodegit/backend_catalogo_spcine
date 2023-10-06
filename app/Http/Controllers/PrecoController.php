@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 use App\Models\Catalogo\Preco;
 use App\Models\util\MapUtil;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Catalogo\Imagem;
-use App\Models\Catalogo\Catalogo;
-use Illuminate\Http\File;
-use App\Models\Enums\MessageResponse;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PrecoController extends Controller
 {
+
+    public function findPorCatalogo($id)
+    {
+        return Preco::where('catalogo_id',$id)->get();
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

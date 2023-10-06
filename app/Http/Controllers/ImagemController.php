@@ -17,6 +17,11 @@ class ImagemController extends Controller
         return Imagem::findOrFail($id);
     }
 
+    public function findPorCatalogo($id)
+    {
+        return Imagem::where('catalogo_id',$id)->get();
+    }
+
     public function store(Request $request)
     {
 

@@ -133,6 +133,7 @@ Route::group([
     Route::post('/', [ImagemController::class, 'store']);
     Route::patch('/', [ImagemController::class, 'edit']);
     Route::get('/{id}', [ImagemController::class, 'find']);
+    Route::get('/catalogo/{id}', [ImagemController::class, 'findPorCatalogo']);
     Route::delete('/{id}', [ImagemController::class, 'destroy']);
 });
 
@@ -165,6 +166,7 @@ Route::group([
     'roles' => ['ROOT', 'ADMIN']
 
 ], function ($router) {
+    Route::get('/{id}', [DescricaoController::class, 'findPorCatalogo']);
     Route::post('/', [DescricaoController::class, 'store']);
     Route::delete('/{id}', [DescricaoController::class, 'destroy']);
     Route::patch('/destaque/{id}', [DescricaoController::class, 'destaque']);
@@ -177,6 +179,7 @@ Route::group([
     'roles' => ['ROOT', 'ADMIN']
 
 ], function ($router) {
+    Route::get('/{id}', [PrecoController::class, 'findPorCatalogo']);
     Route::post('/', [PrecoController::class, 'store']);
     Route::delete('/{id}', [PrecoController::class, 'destroy']);
 });

@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 class DescricaoController extends Controller
 {
 
+    public function findPorCatalogo($id)
+    {
+        return Descricao::where('catalogo_id',$id)->get();
+    }
     public function store(Request $request)
     {
 
