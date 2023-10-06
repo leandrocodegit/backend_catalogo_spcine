@@ -82,12 +82,10 @@ class ImagemController extends Controller
             'catalogo_id' => $request->catalogo_id
         ]);
 
-        if ($isPresentFile)
-            Imagem::updated(
-                [
-                    'id' => $imagemSalva->id,
-                    'url' => $request->catalogo_id . '/' . $request->file->hashName()
-                ]);
+        if ($isPresentFile) {
+            $imagemSalva->url = $request->catalogo_id . '/' . $request->file->hashName();
+            $imagemSalva->save();
+        }
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
