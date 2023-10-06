@@ -83,7 +83,7 @@ class ImagemController extends Controller
         ]);
 
         if ($isPresentFile)
-            Imagem::updateOrCreate(
+            Imagem::updated(
                 [
                     'id' => $imagemSalva->id,
                     'url' => $request->catalogo_id . '/' . $request->file->hashName()
