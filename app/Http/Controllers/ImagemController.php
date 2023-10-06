@@ -26,7 +26,7 @@ class ImagemController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'catalogo_id' => 'bail|required'
+            'catalogo_id' => 'bail|required',
         ],
             [
                 'catalogo_id' => 'Catalogo é obrigatório!'
@@ -35,10 +35,24 @@ class ImagemController extends Controller
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
+
         Catalogo::findOrFail($request->catalogo_id);
 
-        $mensagem = "Imagem criado com sucesso!";
+
         $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
+
+        if ($isPresentFile) {
+            $validator = Validator::make($request->all(), [
+                'file' => 'nullable|mimes:jpeg,webp,png|nullable',
+            ],
+                [
+                    'file.mimes' => 'Formato de arquivo inválido'
+                ]);
+
+            if ($validator->fails())
+                return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
+        }
+
 
         if ($isPresentFile)
             $request->file->store('imagens/' . $request->catalogo_id, 'public');
@@ -53,6 +67,7 @@ class ImagemController extends Controller
             ->get()
             ->first();
 
+        $mensagem = "Imagem criado com sucesso!";
         if (isset($request['id']))
             $mensagem = "Imagem atualizado com sucesso!";
 

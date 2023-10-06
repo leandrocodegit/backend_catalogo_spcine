@@ -62,14 +62,6 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->renderable(function (ValidationException $e, Request $request) {
-            if ($request->is('api/*')) {
-                return response()->json([
-                    'errors' => array('A requisição não foi processada!')
-                ], 422);
-            }
-        });
-
 
         $this->renderable(function (NoTypeDetectedException $e, Request $request) {
             if ($request->is('api/*')) {

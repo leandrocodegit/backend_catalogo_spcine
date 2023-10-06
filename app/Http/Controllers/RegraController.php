@@ -39,6 +39,17 @@ class RegraController extends Controller
         $mensagem = "Regra criada com sucesso!";
         $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
 
+        if ($isPresentFile) {
+            $validator = Validator::make($request->all(), [
+                'file' => 'nullable|mimes:svg',
+            ],
+                [
+                    'file.mimes' => 'Formato de arquivo inválido'
+                ]);
+
+            if ($validator->fails())
+                return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
+        }
 
         if (isset($request['id']) && Regra::where('id', $request->id)->exists()){
                 $regraDB = $this->show($request->id);

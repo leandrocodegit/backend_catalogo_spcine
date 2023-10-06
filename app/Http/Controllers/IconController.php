@@ -31,7 +31,20 @@ class IconController extends Controller
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
         $mensagem = "Icone criado com sucesso!";
+
         $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
+
+        if ($isPresentFile) {
+            $validator = Validator::make($request->all(), [
+                'file' => 'nullable|mimes:jpeg,webp,png,svg',
+            ],
+                [
+                    'file.mimes' => 'Formato de arquivo inválido'
+                ]);
+
+            if ($validator->fails())
+                return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
+        }
 
         if (isset($request['id'])) {
             $iconDB = $this->show($request->id);
