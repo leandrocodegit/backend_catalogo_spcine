@@ -79,7 +79,7 @@ class ImagemController extends Controller
             'descricao' => $request->descricao == null ? "" : $request->descricao,
             'ordem' => $ordem,
             'principal' => $request->principal == null ? false : $request->principal,
-            'url' => $isPresentFile ?   $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagem->url : ''),
+            'url' => $isPresentFile ?   $request->catalogo_id . '/' . $request->file->hashName() : ($imagemDB != null ? $imagemDB->url : ''),
             'catalogo_id' => $request->catalogo_id
         ]);
 
