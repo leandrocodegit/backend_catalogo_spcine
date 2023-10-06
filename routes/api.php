@@ -252,7 +252,7 @@ Route::group([
     Route::get('token/{token}', [AuthController::class, 'loginToken']);
     Route::delete('token/{userId}', [SecurityController::class, 'deleteToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::get('token/find/{userId}', [SecurityController::class, 'findToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::get('token/send/{userId}', [SecurityController::class, 'enviarToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
+    Route::post('token/send', [SecurityController::class, 'enviarToken'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 
 });
 
