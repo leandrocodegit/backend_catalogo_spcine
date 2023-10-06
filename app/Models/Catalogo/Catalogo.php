@@ -47,10 +47,6 @@ class Catalogo extends Model
         return $this->hasMany(Imagem::class)->orderByRaw('ordem and principal desc');
     }
 
-    public function capa(){
-        return $this->hasMany(Imagem::class)->orderByRaw('ordem and principal desc')->limit(1);
-    }
-
     public function regras(){
         return $this->belongsToMany(Regra::class, 'regras_catalogo');
     }

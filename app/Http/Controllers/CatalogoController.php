@@ -26,12 +26,14 @@ use Illuminate\Support\Facades\Log;
 class CatalogoController extends Controller
 {
 
-    public function list(){
+    public function list()
+    {
         return Catalogo::all();
     }
 
-    public function listPorUser($userId){
-         return Catalogo::with(
+    public function listPorUser($userId)
+    {
+        return Catalogo::with(
             'caracteristicas',
             'cordenadas',
             'responsavel',
@@ -47,21 +49,22 @@ class CatalogoController extends Controller
             ->where('user_id', $userId)
             ->paginate();
     }
+
     public function random(Request $request)
     {
         return Catalogo::with(
-        'caracteristicas',
-        'cordenadas',
-        'responsavel',
-        'regras',
-        'administrador',
-        'imagens',
-        'descricoes',
-        'regiao',
-        'icon',
-        'categoria',
-        'precos',
-        'regras')
+            'caracteristicas',
+            'cordenadas',
+            'responsavel',
+            'regras',
+            'administrador',
+            'imagens',
+            'descricoes',
+            'regiao',
+            'icon',
+            'categoria',
+            'precos',
+            'regras')
             ->where('home', true)
             ->where('active', true)
             ->orderByRaw('RAND() LIMIT 15')
@@ -79,14 +82,15 @@ class CatalogoController extends Controller
     {
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
-        $user = \auth()->user();
+        $user = new User();
+
         $isIncludeUser = false;
 
-        $user = User::with('perfil')->find($user->id);
-
-        if($user != null && $user->perfil->role == "MANAGER")
-            $isIncludeUser = true;
-
+        if (auth()->user()) {
+            $user = User::with('perfil')->find(auth()->user()->id);
+            if ($user->perfil->role == "MANAGER")
+                $isIncludeUser = true;
+        }
 
         if ($request->nome == null || $request->nome == "all")
             return Catalogo::with(
@@ -127,7 +131,7 @@ class CatalogoController extends Controller
                 ->where('id', $request->nome)
                 ->paginate($request->limite);
 
-            if($catalogoID->total() == 1)
+            if ($catalogoID->total() == 1)
                 return $catalogoID;
         }
 
@@ -179,24 +183,24 @@ class CatalogoController extends Controller
         }
 
         if ($validNome) {
-          $catalogoID = Catalogo::with(
-              'caracteristicas',
-              'cordenadas',
-              'responsavel',
-              'administrador',
-              'imagens',
-              'descricoes',
-              'regiao',
-              'icon',
-              'categoria',
-              'precos',
-              'regras')
+            $catalogoID = Catalogo::with(
+                'caracteristicas',
+                'cordenadas',
+                'responsavel',
+                'administrador',
+                'imagens',
+                'descricoes',
+                'regiao',
+                'icon',
+                'categoria',
+                'precos',
+                'regras')
                 ->when($validNome)
                 ->where('id', $request->nome)
                 ->paginate($request->limite);
 
-          if($catalogoID->total() == 1)
-              return $catalogoID;
+            if ($catalogoID->total() == 1)
+                return $catalogoID;
         }
 
         return Catalogo::with(
@@ -367,7 +371,6 @@ class CatalogoController extends Controller
                 MapUtil::merge(collect([$descricao]), 'titulo', 'descricao') . ' ' .
                 $catalogo->nome
         ]);
-
 
 
         Log::channel('db')->info(
