@@ -104,6 +104,8 @@ class ImagemController extends Controller
             $imagemSalva->save();
         }
 
+        return $imagemSalva->url;
+
         echo "Url = ";
         echo $imagemSalva->url;
         echo "\n";
