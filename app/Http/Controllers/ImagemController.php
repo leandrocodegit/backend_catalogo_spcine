@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogo\Catalogo;
 use App\Models\Catalogo\Imagem;
+use App\Models\util\ImagemUtil;
 use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ImagemController extends Controller
 {
@@ -100,6 +102,11 @@ class ImagemController extends Controller
         if ($isPresentFile) {
             $imagemSalva->url = $request->catalogo_id . '/' . $request->file->hashName();
             $imagemSalva->save();
+        }
+
+        if ($isPresentFile) {
+            if(!(Str::contains($request->file->getClientOriginalExtension(), 'webp')))
+                ImagemUtil::convert($imagemSalva);
         }
 
         Log::channel('db')->info(
