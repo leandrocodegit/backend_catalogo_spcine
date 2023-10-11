@@ -104,8 +104,19 @@ class ImagemController extends Controller
             $imagemSalva->save();
         }
 
+        echo "PresentFile = ";
+        echo  $isPresentFile ? 'Sim' : 'Não';
+        echo " \n";
+        echo "getClientOriginalExtension = " . $request->file->getClientOriginalExtension();
+        echo " \n";
+        echo "Contem = ";
+        echo str_contains($request->file->getClientOriginalExtension(), 'webp') ? 'Sim' : 'Não';
+        echo " \n";
+
         if ($isPresentFile) {
             if(!str_contains($request->file->getClientOriginalExtension(), 'webp')){
+                echo "Init convert";
+                echo " \n";
                 ImagemUtil::convert($imagemSalva);
             }
 
