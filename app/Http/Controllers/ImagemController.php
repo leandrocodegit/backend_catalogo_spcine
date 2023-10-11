@@ -48,7 +48,7 @@ class ImagemController extends Controller
             ],
                 [
                     'image' => 'Formato de arquivo inválido',
-                    'file.max' => 'O arquivo deve ser menor que 8mb'
+                    'file.max' => 'O arquivo deve ser menor que 20mb'
                 ]);
 
             if ($validator->fails())
