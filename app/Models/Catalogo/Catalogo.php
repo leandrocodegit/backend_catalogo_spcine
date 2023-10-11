@@ -44,7 +44,7 @@ class Catalogo extends Model
     protected $table = "catalogos";
 
     public function imagens(){
-        return $this->hasMany(Imagem::class)->orderByRaw('ordem and principal desc');
+        return $this->hasMany(Imagem::class)->orderByRaw('principal desc');
     }
 
     public function regras(){
