@@ -41,7 +41,7 @@ class ImagemController extends Controller
         Catalogo::findOrFail($request->catalogo_id);
 
 
-        $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
+        $isPresentFile = $request->hasFile('file');
 
         if ($isPresentFile) {
             $validator = Validator::make($request->all(), [
