@@ -118,12 +118,12 @@ class ImagemController extends Controller
         echo str_contains($imagemSalva->url, '.webp') ? 'Sim' : 'Não';
         echo " \n";
 
-        return Imagem::find($imagemSalva->id);
+      //  return Imagem::find($imagemSalva->id);
 
             if(!str_contains($imagemSalva->url, '.webp')){
                 echo "Init convert";
                 echo " \n";
-                ImagemUtil::convert($imagemSalva);
+               // ImagemUtil::convert($imagemSalva);
             }
 
 
