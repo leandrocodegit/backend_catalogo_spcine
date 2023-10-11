@@ -41,7 +41,7 @@ class ImagemController extends Controller
         Catalogo::findOrFail($request->catalogo_id);
 
 
-        $isPresentFile = $request->hasFile('file');
+        $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
 
         if ($isPresentFile) {
             $validator = Validator::make($request->all(), [
@@ -103,29 +103,6 @@ class ImagemController extends Controller
             $imagemSalva->url = $request->catalogo_id . '/' . $request->file->hashName();
             $imagemSalva->save();
         }
-
-
-
-        echo "Url = ";
-        echo $imagemSalva->url;
-        echo "\n";
-        echo "PresentFile = ";
-        echo  $isPresentFile ? 'Sim' : 'Não';
-        echo " \n";
-        echo "getClientOriginalExtension = " . $request->file->getClientOriginalExtension();
-        echo " \n";
-        echo "Contem = ";
-        echo str_contains($imagemSalva->url, '.webp') ? 'Sim' : 'Não';
-        echo " \n";
-
-      //  return Imagem::find($imagemSalva->id);
-
-            if(!str_contains($imagemSalva->url, '.webp')){
-                echo "Init convert";
-                echo " \n";
-               // ImagemUtil::convert($imagemSalva);
-            }
-
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
