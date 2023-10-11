@@ -37,11 +37,9 @@ class ImagemController extends Controller
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-
         Catalogo::findOrFail($request->catalogo_id);
 
-
-        $isPresentFile = (isset($request['file']) && $request->hasFile('file'));
+        $isPresentFile = $request->hasFile('file');
 
         if ($isPresentFile) {
             $validator = Validator::make($request->all(), [
@@ -64,26 +62,13 @@ class ImagemController extends Controller
         if (isset($request['id']))
             $imagemDB = Imagem::firstWhere('id', $request->id);
 
-        $imagem = Imagem::where('catalogo_id', $request->catalogo_id)
-            ->orderByRaw('ordem desc')
-            ->get()
-            ->first();
-
         $mensagem = "Imagem criado com sucesso!";
         if (isset($request['id']))
             $mensagem = "Imagem atualizado com sucesso!";
 
-        $imagem;
-        $ordem = 0;
-        if ($imagem !== null) {
-            $ordem = $imagem->ordem + 1;
-
-            if ($isPresentFile && $imagemDB != null) {
-                if (Storage::disk('public')->exists('imagens/' . $imagemDB->url))
-                    Storage::disk('public')->delete('imagens/' . $imagemDB->url);
-            }
-        }
-
+        if ($isPresentFile && $imagemDB != null)
+            if (Storage::disk('public')->exists('imagens/' . $imagemDB->url))
+                Storage::disk('public')->delete('imagens/' . $imagemDB->url);
 
         if ($request->principal)
             Imagem::where('catalogo_id', $request->catalogo_id)->update([
@@ -94,7 +79,7 @@ class ImagemController extends Controller
             ['id' => isset($request['id']) ? $request->id : null], [
             'titulo' => $request->titulo == null ? "" : $request->titulo,
             'descricao' => $request->descricao == null ? "" : $request->descricao,
-            'ordem' => $ordem,
+            'ordem' => 0,
             'principal' => $request->principal == null ? false : $request->principal,
             'catalogo_id' => $request->catalogo_id
         ]);
@@ -121,7 +106,7 @@ class ImagemController extends Controller
 
         $imagem = Imagem::findOrFail($id);
         if (Storage::disk('public')->exists('imagens/' . $imagem->url))
-            Storage::disk('public')->delete('imagens/' .$imagem->url);
+            Storage::disk('public')->delete('imagens/' . $imagem->url);
 
         $imagem->delete();
 
