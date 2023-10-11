@@ -104,7 +104,7 @@ class ImagemController extends Controller
             $imagemSalva->save();
         }
 
-        return Imagem::find($imagemSalva->id);
+
 
         echo "Url = ";
         echo $imagemSalva->url;
@@ -117,6 +117,8 @@ class ImagemController extends Controller
         echo "Contem = ";
         echo str_contains($imagemSalva->url, '.webp') ? 'Sim' : 'Não';
         echo " \n";
+
+        return Imagem::find($imagemSalva->id);
 
             if(!str_contains($imagemSalva->url, '.webp')){
                 echo "Init convert";
