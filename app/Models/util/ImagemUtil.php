@@ -29,6 +29,7 @@ class ImagemUtil
         try {
             if (Storage::disk('public')->exists('imagens/' . $imagemDB->url)) {
                 exec("cwebp $inputImagePath -o $outputImagePath");
+                echo ("cwebp $inputImagePath -o $outputImagePath");
                 Storage::disk('public')->delete($inputImagePath);
                 $imagemDB->update([
                     'url' => $originalImagePath
