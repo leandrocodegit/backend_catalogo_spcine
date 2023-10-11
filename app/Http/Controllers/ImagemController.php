@@ -27,6 +27,8 @@ class ImagemController extends Controller
     public function store(Request $request)
     {
 
+        echo json_encode($request);
+        echo "\n";
         $validator = Validator::make($request->all(), [
             'catalogo_id' => 'bail|required',
         ],
@@ -43,10 +45,12 @@ class ImagemController extends Controller
 
         if ($isPresentFile) {
             $validator = Validator::make($request->all(), [
-                'file' => 'nullable|mimes:jpg,webp,png',
+                'image' => 'nullable|image',
+                'file' => 'max:8048'
             ],
                 [
-                    'file.mimes' => 'Formato de arquivo inválido'
+                    'image' => 'Formato de arquivo inválido',
+                    'file.max' => 'O arquivo deve ser menor que 8mb'
                 ]);
 
             if ($validator->fails())
