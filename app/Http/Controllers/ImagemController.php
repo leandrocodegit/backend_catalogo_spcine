@@ -104,23 +104,24 @@ class ImagemController extends Controller
             $imagemSalva->save();
         }
 
+        echo "Url = ";
+        echo $imagemSalva->url;
+        echo "\n";
         echo "PresentFile = ";
         echo  $isPresentFile ? 'Sim' : 'Não';
         echo " \n";
         echo "getClientOriginalExtension = " . $request->file->getClientOriginalExtension();
         echo " \n";
         echo "Contem = ";
-        echo str_contains($request->file->getClientOriginalExtension(), 'webp') ? 'Sim' : 'Não';
+        echo str_contains($imagemSalva->url, '.webp') ? 'Sim' : 'Não';
         echo " \n";
 
-        if ($isPresentFile) {
-            if(!str_contains($request->file->getClientOriginalExtension(), 'webp')){
+            if(!str_contains($imagemSalva->url, '.webp')){
                 echo "Init convert";
                 echo " \n";
                 ImagemUtil::convert($imagemSalva);
             }
 
-        }
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
