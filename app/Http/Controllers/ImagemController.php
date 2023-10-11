@@ -27,8 +27,6 @@ class ImagemController extends Controller
     public function store(Request $request)
     {
 
-        echo json_encode($request);
-        echo "\n";
         $validator = Validator::make($request->all(), [
             'catalogo_id' => 'bail|required',
         ],
