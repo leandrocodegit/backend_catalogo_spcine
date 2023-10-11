@@ -104,7 +104,7 @@ class ImagemController extends Controller
             $imagemSalva->save();
         }
 
-        return $imagemSalva->url;
+        return Imagem::find($imagemSalva->id);
 
         echo "Url = ";
         echo $imagemSalva->url;
