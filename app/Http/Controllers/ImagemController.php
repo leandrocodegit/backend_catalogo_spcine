@@ -43,7 +43,7 @@ class ImagemController extends Controller
 
         if ($isPresentFile) {
             $validator = Validator::make($request->all(), [
-                'file' => 'nullable|mimes:jpeg,jpg,webp,png|nullable',
+                'file' => 'nullable|mimes:jpg,webp,png',
             ],
                 [
                     'file.mimes' => 'Formato de arquivo inválido'
