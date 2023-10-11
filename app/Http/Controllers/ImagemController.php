@@ -105,8 +105,10 @@ class ImagemController extends Controller
         }
 
         if ($isPresentFile) {
-            if(!str_contains($request->file->getClientOriginalExtension(), 'webp'))
+            if(!str_contains($request->file->getClientOriginalExtension(), 'webp')){
                 ImagemUtil::convert($imagemSalva);
+            }
+
         }
 
         Log::channel('db')->info(

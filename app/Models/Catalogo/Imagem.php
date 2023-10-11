@@ -23,10 +23,6 @@ class Imagem extends Model
 
     protected $appends = array('host');
 
-    protected $hidden = [
-
-    ];
-
     public function getHostAttribute()
     {
         return 'storage/imagens/'. $this->url;

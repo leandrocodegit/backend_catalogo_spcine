@@ -20,15 +20,23 @@ class ImagemUtil
         $originalImagePath = $imagemDB->catalogo_id . '/' . $id . '.webp';
         $outputImagePath = 'imagens/' . $originalImagePath;
 
+        echo Storage::disk('public')->exists('imagens/' . $imagemDB->url);
+        echo "\n";
+        echo $originalImagePath;
+        echo "\n";
+
+
         try {
-            if (Storage::disk('public')->exists('imagens/' . $imagem->url)) {
+            if (Storage::disk('public')->exists('imagens/' . $imagemDB->url)) {
                 exec("cwebp $inputImagePath -o $outputImagePath");
                 Storage::disk('public')->delete($inputImagePath);
                 $imagemDB->update([
                     'url' => $originalImagePath
                 ]);
+                echo "Imagem convertida com sucesso!";
             }
         } catch (\Exception $err) {
+            echo "Failed to copy imagem from url\n";
         }
     }
 
