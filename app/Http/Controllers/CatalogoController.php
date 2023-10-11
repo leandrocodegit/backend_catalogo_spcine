@@ -67,7 +67,7 @@ class CatalogoController extends Controller
             'regras')
             ->where('home', true)
             ->where('active', true)
-            ->orderByRaw('RAND() LIMIT 15')
+            ->orderByRaw('RAND() LIMIT 10')
             ->get();
     }
 
