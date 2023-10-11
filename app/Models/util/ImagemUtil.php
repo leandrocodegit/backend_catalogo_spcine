@@ -13,7 +13,7 @@ class ImagemUtil
 
     public static function convert($imagem){
 
-        $imagemDB = Imagem::firstWhere('id', $imagem->id);
+        $imagemDB = Imagem::find($imagem->id);
 
         echo "Id = ";
         echo $imagem->id;
@@ -45,6 +45,7 @@ class ImagemUtil
                 $imagemDB->update([
                     'url' => $originalImagePath
                 ]);
+                echo "\n";
                 echo "Imagem convertida com sucesso!";
             }
         } catch (\Exception $err) {
