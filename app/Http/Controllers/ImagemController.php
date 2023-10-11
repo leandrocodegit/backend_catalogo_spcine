@@ -44,7 +44,7 @@ class ImagemController extends Controller
         if ($isPresentFile) {
             $validator = Validator::make($request->all(), [
                 'image' => 'nullable|image',
-                'file' => 'max:8048'
+                'file' => 'max:20048'
             ],
                 [
                     'image' => 'Formato de arquivo inválido',
