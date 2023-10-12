@@ -65,10 +65,9 @@ class CatalogoController extends Controller
             'categoria',
             'precos',
             'regras')
-            ->select('categoria_id')
-            ->distinct()
             ->where('home', true)
             ->where('active', true)
+            ->distinct("categoria_id")
             ->orderByRaw('RAND() LIMIT 10')
         ->get();
 
