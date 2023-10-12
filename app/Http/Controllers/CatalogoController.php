@@ -67,6 +67,9 @@ class CatalogoController extends Controller
             'regras')
             ->where('home', true)
             ->where('active', true)
+            ->whereHas('categoria', function ($query) use ($request) {
+                $query->distinct();
+            })
             ->orderByRaw('RAND() LIMIT 10')
             ->get();
     }
