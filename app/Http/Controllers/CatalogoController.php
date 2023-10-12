@@ -68,8 +68,10 @@ class CatalogoController extends Controller
             ->where('home', true)
             ->where('active', true)
             ->orderByRaw('RAND() LIMIT 10')
-            ->get()->unique('categoria_id')
-            ->values()->toArray();
+            ->get();
+
+            //->unique('categoria_id')
+            //->values()->toArray();
 
     }
 
