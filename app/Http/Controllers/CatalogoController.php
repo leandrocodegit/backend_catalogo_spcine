@@ -52,7 +52,7 @@ class CatalogoController extends Controller
 
     public function random(Request $request)
     {
-        $catalogos = Catalogo::with(
+        return Catalogo::with(
             'caracteristicas',
             'cordenadas',
             'responsavel',
@@ -65,15 +65,13 @@ class CatalogoController extends Controller
             'categoria',
             'precos',
             'regras')
-            ->join('categoria', 'categoria.id', '=', 'catalogo.categoria_id')
-            ->select('categorias.*')
+            ->select('categoria_id')
             ->distinct()
             ->where('home', true)
             ->where('active', true)
             ->orderByRaw('RAND() LIMIT 10')
-            ->get();
+        ->get();
 
-        return $catalogos;
     }
 
     public function searchID($id)
