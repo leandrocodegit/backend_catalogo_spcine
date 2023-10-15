@@ -89,10 +89,14 @@ class ImagemController extends Controller
         if ($isPresentFile) {
             $imagemSalva->url = $request->catalogo_id . '/' . $request->file->hashName();
             $imagemSalva->save();
+
         }
 
         if(!str_contains($imagemSalva->url, '.webp'))
             ImagemUtil::convert($imagemSalva);
+
+        if ($request->principal)
+            ImagemUtil::criarCapa($imagemSalva);
 
         Log::channel('db')->info(
             'Criado imagem catalogo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);

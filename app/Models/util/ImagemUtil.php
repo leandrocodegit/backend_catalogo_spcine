@@ -36,16 +36,14 @@ class ImagemUtil
 
         $imagemDB = Imagem::find($imagem->id);
 
-        $id = uniqid();
         $inputImagePath = 'imagens/' . $imagemDB->url;
         $originalImagePath = 'imagens/' . $imagemDB->catalogo_id;
 
         try {
             if (Storage::disk('public')->exists('imagens/' . $imagemDB->url)) {
                 exec("cwebp $inputImagePath -o $originalImagePath". 'capa.ppm');
-
-                exec("cwebp $inputImagePath -o $originalImagePath". 'capa.webp');
-                Storage::disk('public')->delete($inputImagePath);
+                exec("convert capa.ppm -resize 500X350 capa.ppm");
+                exec("cwebp $originalImagePath capa.ppm -o $originalImagePath". 'capa.webp');
                 $imagemDB->update([
                     'url' => $originalImagePath
                 ]);
