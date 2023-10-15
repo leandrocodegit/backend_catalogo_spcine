@@ -53,18 +53,7 @@ class CatalogoController extends Controller
     public function random(Request $request)
     {
         return Catalogo::with(
-            'caracteristicas',
-            'cordenadas',
-            'responsavel',
-            'regras',
-            'administrador',
-            'imagens',
-            'descricoes',
-            'regiao',
-            'icon',
-            'categoria',
-            'precos',
-            'regras')
+            'imagens')
             ->where('home', true)
             ->where('active', true)
             ->orderByRaw('RAND() LIMIT 10')
