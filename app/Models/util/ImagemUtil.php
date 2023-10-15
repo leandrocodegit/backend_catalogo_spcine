@@ -42,9 +42,16 @@ class ImagemUtil
 
         try {
             if (Storage::disk('public')->exists('imagens/' . $imagemDB->url)) {
+                echo "\n";
                 exec("cwebp $inputImagePath -o $originalImagePath". 'capa.ppm');
+                echo "cwebp $inputImagePath -o $originalImagePath". 'capa.ppm';
+                echo "\n";
+                echo "convert capa.ppm -resize 500X350 capa.ppm";
                 exec("convert capa.ppm -resize 500X350 capa.ppm");
+                echo "\n";
+                echo "cwebp $originalImagePath capa.ppm -o $originalImagePath". 'capa.webp';
                 exec("cwebp $originalImagePath capa.ppm -o $originalImagePath". 'capa.webp');
+                echo "\n";
                 $imagemDB->update([
                     'url' => $originalImagePath
                 ]);
