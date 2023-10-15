@@ -54,6 +54,7 @@ class ImagemUtil
                 echo "\n";
             }
         } catch (\Exception $err) {
+            echo $err;
         }
     }
 
