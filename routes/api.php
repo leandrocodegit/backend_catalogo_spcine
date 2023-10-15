@@ -131,6 +131,7 @@ Route::group([
 
 ], function ($router) {
     Route::post('/', [ImagemController::class, 'store']);
+    Route::post('/capas', [ImagemController::class, 'atualizarCapas']);
     Route::patch('/', [ImagemController::class, 'edit']);
     Route::get('/{id}', [ImagemController::class, 'find']);
     Route::get('/catalogo/{id}', [ImagemController::class, 'findPorCatalogo']);

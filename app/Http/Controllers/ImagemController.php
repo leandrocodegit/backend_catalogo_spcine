@@ -92,7 +92,7 @@ class ImagemController extends Controller
 
         }
 
-        if(!str_contains($imagemSalva->url, '.webp'))
+        if (!str_contains($imagemSalva->url, '.webp'))
             ImagemUtil::convert($imagemSalva);
 
         if ($request->principal)
@@ -141,4 +141,20 @@ class ImagemController extends Controller
             'message' => 'Imagem editada com sucesso!',
             'status' => 200], 200);
     }
+
+    public function atualizarCapas()
+    {
+
+        $catalogos = Catalogo::with("imagens")->get();
+
+        foreach ($catalogos as $catalogo) {
+            foreach ($catalogo->imagens as $imagem) {
+                if ($imagem->principal) {
+                    ImagemUtil::criarCapa($imagem);
+                    break;
+                }
+            }
+        }
+    }
+
 }

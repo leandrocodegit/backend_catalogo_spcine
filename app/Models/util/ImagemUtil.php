@@ -34,7 +34,6 @@ class ImagemUtil
 
     public static function criarCapa($imagem){
 
-        echo $imagem->url;
         $imagemDB = Imagem::find($imagem->id);
 
         $inputImagePath = 'imagens/' . $imagemDB->url;
@@ -42,19 +41,11 @@ class ImagemUtil
 
         try {
             if (Storage::disk('public')->exists('imagens/' . $imagemDB->url)) {
-                echo "\n";
                 exec("cwebp $inputImagePath -o $originalImagePath/capa.ppm");
-                echo "cwebp $inputImagePath -o $originalImagePath/capa.ppm";
-                echo "\n";
-                echo "convert $originalImagePath/capa.ppm -resize 500X350 $originalImagePath/capa.ppm";
                 exec("convert $originalImagePath/capa.ppm -resize 500X350 $originalImagePath/capa.ppm");
-                echo "\n";
-                echo "cwebp $originalImagePath/capa.ppm -o $originalImagePath/capa.webp";
                 exec("cwebp $originalImagePath/capa.ppm -o $originalImagePath/capa.webp");
-                echo "\n";
             }
         } catch (\Exception $err) {
-            echo $err;
         }
     }
 
