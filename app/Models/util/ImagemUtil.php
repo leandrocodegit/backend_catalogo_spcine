@@ -52,9 +52,6 @@ class ImagemUtil
                 echo "cwebp $originalImagePath capa.ppm -o $originalImagePath". 'capa.webp';
                 exec("cwebp $originalImagePath capa.ppm -o $originalImagePath". 'capa.webp');
                 echo "\n";
-                $imagemDB->update([
-                    'url' => $originalImagePath
-                ]);
             }
         } catch (\Exception $err) {
         }
