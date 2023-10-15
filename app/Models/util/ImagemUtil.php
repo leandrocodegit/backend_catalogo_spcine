@@ -34,6 +34,7 @@ class ImagemUtil
 
     public static function criarCapa($imagem){
 
+        echo $imagem->url;
         $imagemDB = Imagem::find($imagem->id);
 
         $inputImagePath = 'imagens/' . $imagemDB->url;
