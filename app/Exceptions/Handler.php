@@ -84,7 +84,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (PostTooLargeException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'errors' => array('O arquivo deve ser menor que 8mb!')
+                    'errors' => array('O arquivo deve ser menor que 20mb!')
                 ], 422);
             }
         });
