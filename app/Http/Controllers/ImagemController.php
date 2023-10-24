@@ -37,7 +37,10 @@ class ImagemController extends Controller
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-        Catalogo::findOrFail($request->catalogo_id);
+       $catalogo = Catalogo::findOrFail($request->catalogo_id);
+
+       if($catalogo->imagens->count() == 0)
+           $request->principal = true;
 
         $isPresentFile = $request->hasFile('file');
 
