@@ -56,7 +56,7 @@ class CatalogoController extends Controller
             'imagens')
             ->where('home', true)
             ->where('active', true)
-            ->orderByRaw('RAND() LIMIT 10')
+            ->orderByRaw('RAND() LIMIT 11')
             ->get();
 
             //->unique('categoria_id')
