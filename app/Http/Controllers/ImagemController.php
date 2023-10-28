@@ -92,7 +92,6 @@ class ImagemController extends Controller
         if ($isPresentFile) {
             $imagemSalva->url = $request->catalogo_id . '/' . $request->file->hashName();
             $imagemSalva->save();
-
         }
 
         if (!str_contains($imagemSalva->url, '.webp'))
