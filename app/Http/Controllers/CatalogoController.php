@@ -59,8 +59,8 @@ class CatalogoController extends Controller
             ->orderByRaw('RAND() LIMIT 14')
             ->get();
 
-            //->unique('categoria_id')
-            //->values()->toArray();
+        //->unique('categoria_id')
+        //->values()->toArray();
 
     }
 
@@ -305,14 +305,10 @@ class CatalogoController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'nome' => 'bail|required',
-            'endereco' => 'bail|required',
-            'descricao.descricao' => 'bail|required'
+            'nome' => 'bail|required'
         ],
             [
                 'nome.required' => 'Nome é obrigatório!',
-                'endereco.required' => 'Endereço é obrigatório!',
-                'descricao.descricao' => 'Descrição é obrigatório!'
             ]);
 
         if ($validator->fails())
@@ -344,13 +340,14 @@ class CatalogoController extends Controller
             'user_id' => 1
         ]);
 
-        $descricao = Descricao::create([
-            'titulo' => $request->input('descricao.titulo'),
-            'descricao' => $request->input('descricao.descricao'),
-            'catalogo_id' => $catalogo->id
-        ]);
+        if ($request->input('descricao.titulo') != null || $request->input('descricao.descricao'))
+            $descricao = Descricao::create([
+                'titulo' => $request->input('descricao.titulo'),
+                'descricao' => $request->input('descricao.descricao'),
+                'catalogo_id' => $catalogo->id
+            ]);
 
-        $descricao = Preco::create([
+        Preco::create([
             'descricao' => 'Valores',
             'descontos' => false,
             'minimo' => 0,
