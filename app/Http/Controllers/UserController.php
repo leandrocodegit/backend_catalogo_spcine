@@ -34,7 +34,7 @@ class UserController extends Controller
             // 'documento' => 'bail|required',
             // 'empresa' => 'bail|required',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)],
-            'telefone' => 'bail|required'
+            //'telefone' => 'bail|required'
         ],
             [
                 'nome.required' => 'Nome é obrigatório!',
@@ -42,7 +42,7 @@ class UserController extends Controller
                 'email.email' => 'Email não é válido!',
                 //   'documento.required' => 'Documento é obrigatório!',
                 //   'empresa.required' => 'Empresa é obrigatório!',
-                'telefone.required' => 'Telefone é obrigatório!',
+                //'telefone.required' => 'Telefone é obrigatório!',
                 'password.required' => 'Senha é obrigatório!',
                 'password_confirmation.required' => 'Confirmação de senha é obrigatório!'
             ]);
