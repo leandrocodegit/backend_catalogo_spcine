@@ -82,8 +82,8 @@ class ImagemController extends Controller
 
         $imagemSalva = Imagem::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
-            'titulo' => $request->titulo == null ? "" : $request->titulo,
-            'descricao' => $request->descricao == null ? "" : $request->descricao,
+            'titulo' =>  isset($request['titulo']) ? $request->titulo : "",
+            'descricao' => isset($request['descricao']) ? $request->descricao : "",
             'ordem' => 0,
             'principal' => $request->principal == null ? false : $request->principal,
             'catalogo_id' => $request->catalogo_id
