@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.2.11",
+        "php": "^8.2.7",
         "guzzlehttp/guzzle": "^7.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
@@ -14,7 +14,8 @@
         "maatwebsite/excel": "^3.1",
         "symfony/http-client": "^6.0",
         "symfony/mailgun-mailer": "^6.0",
-        "tymon/jwt-auth": "^2.0"
+       "tymon/jwt-auth":"^2.0.0"
+
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
