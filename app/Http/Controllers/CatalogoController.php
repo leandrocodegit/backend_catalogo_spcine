@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account\User;
+use App\Models\util\ImagemUtil;
 use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
 use Exception;
@@ -386,92 +387,21 @@ class CatalogoController extends Controller
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
-        Catalogo::with('administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
-            ->findOrFail($request->id)
-            ->update([
-                'nome' => $request->nome,
-                'endereco' => $request->endereco,
-                'hora_inicial' => $request->hora_inicial,
-                'hora_final' => $request->hora_final,
-                'home' => $request->home,
-                'active' => $request->active,
-                'categoria_id' => $request->input('categoria.id'),
-                'regiao_id' => $request->input('regiao.id'),
-                'administrador_id' => $request->input('administrador.id')
-            ]);
+        $catalogoDB = Catalogo::with('administrador', 'descricoes', 'cordenadas', 'caracteristicas', 'precos', 'imagens', 'regiao', 'regras')
+            ->findOrFail($request->id);
 
-//        $catalogo = $this->find($request->id);
-
-//        if ($request->cordenadas !== null) {
-//            try {
-//                $cordenadas = Cordenada::updateOrCreate(
-//                    ['id' => isset($request->cordenadas['id']) ? $request->cordenadas['id'] : null],
-//                    [
-//                        'latitude' => $request->cordenadas['latitude'],
-//                        'longitude' => $request->cordenadas['longitude']
-//                    ]);
-//                $catalogo->cordenadas()->associate($cordenadas->id);
-//            } catch (Exception $e) {
-//            }
-//        }
-
-//        if ($request->descricoes !== null) {
-//            try {
-//                foreach ($request->descricoes as $descricao) {
-//                    Descricao::updateOrCreate(
-//                        ['id' => isset($descricao['id']) ? $descricao['id'] : null],
-//                        [
-//                            'titulo' => $descricao['titulo'],
-//                            'descricao' => $descricao['descricao'],
-//                            'catalogo_id' => $catalogo->id,
-//                        ]);
-//                }
-//            } catch (Exception $e) {
-//            }
-//        }
-
-//        if ($request->precos !== null) {
-//            try {
-//                foreach ($request->precos as $preco) {
-//                    Preco::updateOrCreate(
-//                        ['id' => isset($preco['id']) ? $preco['id'] : null],
-//                        [
-//                            'minimo' => $preco->minimo,
-//                            'maximo' => $preco->maximo,
-//                            'descontos' => $preco->descontos,
-//                            'tabela_descontos' => $preco->tabela_descontos,
-//                            'tabela_precos' => $preco->tabela_precos,
-//                            'descricao' => $preco->descricao,
-//                            'catalogo_id' => $preco->catalogo_id,
-//                        ]);
-//                }
-//            } catch (Exception $e) {
-//            }
-//        }
-
-//        if ($request->caracteristicas !== null) {
-//            try {
-//                $catalogo->caracteristicas()->detach();
-//                $catalogo->caracteristicas()->attach(
-//                    collect($request->caracteristicas)
-//                        ->map(function ($value, $key) {
-//                            return $value['id'];
-//                        }));
-//            } catch (Exception $e) {
-//            }
-//        }
-
-//        if ($request->regras !== null) {
-//            try {
-//                $catalogo->regras()->detach();
-//                $catalogo->regras()->attach(
-//                    collect($request->regras)
-//                        ->map(function ($value, $key) {
-//                            return $value['id'];
-//                        }));
-//            } catch (Exception $e) {
-//            }
-//        }
+        $catalogoDB->update([
+            'nome' => $request->nome,
+            'endereco' => $request->endereco,
+            'hora_inicial' => $request->hora_inicial,
+            'hora_final' => $request->hora_final,
+            'home' => $request->home,
+            'active' => $request->active,
+            'categoria_id' => $request->input('categoria.id'),
+            'regiao_id' => $request->input('regiao.id'),
+            'administrador_id' => $request->input('administrador.id'),
+            'like' => $this->getLike($catalogoDB)
+        ]);
 
         Log::channel('db')->info(
             'Editado imagem ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
@@ -518,6 +448,26 @@ class CatalogoController extends Controller
         return response()->json([
             'message' => 'Catalogo removido com sucesso!',
             'status' => 200], 200);
+    }
+
+    public function sicronizarLike()
+    {
+        $catalogos = Catalogo::with("descricoes")->get();
+
+        foreach ($catalogos as $catalogo) {
+            $like = $catalogo->nome . $catalogo->endereco;
+            foreach ($catalogo->descricoes as $descricao) {
+                $like = $like . $descricao->descricao;
+            }
+            $catalogo->like = $like;
+            $catalogo->save();
+        }
+    }
+
+    private function getLike($catalogo)
+    {
+        return str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", MapUtil::merge(collect($catalogo->descricoes), 'titulo', 'descricao') . ' ' .
+            $catalogo->nome);
     }
 }
 

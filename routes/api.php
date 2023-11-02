@@ -136,6 +136,7 @@ Route::group([
 
     Route::get('/random', [CatalogoController::class, 'random']);
     Route::get('/list', [CatalogoController::class, 'list']);
+    Route::get('/likes', [CatalogoController::class, 'sicronizarLike']);
     Route::get('/list/user/{userId}', [CatalogoController::class, 'listPorUser'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
     Route::post('/search/list', [CatalogoController::class, 'search'])->middleware(['middleware' => 'no_inject']);
     Route::post('/filter/list', [CatalogoController::class, 'filter'])->middleware(['middleware' => 'no_inject']);
