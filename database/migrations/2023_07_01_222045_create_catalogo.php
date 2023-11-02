@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('catalogos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('endereco');
+            $table->string('endereco')->nullable(true)->default('');
             $table->integer('status')->default(1);
             $table->time('hora_inicial')->default('00:00');
             $table->time('hora_final')->default('23:59');

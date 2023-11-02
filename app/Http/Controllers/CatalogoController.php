@@ -455,19 +455,15 @@ class CatalogoController extends Controller
         $catalogos = Catalogo::with("descricoes")->get();
 
         foreach ($catalogos as $catalogo) {
-            $like = $catalogo->nome . $catalogo->endereco;
-            foreach ($catalogo->descricoes as $descricao) {
-                $like = $like . $descricao->descricao;
-            }
-            $catalogo->like = $like;
+            $catalogo->like = getLike($catalogo);
             $catalogo->save();
         }
     }
 
     private function getLike($catalogo)
     {
-        return str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", MapUtil::merge(collect($catalogo->descricoes), 'titulo', 'descricao') . ' ' .
-            $catalogo->nome);
+        return str_limit(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", MapUtil::merge(collect($catalogo->descricoes), 'titulo', 'descricao') . ' ' .
+            $catalogo->nome), 2000);
     }
 }
 
