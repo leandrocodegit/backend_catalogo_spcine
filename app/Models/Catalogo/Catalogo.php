@@ -18,7 +18,6 @@ class Catalogo extends Model
         'id',
         'nome',
         'like',
-        'like_langue',
         'endereco',
         'status',
         'home',

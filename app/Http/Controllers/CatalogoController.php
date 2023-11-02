@@ -2,26 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EventResponse;
 use App\Models\Account\User;
-use App\Models\util\ImagemUtil;
+use App\Models\Catalogo\Catalogo;
+use App\Models\Catalogo\Cordenada;
+use App\Models\Catalogo\Descricao;
+use App\Models\Catalogo\Preco;
 use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
-use Exception;
-use App\Models\Catalogo\Imagem;
-use App\Models\Catalogo\Catalogo;
-use App\Models\Catalogo\Descricao;
-use App\Models\Catalogo\Cordenada;
-use App\Models\Catalogo\Regiao;
-use App\Models\Catalogo\Administrador;
-use App\Models\Catalogo\Caracteristica;
-use App\Models\Catalogo\Preco;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
-use App\Events\EventResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 
 class CatalogoController extends Controller
@@ -214,7 +204,7 @@ class CatalogoController extends Controller
 
             //Aplica filtro por seu nome
             ->when($validNome)
-            ->where('nome', 'LIKE', '%' . $request->nome . '%')
+            ->where('like', 'LIKE', '%' . $request->nome . '%')
             //Aplica filtro por catalogos ativos ou inativos
             ->when($request->active !== null)
             ->where('active', $request->active)
@@ -337,7 +327,6 @@ class CatalogoController extends Controller
             'icon_id' => ($request->icon !== null && $request->input('icon.id') != null) ? $request->input('icon.id') : 1,
             'like' => $request->nome . ' ' .
                 $request->endereco . ' ',
-            'like_langue' => '',
             'user_id' => 1
         ]);
 
@@ -462,8 +451,7 @@ class CatalogoController extends Controller
 
     private function getLike($catalogo)
     {
-        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", MapUtil::merge(collect($catalogo->descricoes), '', 'descricao') . ' ' .
-            $catalogo->nome), 0, 2000);
+        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao') ), 0, 2000);
     }
 }
 
