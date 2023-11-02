@@ -261,6 +261,11 @@ return [
     |
     */
 
+    'jwt' => [
+        'algo' => 'HS256'
+    ],
+
+
     'providers' => [
 
         /*

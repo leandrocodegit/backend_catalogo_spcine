@@ -12,7 +12,6 @@ use App\Http\Controllers\ExportImportController;
 use App\Http\Controllers\CaracteristicaController;
 use App\Http\Controllers\RegraController;
 use App\Http\Controllers\TipoRegraController;
-use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\IconController;
 use App\Http\Controllers\FiltroController;
 use App\Http\Controllers\CategoriaCatalogoController;
@@ -54,16 +53,6 @@ Route::group([
     Route::post('/update', [IconController::class, 'update'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
     Route::post('/associar', [IconController::class, 'associar'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);
     Route::delete('/{id}', [IconController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-});
-
-//Route:: Agendas
-Route::group([
-    'prefix' => 'agenda'
-], function ($router) {
-    Route::get('/{id}', [AgendaController::class, 'find'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
-    Route::get('/find/list', [AgendaController::class, 'list'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,GUEST,MANAGER']);
-    Route::post('/', [AgendaController::class, 'store'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
-    Route::delete('/{id}', [AgendaController::class, 'destroy'])->middleware(['middleware' => 'JWT:ROOT,ADMIN']);
 });
 
 //Route:: Tipo de regas
