@@ -135,7 +135,6 @@ class CatalogoController extends Controller
             ->where('user_id', $user->id)
             ->when($validNome)
             ->where('like', 'LIKE', '%' . $request->nome . '%')
-            ->orWhere('like_langue', 'LIKE', '%' . $request->nome . '%')
             ->when($request->ordem !== null)
             ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
             ->paginate($request->limite);
