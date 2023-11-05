@@ -145,47 +145,6 @@ class CatalogoController extends Controller
 
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
-        if ($validNome && $request->nome != "") {
-            return Catalogo::with(
-                'responsavel',
-                'categoria',
-                'administrador',
-                'descricoes',
-                'cordenadas',
-                'icon',
-                'caracteristicas',
-                'precos',
-                'imagens',
-                'regiao',
-                'regras')
-                ->when($request->active !== null)
-                ->where('active', $request->active)
-                ->when($request->ordem !== null)
-                ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
-                ->paginate($request->limite);
-        }
-
-        if ($validNome) {
-            $catalogoID = Catalogo::with(
-                'caracteristicas',
-                'cordenadas',
-                'responsavel',
-                'administrador',
-                'imagens',
-                'descricoes',
-                'regiao',
-                'icon',
-                'categoria',
-                'precos',
-                'regras')
-                ->when($validNome)
-                ->where('id', $request->nome)
-                ->paginate($request->limite);
-
-            if ($catalogoID->total() == 1)
-                return $catalogoID;
-        }
-
         return Catalogo::with(
             'responsavel',
             'categoria',
