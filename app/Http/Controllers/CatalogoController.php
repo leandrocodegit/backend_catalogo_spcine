@@ -76,7 +76,7 @@ class CatalogoController extends Controller
                 $isIncludeUser = true;
         }
 
-        if ($request->nome == null || $request->nome == "all")
+        if (($request->nome == null) || $request->nome != "")
             return Catalogo::with(
                 'caracteristicas',
                 'cordenadas',
@@ -145,7 +145,7 @@ class CatalogoController extends Controller
 
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
-        if ($validNome && $request->nome == "all") {
+        if ($validNome && $request->nome != "") {
             return Catalogo::with(
                 'responsavel',
                 'categoria',
