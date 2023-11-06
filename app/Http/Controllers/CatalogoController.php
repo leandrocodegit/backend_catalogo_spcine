@@ -139,6 +139,7 @@ class CatalogoController extends Controller
                 'regras')
                 ->when($validNome)
                 ->where('id', $request->nome)
+                ->where('active', 1)
                 ->paginate($request->limite);
 
             if ($catalogoID != null && $catalogoID->total() == 1)
@@ -202,6 +203,7 @@ class CatalogoController extends Controller
             ->where('hora_inicial', '>=', $request['horario.inicial'])
             ->when($request->horario !== null)
             ->where('hora_final', '<=', $request['horario.final'])
+            ->where('active', 1)
             ->paginate($request->limite);
 
     }
