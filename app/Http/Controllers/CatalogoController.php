@@ -124,6 +124,26 @@ class CatalogoController extends Controller
 
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
+        if($validNome)
+        $catalogoID = Catalogo::with(
+            'caracteristicas',
+            'cordenadas',
+            'responsavel',
+            'administrador',
+            'imagens',
+            'descricoes',
+            'regiao',
+            'icon',
+            'categoria',
+            'precos',
+            'regras')
+            ->when($validNome)
+            ->where('id', $request->nome)
+            ->paginate($request->limite);
+
+        if ($catalogoID->total() == 1)
+            return $catalogoID;
+
         return Catalogo::with(
             'responsavel',
             'categoria',
