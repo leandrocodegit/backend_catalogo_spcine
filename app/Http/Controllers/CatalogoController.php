@@ -76,27 +76,6 @@ class CatalogoController extends Controller
                 $isIncludeUser = true;
         }
 
-        if (($request->nome == null) || $request->nome != "")
-            return Catalogo::with(
-                'caracteristicas',
-                'cordenadas',
-                'responsavel',
-                'regras',
-                'administrador',
-                'imagens',
-                'descricoes',
-                'regiao',
-                'icon',
-                'categoria',
-                'precos',
-                'regras')
-                ->when($isIncludeUser)
-                ->where('user_id', $user->id)
-                ->when($request->ordem !== null)
-                ->orderBy($request['ordem.nome'], $request['ordem.tipo'])
-                ->paginate($request->limite);
-
-        if ($validNome) {
             $catalogoID = Catalogo::with(
                 'caracteristicas',
                 'cordenadas',
@@ -117,7 +96,7 @@ class CatalogoController extends Controller
 
             if ($catalogoID->total() == 1)
                 return $catalogoID;
-        }
+
 
         return Catalogo::with(
             'caracteristicas',
