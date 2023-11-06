@@ -30,7 +30,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            'throttle:2000,1', // Permite 500 solicitações por minuto (60 RPM) por IP
+            //'throttle:2000,1', // Permite 500 solicitações por minuto (60 RPM) por IP
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:2000,1', // Permite 500 solicitações por minuto (60 RPM) por IP
+            //'throttle:2000,1', // Permite 500 solicitações por minuto (60 RPM) por IP
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class,
