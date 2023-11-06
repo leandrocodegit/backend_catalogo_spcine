@@ -76,26 +76,26 @@ class CatalogoController extends Controller
                 $isIncludeUser = true;
         }
 
-            $catalogoID = Catalogo::with(
-                'caracteristicas',
-                'cordenadas',
-                'responsavel',
-                'administrador',
-                'imagens',
-                'descricoes',
-                'regiao',
-                'icon',
-                'categoria',
-                'precos',
-                'regras')
-                ->when($isIncludeUser)
-                ->where('user_id', $user->id)
-                ->when($validNome)
-                ->where('id', $request->nome)
-                ->paginate($request->limite);
+        $catalogoID = Catalogo::with(
+            'caracteristicas',
+            'cordenadas',
+            'responsavel',
+            'administrador',
+            'imagens',
+            'descricoes',
+            'regiao',
+            'icon',
+            'categoria',
+            'precos',
+            'regras')
+            ->when($isIncludeUser)
+            ->where('user_id', $user->id)
+            ->when($validNome)
+            ->where('id', $request->nome)
+            ->paginate($request->limite);
 
-            if ($catalogoID->total() == 1)
-                return $catalogoID;
+        if ($catalogoID->total() == 1)
+            return $catalogoID;
 
 
         return Catalogo::with(
@@ -124,25 +124,27 @@ class CatalogoController extends Controller
 
         $validNome = (isset($request->nome) && strlen($request->nome) > 2);
 
-        if($validNome)
-        $catalogoID = Catalogo::with(
-            'caracteristicas',
-            'cordenadas',
-            'responsavel',
-            'administrador',
-            'imagens',
-            'descricoes',
-            'regiao',
-            'icon',
-            'categoria',
-            'precos',
-            'regras')
-            ->when($validNome)
-            ->where('id', $request->nome)
-            ->paginate($request->limite);
+        if ($validNome) {
+            $catalogoID = Catalogo::with(
+                'caracteristicas',
+                'cordenadas',
+                'responsavel',
+                'administrador',
+                'imagens',
+                'descricoes',
+                'regiao',
+                'icon',
+                'categoria',
+                'precos',
+                'regras')
+                ->when($validNome)
+                ->where('id', $request->nome)
+                ->paginate($request->limite);
 
-        if ($catalogoID->total() == 1)
-            return $catalogoID;
+            if ($catalogoID != null && $catalogoID->total() == 1)
+                return $catalogoID;
+        }
+
 
         return Catalogo::with(
             'responsavel',
@@ -408,7 +410,7 @@ class CatalogoController extends Controller
 
     private function getLike($catalogo)
     {
-        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao') ), 0, 2000);
+        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao')), 0, 2000);
     }
 }
 
