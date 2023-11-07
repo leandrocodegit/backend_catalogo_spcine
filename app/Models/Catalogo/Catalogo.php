@@ -29,7 +29,8 @@ class Catalogo extends Model
         'categoria_id',
         'user_id',
         'hora_inicial',
-        'hora_final'
+        'hora_final',
+        'descricao_principal'
     ];
 
     protected $hidden = [

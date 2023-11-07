@@ -277,6 +277,7 @@ class CatalogoController extends Controller
         $catalogo = Catalogo::create([
             'nome' => $request->nome,
             'endereco' => $request->endereco,
+            'descricao_principal' => $request->descricao_principal,
             'hora_inicial' => $request->hora_inicial,
             'hora_final' => $request->hora_final,
             'home' => $request->home !== null ? $request->home : false,
@@ -291,13 +292,6 @@ class CatalogoController extends Controller
             'user_id' => 1
         ]);
 
-        if ($request->input('descricao.titulo') != null || $request->input('descricao.descricao'))
-            $descricao = Descricao::create([
-                'titulo' => $request->input('descricao.titulo'),
-                'descricao' => $request->input('descricao.descricao'),
-                'catalogo_id' => $catalogo->id
-            ]);
-
         Preco::create([
             'descricao' => 'Valores',
             'descontos' => false,
@@ -308,11 +302,8 @@ class CatalogoController extends Controller
 
         $catalogo->update([
             'like' => $catalogo->nome . ' ' .
-                $catalogo->endereco . ' ' .
-                MapUtil::merge(collect([$descricao]), 'titulo', 'descricao') . ' ' .
-                $catalogo->nome
+                $catalogo->endereco . ' ' . $catalogo->descricao_principal
         ]);
-
 
         Log::channel('db')->info(
             'Criado catalogo ' . $request->id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
@@ -325,13 +316,11 @@ class CatalogoController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id' => 'bail|required',
-            'nome' => 'bail|required',
-            'endereco' => 'bail|required'
+            'nome' => 'bail|required'
         ],
             [
                 'id.required' => 'Campo id é obrigatório!',
-                'nome.required' => 'Nome é obrigatório!',
-                'endereco.required' => 'Endereço é obrigatório!'
+                'nome.required' => 'Nome é obrigatório!'
             ]);
 
         if ($validator->fails())
@@ -342,6 +331,7 @@ class CatalogoController extends Controller
 
         $catalogoDB->update([
             'nome' => $request->nome,
+            'descricao_principal' => $request->descricao_principal,
             'endereco' => $request->endereco,
             'hora_inicial' => $request->hora_inicial,
             'hora_final' => $request->hora_final,
@@ -405,14 +395,28 @@ class CatalogoController extends Controller
         $catalogos = Catalogo::with("descricoes")->get();
 
         foreach ($catalogos as $catalogo) {
-            $catalogo->like = $this->getLike($catalogo);
-            $catalogo->save();
+            if ($catalogo->descricoes != null) {
+                $descricao = $catalogo->descricoes->first();
+                if ($descricao != null) {
+                    if (strlen($descricao->descricao) > 50)
+                        if (!(str_contains($descricao->descricao, '<li>')))
+                            if (!(str_contains($descricao->descricao, '<br')))
+                                if (!(str_contains($descricao->descricao, '<p>')))
+                                    if (!(str_contains($descricao->descricao, '<p>'))) {
+                                        $catalogo->descricao_principal = $descricao->descricao;
+                                        $catalogo->save();
+                                        $descricao->delete();
+                                    }
+
+                }
+            }
+
         }
     }
 
     private function getLike($catalogo)
     {
-        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao')), 0, 2000);
+        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . $catalogo->descricao_principal . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao')), 0, 2000);
     }
 }
 
