@@ -3,10 +3,9 @@
 <head>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <meta charset="utf-8">
-    <title>Fimesp Locações</title>
+    <title>Filmesp Catalogos</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style type="text/css">@font-face {
             font-family: 'Material Symbols Outlined';
             font-style: normal;
