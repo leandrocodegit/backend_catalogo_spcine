@@ -390,29 +390,6 @@ class CatalogoController extends Controller
             'status' => 200], 200);
     }
 
-    public function sicronizarLike()
-    {
-        $catalogos = Catalogo::with("descricoes")->get();
-
-        foreach ($catalogos as $catalogo) {
-            if ($catalogo->descricoes != null) {
-                $descricao = $catalogo->descricoes->first();
-                if ($descricao != null) {
-                    if (strlen($descricao->descricao) > 50)
-                        if (!(str_contains($descricao->descricao, '<li>')))
-                            if (!(str_contains($descricao->descricao, '<br')))
-                                if (!(str_contains($descricao->descricao, '<p>')))
-                                    if (!(str_contains($descricao->descricao, '<p>'))) {
-                                        $catalogo->descricao_principal = $descricao->descricao;
-                                        $catalogo->save();
-                                        $descricao->delete();
-                                    }
-
-                }
-            }
-
-        }
-    }
 
     private function getLike($catalogo)
     {
