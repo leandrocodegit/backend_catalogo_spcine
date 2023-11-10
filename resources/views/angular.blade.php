@@ -3,7 +3,7 @@
 <head>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <meta charset="utf-8">
-    <title>Filmesp Catalogos</title>
+    <title>Catálogo de Locações SPFilm</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type="text/css">@font-face {
