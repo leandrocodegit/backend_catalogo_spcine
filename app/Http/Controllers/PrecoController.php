@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Catalogo\Preco;
 use App\Models\util\MapUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PrecoController extends Controller
@@ -36,10 +37,18 @@ class PrecoController extends Controller
 
         $mensagem = "Preço criado com sucesso!";
 
-        if (isset($request['id']) && Preco::where('id', $request->id)->exists())
+        if (isset($request['id']) && Preco::where('id', $request->id)->exists()){
             $mensagem = "Preço atualizado com sucesso!";
+            Log::channel('db')->info(
+                'Atualizado preço ' . $request['id'] . ' ' . $request->minimo . ' ' .  $request->maximo . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
+        }
+        else{
+            Log::channel('db')->info(
+                'Criado novo preço para catalogo ' . $request->catalogo_id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
+        }
 
-        Preco::updateOrCreate(
+
+      $preco =  Preco::updateOrCreate(
             ['id' => isset($request['id']) ? $request->id : null], [
             'minimo' => $request->minimo,
             'maximo' => $request->maximo,
@@ -49,6 +58,8 @@ class PrecoController extends Controller
             'descricao' =>  $request->descricao,
             'catalogo_id' => $request->catalogo_id,
         ]);
+
+
 
         return response()->json([
             'message' => $mensagem,
@@ -68,6 +79,8 @@ class PrecoController extends Controller
            }
            else{
                $preco->delete();
+               Log::channel('db')->info(
+                   'Removido preço ' . $id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
                return response()->json([
                    'message' => 'Preço removido com sucesso!',
                    'status' => 200], 200);
