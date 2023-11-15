@@ -23,11 +23,11 @@ class DescricaoController extends Controller
         if (isset($request['id']) && Descricao::where('id', $request->id)->exists()){
             $mensagem = "Descrição atualizada com sucesso!";
             Log::channel('db')->info(
-                'Atualizado descrição ' . $request['id'] . ' ' . substr($request->descricao, 50) . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
+                'Atualizado descrição ' . $request['id'] .  ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
         }
         else{
             Log::channel('db')->info(
-                'Adicionado nova descrição para catalogo ' . $request->catalogo_id . ' ' . substr($request->descricao, 50) . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
+                'Adicionado nova descrição para catalogo ' . $request->catalogo_id . ' com usuario ' . \auth()->user()->nome . ' e previlégios ' . \auth()->user()->perfil->nome);
         }
 
       Descricao::updateOrCreate(
