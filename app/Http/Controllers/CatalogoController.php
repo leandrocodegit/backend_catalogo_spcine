@@ -393,7 +393,7 @@ class CatalogoController extends Controller
 
     private function getLike($catalogo)
     {
-        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . $catalogo->descricao_principal . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao')), 0, 2000);
+        return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . $catalogo->endereco . ' ' . $catalogo->descricao_principal . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao')), 0, 2000);
     }
 }
 
