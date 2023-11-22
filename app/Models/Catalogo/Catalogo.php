@@ -38,7 +38,8 @@ class Catalogo extends Model
         'cordenadas_id',
         'administrador_id',
         'icon_id',
-        'categoria_id'
+        'categoria_id',
+        'like'
     ];
 
     protected $table = "catalogos";
