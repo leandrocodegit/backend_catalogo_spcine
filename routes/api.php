@@ -134,6 +134,7 @@ Route::group([
 
 ], function ($router) {
 
+    Route::get('/like', [CatalogoController::class, 'likes']);
     Route::get('/random', [CatalogoController::class, 'random']);
     Route::get('/list', [CatalogoController::class, 'list']);
     Route::get('/list/user/{userId}', [CatalogoController::class, 'listPorUser'])->middleware(['middleware' => 'JWT:ROOT,ADMIN,MANAGER']);

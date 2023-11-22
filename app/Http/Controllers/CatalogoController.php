@@ -395,5 +395,17 @@ class CatalogoController extends Controller
     {
         return substr(str_replace(["<br />", "<br>", "<ul>", "</ul>", "<li>", "</li>"], "", $catalogo->nome . ' ' . $catalogo->endereco . ' ' . $catalogo->descricao_principal . ' ' . MapUtil::merge(collect($catalogo->descricoes), '', 'descricao')), 0, 2000);
     }
+
+
+    public function likes(){
+
+        $catalogos = Catalogo::all();
+
+        foreach ($catalogos as  $catalogo){
+            $catalogo->update([
+                'like' => $this->getLike($catalogo)
+            ]);
+        }
+    }
 }
 
