@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExportImportController;
 use App\Http\Controllers\SecurityController;
 use Illuminate\Support\Facades\View;
 
@@ -21,7 +22,9 @@ use Illuminate\Support\Facades\View;
 Route::get('/', function () {
     return view('angular');
 });
- 
+
+
+
 
 // Para ativar conta de usuário
 Route::get('/account/active/{id}/{token}', [SecurityController::class, 'active']);
@@ -29,7 +32,6 @@ Route::get('/account/active/{id}/{token}', [SecurityController::class, 'active']
 // Redireciona para formulário de senha
 Route::get('/account/reset/{id}/{token}', [SecurityController::class, 'valid']);
 
- 
 
- 
- 
+
+

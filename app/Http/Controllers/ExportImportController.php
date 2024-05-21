@@ -20,7 +20,7 @@ class ExportImportController extends Controller
     public function catalogosXLS()
     {
         Log::channel('db')->info(
-            'Exportando catalogos com usuario ' . auth()->user()->nome. ' e previlégios ' .auth()->user()->perfil->role);
+            'Exportando catalogos');
         return Excel::download(new ExportCatalogos, 'catalogos.xls');
     }
 

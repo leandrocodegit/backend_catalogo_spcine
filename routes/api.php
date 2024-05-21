@@ -96,6 +96,14 @@ Route::group([
     Route::get('/export/catalogo', [ExportImportController::class, 'catalogosXLS']);
 });
 
+
+Route::group([
+    'prefix' => 'export',
+
+], function ($router) {
+    Route::get('/catalogo', [ExportImportController::class, 'catalogosXLS']);
+});
+
 Route::group([
     'middleware' => 'JWT:ROOT',
     'prefix' => 'data',

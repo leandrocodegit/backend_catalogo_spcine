@@ -26,11 +26,19 @@ class ExportCatalogos implements FromCollection, WithHeadings, WithMapping
             'ID',
             'Nome',
             'Descrição',
-            'Média de preço',
+            'Categoria',
+            'Endereço',
+            'Horário inicial',
+            'Horário final',
+            'Administrador',
+            'Região',
             'Latitude',
             'Longitude',
+            'Menor preço',
+            'Maior preço',
+            'Quantidade imagens',
             'Status',
-            'Administrador'
+
         ];
     }
 
@@ -42,12 +50,23 @@ class ExportCatalogos implements FromCollection, WithHeadings, WithMapping
             [
                 $catalogo->id,
                 $catalogo->nome,
+                $catalogo->descricao_principal,
+                $catalogo->categoria->nome,
                 $catalogo->endereco,
-                $catalogo->mediaPreco,
-                $catalogo->cordenadas->latitude,
-                $catalogo->cordenadas->longitute,
-                $catalogo->active === 1 ? 'Ativo' : 'Inativo',
+                $catalogo->horaInicial,
+                $catalogo->horaFinal,
                 $catalogo->administrador->nome,
+                $catalogo->regiao->nome,
+                $catalogo->cordenadas->latitude,
+                $catalogo->cordenadas->longitude,
+                'R$ ' .$catalogo->precos->min(function ($preco) {
+                    return $preco->minimo;
+                }),
+                'R$ ' .$catalogo->precos->max(function ($preco) {
+                    return $preco->maximo;
+                }),
+                count($catalogo->imagens),
+                $catalogo->active === 1 ? 'Ativo' : 'Inativo',
             ]
         ];
     }
