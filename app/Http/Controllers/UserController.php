@@ -21,21 +21,24 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class UserController extends Controller
 {
 
-    public function list(){
+    public function list()
+    {
         return User::all();
     }
 
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'nome' => 'bail|required',
-            'email' => 'bail|required|email',
-            // 'documento' => 'bail|required',
-            // 'empresa' => 'bail|required',
-            'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)],
-            //'telefone' => 'bail|required'
-        ],
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'nome' => 'bail|required',
+                'email' => 'bail|required|email',
+                // 'documento' => 'bail|required',
+                // 'empresa' => 'bail|required',
+                'password' => ['required', 'confirmed', Password::min(8)->mixedCase(1)->symbols(1)->numbers(1)],
+                //'telefone' => 'bail|required'
+            ],
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
@@ -45,38 +48,40 @@ class UserController extends Controller
                 //'telefone.required' => 'Telefone é obrigatório!',
                 'password.required' => 'Senha é obrigatório!',
                 'password_confirmation.required' => 'Confirmação de senha é obrigatório!'
-            ]);
+            ]
+        );
 
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
 
 
-        if (User:: where('email', '=', $request->email)->exists())
+        if (User::where('email', '=', $request->email)->exists())
             return response()->json(['message' => 'Usuário já foi cadastrado!'], 422);
 
-        $user = User:: create([
+        $user = User::create([
             'nome' => $request->nome,
             'email' => $request->email,
             'documento' => $request->documento,
             //  'empresa' => $request->empresa,
-            'password' => Hash:: make($request->password),
+            'password' => Hash::make($request->password),
             'active' => false,
             'telefone' => $request->telefone,
             'celular' => $request->celular,
             'perfil_id' => 4
         ]);
 
-        $tokenAcess = TokenAccess:: create([
+        $tokenAcess = TokenAccess::create([
             'user_id' => $user->id,
             'tipo' => 'ACTIVE',
-            'token' => Str:: random(254),
-            'validade' => Carbon:: now()->addMinutes(10)
+            'token' => Str::random(254),
+            'validade' => Carbon::now()->addMinutes(10)
         ]);
 
         Log::channel('db')->info(
-            'Criado usuario' . $user->id . ' com usuario ' . $user->nome . ' e previlégios ' . $user->perfil->role);
+            'Criado usuario' . $user->id . ' com usuario ' . $user->nome . ' e previlégios ' . $user->perfil->role
+        );
 
-        EnviarEmail:: dispatch($user, $tokenAcess, 'CHECK');
+        EnviarEmail::dispatch($user, $tokenAcess, 'CHECK');
 
         return response()->json(['message' => 'Usuário cadastrado com sucesso!'], 200);
     }
@@ -87,12 +92,15 @@ class UserController extends Controller
         $request = new Request([
             'id' => $id
         ]);
-        $validator = Validator::make($request->all(), [
-            'id' => 'bail|numeric'
-        ],
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id' => 'bail|numeric'
+            ],
             [
                 'id.numeric' => 'Id inválido!'
-            ]);
+            ]
+        );
 
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
@@ -102,40 +110,35 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nome' => 'bail|required'
-        ],
-            [
-                'nome.required' => 'Nome é obrigatório!'
-            ]);
 
-        if ($validator->fails())
-            return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
+        if ((isset($request->nome) && strlen($request->nome) > 2)) {
 
-        if ($request['nome'] == "all")
-            return User::with('perfil')->where('nome', '!=', 'Root')->paginate(50);
+            if ($request['nome'] == "all")
+                return User::with('perfil')->where('nome', '!=', 'Root')->paginate(50);
 
-        if (Str::length($request->nome) > 2)
-            return User::with('perfil')
-                ->where('nome', 'LIKE', '%' . $request->nome . '%')
-                ->orWhere('email', 'LIKE', '%' . $request->nome . '%')
-                ->orWhere('documento', 'LIKE', '%' . $request->nome . '%')
-                ->orWhere('empresa', 'LIKE', '%' . $request->nome . '%')
-                ->where('nome', '!=', 'Root')
-                ->simplePaginate(50);
-        return response()->json(['message' => 'Necessário ao menos 3 caracteres!'], 201);
+            if (Str::length($request->nome) > 2)
+                return User::with('perfil')
+                    ->where('nome', 'LIKE', '%' . $request->nome . '%')
+                    ->orWhere('email', 'LIKE', '%' . $request->nome . '%')
+                    ->orWhere('documento', 'LIKE', '%' . $request->nome . '%')
+                    ->orWhere('empresa', 'LIKE', '%' . $request->nome . '%')
+                    ->where('nome', '!=', 'Root')
+                    ->simplePaginate(50);
+        }
     }
 
     public function edit(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nome' => 'bail|required',
-            'email' => 'bail|required',
-            //    'documento' => 'bail|required',
-           // 'empresa' => 'bail|required',
-            'telefone' => 'bail|required',
-            'celular' => 'bail|required'
-        ],
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'nome' => 'bail|required',
+                'email' => 'bail|required',
+                //    'documento' => 'bail|required',
+                // 'empresa' => 'bail|required',
+                'telefone' => 'bail|required',
+                'celular' => 'bail|required'
+            ],
             [
                 'nome.required' => 'Nome é obrigatório!',
                 'email.required' => 'Email é obrigatório!',
@@ -143,7 +146,8 @@ class UserController extends Controller
                 //    'empresa.required' => 'Empresa é obrigatório!',
                 'telefone.required' => 'Telefone é obrigatório!',
                 'celular.required' => 'Celular é obrigatório!',
-            ]);
+            ]
+        );
 
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
@@ -166,12 +170,13 @@ class UserController extends Controller
                 ]);
 
             Log::channel('db')->info(
-                'Editado usuario' . $request->email . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
+                'Editado usuario' . $request->email . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role
+            );
 
             return response()->json([
                 'message' => 'Usuário atualizado com sucesso!',
-                'status' => 200], 200);
-
+                'status' => 200
+            ], 200);
         } catch (Throwable $e) {
             if ($e->getCode() === "23000")
                 return response()->json(['message' => 'Email ou documento já existe!', 'status' => 422], 422);
@@ -183,36 +188,39 @@ class UserController extends Controller
     {
 
         try {
-            $token = JWTAuth:: parseToken();
+            $token = JWTAuth::parseToken();
             $userAuth = $token->authenticate();
 
             if ($userAuth->perfil->role === 'ROOT') {
                 User::destroy($id);
                 Log::channel('db')->info(
-                    'Delete usuario' . $id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
+                    'Delete usuario' . $id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role
+                );
             } else {
                 Log::channel('db')->info(
-                    'Delete não conlcuido usuario' . $id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
+                    'Delete não conlcuido usuario' . $id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role
+                );
             }
-
         } catch (Throwable $e) {
             return response()->json(['error' => 'Falha ao remover cadastro!']);
         }
-
     }
 
     public function update(Request $request)
     {
         $userAuth = auth()->user();
 
-        $validator = Validator::make($request->all(), [
-            'perfil.id' => 'bail|required',
-            'id' => 'bail|required'
-        ],
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'perfil.id' => 'bail|required',
+                'id' => 'bail|required'
+            ],
             [
                 'perfil.id.required' => 'Id do perfil é obrigatório!',
                 'id.required' => 'O id de usuário é obrigatório!'
-            ]);
+            ]
+        );
 
         if ($validator->fails())
             return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
@@ -230,8 +238,8 @@ class UserController extends Controller
             ]);
 
         Log::channel('db')->info(
-            'Pefil de usuario alterado ' . $request->id . ' com usuario ' . $userAuth->nome . ' e previlégios ' . $userAuth->perfil->nome);
-
+            'Pefil de usuario alterado ' . $request->id . ' com usuario ' . $userAuth->nome . ' e previlégios ' . $userAuth->perfil->nome
+        );
     }
 
 
@@ -250,11 +258,9 @@ class UserController extends Controller
             ]);
 
         Log::channel('db')->info(
-            'Alterado status de usuario ' . $active . ' ' . $id . ' com usuario ' . $userAuth->nome . ' e previlégios ' . $userAuth->perfil->nome);
+            'Alterado status de usuario ' . $active . ' ' . $id . ' com usuario ' . $userAuth->nome . ' e previlégios ' . $userAuth->perfil->nome
+        );
 
         return response()->json(['message' => $active ? "Usuário ativado!" : "Usuário foi desativado!", 'status' => 200], 200);
     }
-
-
-
 }
