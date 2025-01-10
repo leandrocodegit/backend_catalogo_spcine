@@ -180,6 +180,7 @@ Route::group([
     Route::get('/{id}', [PrecoController::class, 'findPorCatalogo']);
     Route::post('/', [PrecoController::class, 'store']);
     Route::delete('/{id}', [PrecoController::class, 'destroy']);
+    Route::put('/', [PrecoController::class, 'atualizarTabela']);
 });
 
 

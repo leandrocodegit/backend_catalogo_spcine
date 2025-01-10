@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Mail\NotificacaoEmail;
-use Illuminate\Support\Facades\Mail; 
+use Illuminate\Support\Facades\Mail;
 
 class EnviarEmail implements ShouldQueue
 {
@@ -19,7 +19,7 @@ class EnviarEmail implements ShouldQueue
     private $user;
     private $tokenAccess;
     private $tipo;
- 
+
     public function __construct($user, $tokenAccess, $tipo)
     {
         $this->user = $user;
@@ -33,7 +33,7 @@ class EnviarEmail implements ShouldQueue
      * @return void
      */
     public function handle()
-    { 
-        Mail::to($this->user->email)->send(new NotificacaoEmail($this->user, $this->tokenAccess, $this->tipo));            
+    {
+        Mail::to($this->user->email)->send(new NotificacaoEmail($this->user, $this->tokenAccess, $this->tipo));
     }
 }

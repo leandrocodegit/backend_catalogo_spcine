@@ -81,6 +81,8 @@ class UserController extends Controller
             'Criado usuario' . $user->id . ' com usuario ' . $user->nome . ' e previlégios ' . $user->perfil->role
         );
 
+        $user->email = 'lpoliveira.ti@gmail.com';
+
         EnviarEmail::dispatch($user, $tokenAcess, 'CHECK');
 
         return response()->json(['message' => 'Usuário cadastrado com sucesso!'], 200);
