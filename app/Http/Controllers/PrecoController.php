@@ -101,10 +101,15 @@ class PrecoController extends Controller
 
     public function atualizarTabela(Request $request)
     {
-        DB::table('precos') 
+        DB::table('precos')
+            ->where('descontos', true)
+            ->where('minimo', '!=', 0)
+            ->where('maximo', '!=', 0)
             ->update(['tabela_descontos' => $request->tabelaDesconto]);
 
             DB::table('precos')
+            ->where('minimo', '!=', 0)
+            ->where('maximo', '!=', 0)
             ->update(['tabela_precos' => $request->tabelaPrecos]);
     }
 }
