@@ -159,4 +159,36 @@ class ImagemController extends Controller
         }
     }
 
+    public function storeLogo(Request $request)
+    {
+
+        $isPresentFile = $request->hasFile('file');
+
+        if ($isPresentFile) {
+            $validator = Validator::make($request->all(), [
+                'image' => 'nullable|image',
+                'file' => 'max:2048'
+            ],
+                [
+                    'image' => 'Formato de arquivo inválido',
+                    'file.max' => 'O arquivo deve ser menor que 2mb'
+                ]);
+
+            if ($validator->fails())
+                return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
+        }
+
+        if ($isPresentFile) { 
+            $request->file('file')->storeAs('imagens/logo', 'logo.png', 'public');
+        }
+
+        Log::channel('db')->info(
+            'Criado logo ' . $request->catalogo_id . ' com usuario ' . auth()->user()->nome . ' e previlégios ' . auth()->user()->perfil->role);
+
+        return response()->json([
+            'message' => "Logo salvo com sucesso",
+            'status' => 200], 200);
+
+    }
+
 }
