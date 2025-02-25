@@ -128,7 +128,7 @@ Route::group([
 
 ], function ($router) {
     Route::post('/', [ImagemController::class, 'store']);
-    Route::post('/logo', [ImagemController::class, 'storeLogo']);
+    Route::post('/logo/{nome}', [ImagemController::class, 'storeLogo']);
     Route::post('/capas', [ImagemController::class, 'atualizarCapas']);
     Route::patch('/', [ImagemController::class, 'edit']);
     Route::get('/{id}', [ImagemController::class, 'find']);

@@ -159,7 +159,7 @@ class ImagemController extends Controller
         }
     }
 
-    public function storeLogo(Request $request)
+    public function storeLogo(Request $request, $nome)
     {
 
         $isPresentFile = $request->hasFile('file');
@@ -179,7 +179,7 @@ class ImagemController extends Controller
         }
 
         if ($isPresentFile) {
-            $request->file('file')->storeAs('imagens/logo',  $request->nome. '.png', 'public');
+            $request->file('file')->storeAs('imagens/logo',  $nome. '.png', 'public');
         }
 
         Log::channel('db')->info(
