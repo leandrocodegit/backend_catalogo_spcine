@@ -178,8 +178,8 @@ class ImagemController extends Controller
                 return response()->json(['errors' => MapUtil::format($validator->messages()), 'status' => 400], 400);
         }
 
-        if ($isPresentFile) { 
-            $request->file('file')->storeAs('imagens/logo', 'logo.png', 'public');
+        if ($isPresentFile) {
+            $request->file('file')->storeAs('imagens/logo',  $request->nome. '.png', 'public');
         }
 
         Log::channel('db')->info(
